@@ -60,9 +60,13 @@
     /* @ngInject */
     function authMock($q) {
       var isAuth=false;
+      // var userData=null;
         var service = {
             auth: auth,
-            setAuth:setAuth
+            setAuth:setAuth,
+            userData:null,
+            setUserData:setUserData
+
         };
         return service;
 
@@ -78,6 +82,10 @@
 
         function setAuth (bool) {
           isAuth=bool;
+        }
+
+        function setUserData (data) {
+          service.userData=data;
         }
     }
 })();

@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'firebase', 'app.Auth'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'firebase', 'app.Auth', 'app.placas'])
     .constant('FBURL', 'https://scmtest.firebaseio.com/')
     .constant('Firebase', Firebase)
     .factory('FBROOT', ['Firebase', 'FBURL', function(Firebase, FBURL) {
@@ -64,17 +64,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 // Example using function with simple return value.
                 // Since it's not a promise, it resolves immediately.
                 simpleObj: function(authMock) {
-                   return authMock.auth();
+                    return authMock.auth();
                 }
 
-            //     // controller will not be loaded until $waitForAuth resolves
-            //     // Auth refers to our $firebaseAuth wrapper in the example above
-            //     "currentAuth": ["Auth",
-            //         function(Auth) {
-            //             // $waitForAuth returns a promise so the resolve waits for it to complete
-            //             return Auth.$waitForAuth();
-            //         }
-            //     ]
+                //     // controller will not be loaded until $waitForAuth resolves
+                //     // Auth refers to our $firebaseAuth wrapper in the example above
+                //     "currentAuth": ["Auth",
+                //         function(Auth) {
+                //             // $waitForAuth returns a promise so the resolve waits for it to complete
+                //             return Auth.$waitForAuth();
+                //         }
+                //     ]
             }
 
 
@@ -92,7 +92,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                             function(Auth) {
                                 // $requireAuth returns a promise so the resolve waits for it to complete
                                 // If the promise is rejected, it will throw a $stateChangeError (see above)
-                                return Auth.$waitForAuth();
+                                return Auth.$waitForAuth().then(function(data) {
+                                    return data;
+                                });
                             }
                         ]
                     }
@@ -169,15 +171,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
     $urlRouterProvider.otherwise('/tab/dash');
 
-/* se va a un estado intermedio que no me gusta*/
-     // $stateProvider.state("otherwise", {
-     //        url: "*path",
-     //        template: "",
-     //        controller: [
-     //                  '$state',
-     //          function($state) {
-     //            $state.go('tab.dash');
-     //          }]
-     //    });
+    /* se va a un estado intermedio que no me gusta*/
+    // $stateProvider.state("otherwise", {
+    //        url: "*path",
+    //        template: "",
+    //        controller: [
+    //                  '$state',
+    //          function($state) {
+    //            $state.go('tab.dash');
+    //          }]
+    //    });
 
 });
