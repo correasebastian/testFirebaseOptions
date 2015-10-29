@@ -17,32 +17,35 @@ angular.module('starter.controllers', [])
 
         $ionicPlatform.ready(function() {
 
-            function IsOnline() {
-                vm.isOnline = $cordovaNetwork.isOnline();
+            function isOnline() {
+
+                function checkIsonline() {
+                    if ($cordovaNetwork.isOnline()) {
+                        vm.isOnline = true;
+                        vm.msg = 'online';
+
+                    } else {
+                        vm.isOnline = false;
+                        vm.msg = 'offline';
+
+                    }
+                }
+                $timeout(checkIsonline);
             }
 
             // listen for Online event
             $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
                 console.log('online', networkState);
-                $timeout(function() {
-                    vm.msg = 'online';
-                    IsOnline();
-                });
+                isOnline();
             });
 
             // listen for Offline event
             $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
                 console.log('offline --->>', networkState);
-                $timeout(function() {
-                    vm.msg = 'offline';
-                    IsOnline();
-                });
+                isOnline();
             });
 
-            $timeout(function() {
-                IsOnline();
-            });
-
+            isOnline();
 
 
         });
