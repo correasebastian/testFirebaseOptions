@@ -27,6 +27,7 @@
         <ion-list>
             <ion-item ng-repeat="item in placas">
                 {{item.placa}}
+                <span>{{$index+1}}</span>
             </ion-item>
             </ion-list>
             <button class="button button-full button-positive" ng-click="emit()">

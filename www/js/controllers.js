@@ -47,7 +47,7 @@ angular.module('starter.controllers', [])
         // Auth.$requireAuth().then(activated);
 
         function activated() {
-            FbPlacas.setArrayPlacas(currentAuth.uid);
+            FbPlacas.setArrayPlacas(currentAuth.uid,5);
             console.log('activado');
 
             /*viene del login asi que debo borrar la historia para que no pueda devolverse, no hace falta

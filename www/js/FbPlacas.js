@@ -23,8 +23,9 @@
         	return ngArrayFb;
         }
 
-        function setArrayPlacas(uid) {
-        	ngArrayFb=$firebaseArray(FBROOT.child('users').child(uid));
+        function setArrayPlacas(uid, lastNumber) {
+        	var query= FBROOT.child('users').child(uid).orderByKey().limitToLast(lastNumber);
+        	ngArrayFb=$firebaseArray(query);
         }
     }
 })();
