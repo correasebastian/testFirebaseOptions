@@ -5,10 +5,10 @@ angular.module('starter.controllers', [])
         console.log(simpleObj);
        
 
-        $ionicHistory.nextViewOptions({
+        /*$ionicHistory.nextViewOptions({
             disableAnimate: true,
             disableBack: true
-        });
+        });*/
     })
     .controller('DashCtrl', function($scope, $ionicHistory,authMock) {
          authMock.setAuth();
