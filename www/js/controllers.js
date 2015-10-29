@@ -1,12 +1,30 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {
+.controller('loginCtrl', function($ionicHistory) {
+
+        $ionicHistory.nextViewOptions({
+            disableAnimate: true,
+            disableBack: true
+        });
+    })
+    .controller('DashCtrl', function($scope, $ionicHistory) {
+
+        /*viene del login asi que debo borrar la historia para que no pueda devolverse, no hace falta
+
+        aunque estoy evaluando  $ionicHistory.nextViewOptions({
+            disableAnimate: true,
+            disableBack: true
+        });
+        en el login controller 
+
+        */
+        // $ionicHistory.clearHistory();
         /* send an event up */
         $scope.emit = function() {
             $scope.$emit('custom', {
                 name: "juliana"
             });
-        }
+        };
 
     })
     .controller('AppController', function($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork) {
@@ -19,7 +37,7 @@ angular.module('starter.controllers', [])
             $timeout(function() {
                 vm.msg = msg;
             });
-        }
+        };
 
         $ionicPlatform.ready(function() {
 
@@ -61,7 +79,7 @@ angular.module('starter.controllers', [])
 
 
             /*habilitarlo para cuando este en mobile, si estoy en serve tira error por no encontrar cordova*/
-            isOnline();
+            // isOnline();
 
 
         });
