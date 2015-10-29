@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+/*angular.module('starter.services', [])
 
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
@@ -47,4 +47,37 @@ angular.module('starter.services', [])
       return null;
     }
   };
-});
+})*/
+(function() {
+    'use strict';
+
+    angular
+        .module('starter.services', [])
+        .factory('authMock', authMock);
+
+    authMock.$inject = ['$q'];
+
+    /* @ngInject */
+    function authMock($q) {
+      var isAuth=false;
+        var service = {
+            auth: auth,
+            setAuth:setAuth
+        };
+        return service;
+
+        ////////////////
+
+        function auth() {
+
+          if(!isAuth){
+            return $q.when('go to login');
+          }
+          return $q.reject('already login');
+        }
+
+        function setAuth () {
+          isAuth=true;
+        }
+    }
+})();

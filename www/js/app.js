@@ -44,7 +44,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             url: '/login',
 
             templateUrl: 'templates/login.html',
-            controller: 'loginCtrl'
+            controller: 'loginCtrl',
+            resolve: {
+
+                // Example using function with simple return value.
+                // Since it's not a promise, it resolves immediately.
+                simpleObj: function(authMock) {
+                   return authMock.auth();
+                }
+            }
 
 
         })

@@ -1,13 +1,17 @@
 angular.module('starter.controllers', [])
 
-.controller('loginCtrl', function($ionicHistory) {
+.controller('loginCtrl', function($ionicHistory, simpleObj) {
+
+        console.log(simpleObj);
+       
 
         $ionicHistory.nextViewOptions({
             disableAnimate: true,
             disableBack: true
         });
     })
-    .controller('DashCtrl', function($scope, $ionicHistory) {
+    .controller('DashCtrl', function($scope, $ionicHistory,authMock) {
+         authMock.setAuth();
 
         /*viene del login asi que debo borrar la historia para que no pueda devolverse, no hace falta
 
@@ -79,7 +83,7 @@ angular.module('starter.controllers', [])
 
 
             /*habilitarlo para cuando este en mobile, si estoy en serve tira error por no encontrar cordova*/
-            // isOnline();
+            isOnline();
 
 
         });
