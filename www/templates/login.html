@@ -9,6 +9,19 @@
             </div>
         </div>
 
+        <div class="list list-inset">
+          <label class="item item-input">
+            <input ng-model="login.email" type="text" placeholder="email">
+          </label>
+          <label class="item item-input">
+            <input ng-model="login.pass" type="text" placeholder="password">
+          </label>
+        </div>
+
+        <button class="button button-full button-positive" ng-click="loginFn(login)">
+        login
+       </button>
+
        <button class="button button-full button-positive" ui-sref="tab.dash">
         go Dash
        </button>

@@ -71,13 +71,13 @@
         function auth() {
 
           if(!isAuth){
-            return $q.when('go to login');
+            return $q.when('voy a dejarlo ingrear a  login');
           }
-          return $q.reject('already login');
+          return $q.reject('already login permanezca en tab.dash si es que esta dandole al boton de back, es mejor esto que salirse de la aplicacion');
         }
 
-        function setAuth () {
-          isAuth=true;
+        function setAuth (bool) {
+          isAuth=bool;
         }
     }
 })();

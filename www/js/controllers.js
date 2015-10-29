@@ -1,17 +1,47 @@
 angular.module('starter.controllers', [])
 
-.controller('loginCtrl', function($ionicHistory, simpleObj) {
+.controller('loginCtrl', function($ionicHistory, simpleObj, $ionicLoading, Auth, $state, $scope) {
 
-        console.log(simpleObj);
-       
+        // console.log(simpleObj);
+        $scope.login = {
+            email: 'a@a.com',
+            pass: 'a'
+        };
+
+
+        $scope.loginFn = function(user) {
+
+            Auth.$authWithPassword({
+                    email: user.email,
+                    password: user.pass
+                }).then(function(authData) {
+                    console.log("Logged in as:" + authData.uid);
+                    /*ref.child("users").child(authData.uid).once('value', function(snapshot) {
+                        var val = snapshot.val();
+                        // To Update AngularJS $scope either use $apply or $timeout
+                        $scope.$apply(function() {
+                            $rootScope.displayName = val;
+                        });
+                    });*/
+
+                    $state.go('tab.dash');
+                }).catch(function(error) {
+                    alert("Authentication failed:" + error.message);
+
+                })
+                .finally(function() {
+                    $ionicLoading.hide();
+                });
+        }
+
 
         /*$ionicHistory.nextViewOptions({
             disableAnimate: true,
             disableBack: true
         });*/
     })
-    .controller('DashCtrl', function($scope, $ionicHistory,authMock) {
-         authMock.setAuth();
+    .controller('DashCtrl', function($scope, $ionicHistory, authMock, currentAuth) {
+        authMock.setAuth();
 
         /*viene del login asi que debo borrar la historia para que no pueda devolverse, no hace falta
 
@@ -31,7 +61,7 @@ angular.module('starter.controllers', [])
         };
 
     })
-    .controller('AppController', function($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork) {
+    .controller('AppController', function($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork,Auth, $state,authMock) {
 
         var vm;
         vm = this;
@@ -42,6 +72,18 @@ angular.module('starter.controllers', [])
                 vm.msg = msg;
             });
         };
+
+
+        Auth.$onAuth(function(authData) {
+            if (authData) {
+                authMock.setAuth(true);
+                console.log("Logged in as:", authData.uid);
+            } else {
+                authMock.setAuth(false);
+                console.log("Logged out");
+                $state.go('login');
+            }
+        });
 
         $ionicPlatform.ready(function() {
 
@@ -96,7 +138,7 @@ angular.module('starter.controllers', [])
 
     })
 
-.controller('ChatsCtrl', function($scope, Chats) {
+.controller('ChatsCtrl', function($scope, Chats,currentAuth) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -115,8 +157,13 @@ angular.module('starter.controllers', [])
     $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', function($scope, Auth, currentAuth) {
     $scope.settings = {
         enableFriends: true
+    };
+
+    $scope.logout = function() {
+
+        Auth.$unauth();
     };
 });

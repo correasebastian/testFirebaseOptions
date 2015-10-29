@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "firebase": "~2.3.1",
-    "ngCordova": "~0.1.20-alpha"
+    "ngCordova": "~0.1.20-alpha",
+    "angularfire": "~1.1.3"
   }
 }
