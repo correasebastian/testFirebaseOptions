@@ -1,6 +1,12 @@
 angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {
+        /* send an event up */
+        $scope.emit = function() {
+            $scope.$emit('custom', {
+                name: "juliana"
+            });
+        }
 
     })
     .controller('AppController', function($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork) {
@@ -34,17 +40,27 @@ angular.module('starter.controllers', [])
             }
 
             // listen for Online event
-            $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
+            $scope.$on('$cordovaNetwork:online', function(event, networkState) {
                 console.log('online', networkState);
                 isOnline();
             });
 
             // listen for Offline event
-            $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
+            $scope.$on('$cordovaNetwork:offline', function(event, networkState) {
                 console.log('offline --->>', networkState);
                 isOnline();
             });
 
+
+            $scope.$on('custom', function(event, data) {
+                $timeout(function() {
+                    console.log(data);
+                    vm.msg = 'custom';
+                });
+            });
+
+
+            /*habilitarlo para cuando este en mobile, si estoy en serve tira error por no encontrar cordova*/
             isOnline();
 
 
