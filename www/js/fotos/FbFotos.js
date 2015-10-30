@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.fotos',[])
+        .module('app.fotos')
         .factory('FbFotos', FbFotos);
 
     FbFotos.$inject = ['$firebaseArray','FBROOT'];

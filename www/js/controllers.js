@@ -43,7 +43,7 @@ angular.module('starter.controllers', [])
     .controller('DashCtrl', function($scope, $ionicHistory, authMock, currentAuth, FbPlacas, FBROOT) {
         // authMock.setAuth();
 
-        // console.log(currentAuth)
+        console.log('in dash', currentAuth)
         // Auth.$requireAuth().then(activated);
 
         function activated() {
@@ -87,86 +87,73 @@ angular.module('starter.controllers', [])
 
 
     })
-    .controller('AppController', function($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork, Auth, $state, authMock, FbPlacas) {
+    // .controller('AppController', function($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork, Auth, $state, authMock, FbPlacas) {
 
-        var vm;
-        vm = this;
-        vm.msg = 'init';
+    //     var vm;
+    //     vm = this;
+    //     vm.msg = 'init';
 
-        vm.cl = function(msg) {
-            $timeout(function() {
-                vm.msg = msg;
-            });
-        };
-
-
-        Auth.$onAuth(function(authData) {
-            console.log('authData', authData);
-            authMock.setUserData(authData);
-            if (authData) {
-                // FbPlacas.setArrayPlacas(authData.uid)
-                authMock.setAuth(true);
-
-                console.log("Logged in as:", authData.uid);
-            } else {
-                authMock.setAuth(false);
-                console.log("Logged out");
-                $state.go('login');
-            }
-        });
-
-        $ionicPlatform.ready(function() {
-
-            function isOnline() {
-
-                function checkIsonline() {
-                    if ($cordovaNetwork.isOnline()) {
-                        vm.isOnline = true;
-                        vm.msg = 'online';
-
-                    } else {
-                        vm.isOnline = false;
-                        vm.msg = 'offline';
-
-                    }
-                }
-                $timeout(checkIsonline);
-            }
-
-            // listen for Online event
-            $scope.$on('$cordovaNetwork:online', function(event, networkState) {
-                console.log('online', networkState);
-                isOnline();
-            });
-
-            // listen for Offline event
-            $scope.$on('$cordovaNetwork:offline', function(event, networkState) {
-                console.log('offline --->>', networkState);
-                isOnline();
-            });
+    //     vm.cl = function(msg) {
+    //         $timeout(function() {
+    //             vm.msg = msg;
+    //         });
+    //     };
 
 
-            $scope.$on('custom', function(event, data) {
-                $timeout(function() {
-                    console.log(data);
-                    vm.msg = 'custom';
-                });
-            });
+  
+
+    //     $ionicPlatform.ready(function() {
+
+    //         function isOnline() {
+
+    //             function checkIsonline() {
+    //                 if ($cordovaNetwork.isOnline()) {
+    //                     vm.isOnline = true;
+    //                     vm.msg = 'online';
+
+    //                 } else {
+    //                     vm.isOnline = false;
+    //                     vm.msg = 'offline';
+
+    //                 }
+    //             }
+    //             $timeout(checkIsonline);
+    //         }
+
+    //         // listen for Online event
+    //         $scope.$on('$cordovaNetwork:online', function(event, networkState) {
+    //             console.log('online', networkState);
+    //             isOnline();
+    //         });
+
+    //         // listen for Offline event
+    //         $scope.$on('$cordovaNetwork:offline', function(event, networkState) {
+    //             console.log('offline --->>', networkState);
+    //             isOnline();
+    //         });
 
 
-            /*habilitarlo para cuando este en mobile, si estoy en serve tira error por no encontrar cordova*/
-            isOnline();
+    //         $scope.$on('custom', function(event, data) {
+    //             $timeout(function() {
+    //                 console.log(data);
+    //                 vm.msg = 'custom';
+    //             });
+    //         });
 
 
-        });
+    //         /*habilitarlo para cuando este en mobile, si estoy en serve tira error por no encontrar cordova*/
+    //         isOnline();
 
-        /*
-        e=angular.element($0);
-        s=e.scope()
-        p=s.$parent
-        p.AppCtrl.*/
 
-    })
+    //     });
+
+    //     /*
+    //     e=angular.element($0);
+    //     s=e.scope()
+    //     p=s.$parent
+    //     p.AppCtrl.*/
+
+    // })
 
 .controller('ChatsCtrl', function($scope, currentAuth, FbPlacas) {
     // With the new view caching in Ionic, Controllers are only called
@@ -184,7 +171,7 @@ angular.module('starter.controllers', [])
 .controller('ChatDetailCtrl', function($scope, $stateParams,  FbFotos, moment, FBROOT) {
     // $scope.chat = Chats.get($stateParams.chatId);
 
-    $scope.fotos= FbFotos.getFotosArray($stateParams.chatId);
+    $scope.fotos= FbFotos.getFotosArray($stateParams.idinspeccion);
 
     $scope.addFoto=function(){
         var obj={
