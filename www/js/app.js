@@ -5,9 +5,12 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'firebase', 'app.Auth', 'app.placas'])
+angular.module('starter', ['ionic', 'starter.controllers',
+        'starter.services', 'ngCordova', 'firebase', 'app.Auth', 'app.placas', 'app.fotos'
+    ])
     .constant('FBURL', 'https://scmtest.firebaseio.com/')
     .constant('Firebase', Firebase)
+    .constant('moment', moment)
     .factory('FBROOT', ['Firebase', 'FBURL', function(Firebase, FBURL) {
         return new Firebase(FBURL);
     }])
@@ -92,9 +95,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                             function(Auth) {
                                 // $requireAuth returns a promise so the resolve waits for it to complete
                                 // If the promise is rejected, it will throw a $stateChangeError (see above)
-                                return Auth.$waitForAuth().then(function(data) {
-                                    return data;
-                                });
+                                return Auth.$waitForAuth();
                             }
                         ]
                     }

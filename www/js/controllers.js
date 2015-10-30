@@ -40,14 +40,14 @@ angular.module('starter.controllers', [])
             disableBack: true
         });*/
     })
-    .controller('DashCtrl', function($scope, $ionicHistory, authMock, currentAuth, FbPlacas, Auth) {
+    .controller('DashCtrl', function($scope, $ionicHistory, authMock, currentAuth, FbPlacas, FBROOT) {
         // authMock.setAuth();
 
         // console.log(currentAuth)
         // Auth.$requireAuth().then(activated);
 
         function activated() {
-            FbPlacas.setArrayPlacas(currentAuth.uid,5);
+            FbPlacas.setArrayPlacas(currentAuth.uid, 5);
             console.log('activado');
 
             /*viene del login asi que debo borrar la historia para que no pueda devolverse, no hace falta
@@ -65,9 +65,16 @@ angular.module('starter.controllers', [])
                 $scope.$emit('custom', {
                     name: "juliana"
                 });
-                var obj={"placa": new Date().toString()}
+                var obj = {
+                    "placa": new Date().toString()
+                };
 
-                $scope.placas.$add(obj)
+                $scope.placas.$add(obj).then(function(data) {
+                    console.log('data registered', data.key());
+                    var keyInserted=data.key();
+
+                    FBROOT.child('inspecciones').child(keyInserted).set(obj);
+                });
             };
 
             $scope.placas = FbPlacas.getArray();
@@ -80,7 +87,7 @@ angular.module('starter.controllers', [])
 
 
     })
-    .controller('AppController', function($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork, Auth, $state, authMock,FbPlacas) {
+    .controller('AppController', function($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork, Auth, $state, authMock, FbPlacas) {
 
         var vm;
         vm = this;
@@ -161,7 +168,7 @@ angular.module('starter.controllers', [])
 
     })
 
-.controller('ChatsCtrl', function($scope,  currentAuth, FbPlacas) {
+.controller('ChatsCtrl', function($scope, currentAuth, FbPlacas) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -170,12 +177,28 @@ angular.module('starter.controllers', [])
     //$scope.$on('$ionicView.enter', function(e) {
     //});
 
-    $scope.chats  = FbPlacas.getArray();
-   
+    $scope.chats = FbPlacas.getArray();
+
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-    $scope.chat = Chats.get($stateParams.chatId);
+.controller('ChatDetailCtrl', function($scope, $stateParams,  FbFotos, moment, FBROOT) {
+    // $scope.chat = Chats.get($stateParams.chatId);
+
+    $scope.fotos= FbFotos.getFotosArray($stateParams.chatId);
+
+    $scope.addFoto=function(){
+        var obj={
+            path: moment().unix()
+        }
+
+        $scope.fotos.$add(obj).then(function(data){
+            var keyInserted=data.key();
+
+            FBROOT.child('fotos').child(keyInserted).set(obj);
+        });
+
+
+    }
 })
 
 .controller('AccountCtrl', function($scope, Auth, currentAuth) {

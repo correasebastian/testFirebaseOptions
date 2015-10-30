@@ -10,5 +10,16 @@
     <p>
       {{chat.lastText}}
     </p>
+
+    <ion-list>
+      <ion-item ng-repeat="item in fotos">
+    {{ item.path}}
+      </ion-item>
+   
+    </ion-list>
+
+    <button class="button button-small button-positive" ng-click="addFoto()">
+      addFoto
+    </button>
   </ion-content>
 </ion-view>
