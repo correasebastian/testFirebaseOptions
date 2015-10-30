@@ -97,7 +97,9 @@ module.exports = function() {
             ignorePath: config.bower.ignorePath,
               devDependencies: true,
               // already include in ionic bundle
-              exclude:['bootstrap.js','ionic.js','angular.js','angular-animate.js','angular-sanitize.js','angular-ui-router.js']
+              exclude:['bootstrap.js','ionic.js','angular.js',
+              'angular-animate.js','angular-sanitize.js','angular-ui-router.js',
+              'ionic.material.min.js','ionic.material.min.css']
         };
         return options;
     };
