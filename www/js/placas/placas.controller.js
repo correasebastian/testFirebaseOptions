@@ -11,7 +11,7 @@
     function Placas($scope, currentAuth, FbPlacas, FBROOT,logger) {
         var vm = this;
         vm.title = 'Placas';
-        vm.emit = emit;
+        vm.addPlaca = addPlaca;
         vm.placas = [];
 
         activate();
@@ -25,10 +25,8 @@
             vm.placas = FbPlacas.getArray();
         }
 
-        function emit() {
-            $scope.$emit('custom', {
-                name: "juliana"
-            });
+        function addPlaca() {
+          
             var obj = {
                 "placa": new Date().toString()
             };

@@ -100,8 +100,8 @@
                 url: '/placas/:idinspeccion',
                 views: {
                     'tab-placas': {
-                        templateUrl: 'js/placas/placas-detail.html',
-                        controller: 'ChatDetailCtrl'
+                        templateUrl: 'js/fotos/fotos-detail.html',
+                        controller: 'FotosCtrl as FC'
                     }
                 }
             })
