@@ -7,6 +7,6 @@
             'blocks.logger','blocks.exception',
 
             //third party
-            'ngCordova'
+            'ngCordova', 'ionic-material'
         ]);
 })();
