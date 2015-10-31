@@ -24,10 +24,6 @@
             logger.info('activado placas');
             FbPlacas.getArray(currentAuth.uid).$loaded().then(function(data) {
                     vm.placas = data;
-
-                    animate();
-
-
                 }
 
             );
@@ -35,19 +31,6 @@
 
         }
 
-        function animate() {
-            $timeout(function() {
-                // Set Motion
-                ionicMaterialMotion.fadeSlideInRight();
-
-                // Set Ink
-                ionicMaterialInk.displayEffect();
-
-
-                // $scope.$parent.AppCtrl.setExtended(true);
-
-            }, 20)
-        }
 
         var i = 0;
 
@@ -62,8 +45,8 @@
 
             var obj = {
                 "placa": new Date().toString(),
-                path:paths[i],
-                name:paths[i].split('.')[0]
+                path: paths[i],
+                name: paths[i].split('.')[0]
             };
 
             (i === 3) ? i = 0: i++;
@@ -72,15 +55,12 @@
 
             function onAdded(data) {
                 console.log('data registered', data.key());
-                 // $scope.$parent.AppCtrl.isExpanded=true;
-                animate();
-                // ionicMaterialInk.displayEffect();// este solo no sirve, hay k llamar animate();
 
                 var keyInserted = data.key();
                 FBROOT.child('inspecciones').child(keyInserted).set(obj);
 
-                
-    
+
+
             }
         }
     }
