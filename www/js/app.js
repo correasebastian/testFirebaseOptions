@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers',
         'starter.services',  'app.auth',
-        'app.placas', 'app.fotos', 'app.core'
+        'app.placas', 'app.fotos', 'app.core', 'app.mfb'
     ])
     // .constant('FBURL', 'https://scmtest.firebaseio.com/')
     // .constant('Firebase', Firebase)

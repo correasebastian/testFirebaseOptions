@@ -3,10 +3,10 @@
 
     angular
         .module('app.core', [
-            'common.firebase', 'common.moment','common.toastr',
+            'common.firebase', 'common.moment','common.toastr','common.fabMenu',
             'blocks.logger','blocks.exception',
 
             //third party
-            'ngCordova', 'ionic-material'
+            'ngCordova', 'ionic-material','ng-mfb' /*menu fab */
         ]);
 })();

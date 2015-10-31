@@ -18,8 +18,25 @@
         // Each state's controller can be found in controllers.js
         $stateProvider
 
+
+            .state('app', {
+            url: '/app',
+            abstract: true,
+            templateUrl: 'templates/menu.html'
+        })
+
+        .state('app.activity', {
+            url: '/activity',
+            views: {
+                'menuContent': {
+                    templateUrl: 'js/mfb/mfb-example.html',
+                    controller: 'MfbController as MfbC'
+                }
+            }
+        })
+
         // setup an abstract state for the tabs directive
-            .state('tab', {
+        .state('tab', {
             url: '/tab',
             abstract: true,
             templateUrl: 'templates/tabs.html'
@@ -95,15 +112,16 @@
                                 }
                             ]
                         }
-                    }/*,
-                    'fabContent': {
-                        template: '<button scm-fab delay="1000" id="fab-friends" class="button button-fab button-fab-top-left expanded button-energized-900 spin"><i class="icon ion-chatbubbles"></i></button>',
-                        controller: function($timeout) {
-                            $timeout(function() {
-                                // document.getElementById('fab-friends').classList.toggle('on');
-                            }, 900);
-                        }
-                    }*/
+                    }
+                    /*,
+                                        'fabContent': {
+                                            template: '<button scm-fab delay="1000" id="fab-friends" class="button button-fab button-fab-top-left expanded button-energized-900 spin"><i class="icon ion-chatbubbles"></i></button>',
+                                            controller: function($timeout) {
+                                                $timeout(function() {
+                                                    // document.getElementById('fab-friends').classList.toggle('on');
+                                                }, 900);
+                                            }
+                                        }*/
                 }
             })
             .state('tab.placas-detail', {
