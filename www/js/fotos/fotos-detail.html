@@ -5,12 +5,20 @@
   The Friends service returns an array of friend data
 -->
 <ion-view view-title="{{FC.title}}">
-    <ion-content ng-class="{expanded:FC.isExpanded}"  class="padding animate-fade-slide-in">
-       <!--  <ion-list>
+    <ion-content ng-class="{expanded:FC.isExpanded}" class=" animate-fade-slide-in">
+        <!--  <ion-list>
             <ion-item ng-repeat="item in FC.fotos">
                 {{ item.path}}
             </ion-item>
         </ion-list> -->
+      
+        <div ng-repeat="foto in FC.fotos" class="hero slide-up padding" background-image path="img/{{foto.path}}">
+            <div class="content">
+                <div class="avatar" background-image path="img/{{foto.path}}"></div>
+                <h3><a class="light">{{foto.name}}</a></h3>
+                <h4>dragon_mommy</h4>
+            </div>
+        </div>
         <div class="list half">
             <div ng-if="$even" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="card card-gallery item item-text-wrap">
                 <div class="ink dark-bg">
@@ -26,7 +34,7 @@
                     </a>
                 </div>
             </div>
-          <!--   <div ui-sref="app.profile" class="card card-gallery item item-text-wrap">
+            <!--   <div ui-sref="app.profile" class="card card-gallery item item-text-wrap">
                 <div class="ink dark-bg">
                     <h2>Where's Elsa?</h2>
                     <img class="full-image" src="img/sansa-snowcastle3.jpg">
@@ -56,7 +64,7 @@
             </div> -->
         </div>
         <div class="list half">
-         <div ng-if="$odd" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="card card-gallery item item-text-wrap">
+            <div ng-if="$odd" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="card card-gallery item item-text-wrap">
                 <div class="ink dark-bg">
                     <h2>{{foto.name}}</h2>
                     <img class="full-image" ng-src="img/{{foto.path}}">
@@ -70,7 +78,7 @@
                     </a>
                 </div>
             </div>
-           <!--  <div ui-sref="app.profile" class="card card-gallery item item-text-wrap">
+            <!--  <div ui-sref="app.profile" class="card card-gallery item item-text-wrap">
                 <div class="ink dark-bg">
                     <h2>Making Olaf a House</h2>
                     <img class="full-image" src="img/sansa-snowcastle2.jpg">
@@ -99,9 +107,26 @@
                 </div>
             </div> -->
         </div>
+        <!-- UNA SOLA LISTA // asi no funciona  -->
+        <!--    <div class="list ">
+            <div n ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="card card-gallery item item-text-wrap">
+                <div class="ink dark-bg">
+                    <h2>{{foto.name}}</h2>
+                    <img class="full-image" ng-src="img/{{foto.path}}">
+                </div>
+                <div class="item tabs tabs-secondary tabs-icon-left">
+                    <a class="tab-item stable-bg assertive">
+                        <i class="icon ion-heart"></i> 4
+                    </a>
+                    <a class="tab-item stable-bg positive-900">
+                        <i class="icon ion-chatbubbles"></i> 2
+                    </a>
+                </div>
+            </div>
+        </div> -->
     </ion-content>
     <button id="fab-gallery" class="button button-fab button-fab-bottom-left expanded button-energized-900 drop"><i class="icon ion-heart"></i></button>
-    <button id="fab-gallery-plus" class="button  button-positive button-fab button-fab-bottom-right expanded drop" ng-click="FC.addFoto()">
+    <button scm-fab delay="800" id="fab-gallery-plus" class="button  button-energized button-fab button-fab-bottom-right expanded drop" ng-click="FC.addFoto()">
         <i class="icon ion-plus">
     </button>
 </ion-view>

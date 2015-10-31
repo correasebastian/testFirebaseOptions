@@ -11,7 +11,7 @@
     function FotosCtrl($stateParams, FbFotos, FBROOT, moment, ionicMaterialInk, ionicMaterialMotion, $timeout) {
         var vm = this;
         vm.title = 'FotosCtrl';
-        vm.isExpanded=true;
+        vm.isExpanded = true;
 
         activate();
 
@@ -26,18 +26,22 @@
                 });
 
         }
-        var buttonAnimate=true;
+        var buttonAnimate = false;
 
         function animate() {
             $timeout(function() {
 
-                if(buttonAnimate){
-                     document.getElementById('fab-gallery').classList.toggle('on');
-                      document.getElementById('fab-gallery-plus').classList.toggle('on');
-                    buttonAnimate=false;
+                if (buttonAnimate) {
+                    document.getElementById('fab-gallery').classList.toggle('on');
+                    document.getElementById('fab-gallery-plus').classList.toggle('on');
+                    buttonAnimate = false;
                 }
+
+                ionicMaterialMotion.slideUp({
+                    selector: '.slide-up'
+                });
                 // Activate ink for controller
-                ionicMaterialInk.displayEffect();
+               
 
                 ionicMaterialMotion.pushDown({
                     selector: '.push-down'
@@ -45,6 +49,8 @@
                 ionicMaterialMotion.fadeSlideInRight({
                     selector: '.animate-fade-slide-in .item'
                 });
+
+                 ionicMaterialInk.displayEffect();
             }, 300)
         }
 

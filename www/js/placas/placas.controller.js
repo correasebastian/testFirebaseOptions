@@ -43,6 +43,9 @@
                 // Set Ink
                 ionicMaterialInk.displayEffect();
 
+
+                // $scope.$parent.AppCtrl.setExtended(true);
+
             }, 20)
         }
 
@@ -69,11 +72,15 @@
 
             function onAdded(data) {
                 console.log('data registered', data.key());
+                 // $scope.$parent.AppCtrl.isExpanded=true;
                 animate();
                 // ionicMaterialInk.displayEffect();// este solo no sirve, hay k llamar animate();
 
                 var keyInserted = data.key();
                 FBROOT.child('inspecciones').child(keyInserted).set(obj);
+
+                
+    
             }
         }
     }

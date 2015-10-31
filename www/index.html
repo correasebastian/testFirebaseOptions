@@ -39,8 +39,8 @@
     <!--
       The nav bar that will be updated as we navigate between views.
     -->
-    <ion-nav-bar class="bar-positive">
-        <ion-nav-back-button>
+    <ion-nav-bar class="bar-positive" ng-class="{expanded: AppCtrl.isExpanded, 'has-header-fab-left': hasHeaderFabLeft, 'has-header-fab-right': AppCtrl.hasHeaderFabRight}" align-title="left">
+        <ion-nav-back-button class="no-text">
         </ion-nav-back-button>
     </ion-nav-bar>
     <!--
@@ -48,7 +48,8 @@
       Templates are in the /templates folder (but you could also
       have templates inline in this html file if you'd like).
     -->
-    <ion-nav-view></ion-nav-view>
+ 
+    <ion-nav-view ng-class="{'expanded': AppCtrl.isExpanded}"></ion-nav-view>
     <!-- inject:js -->
     <script src="js/auth/auth.module.js"></script>
     <script src="js/core/core.module.js"></script>
@@ -69,6 +70,8 @@
     <script src="js/core/core.controller.js"></script>
     <script src="js/core/core.run.js"></script>
     <script src="js/fotos/FbFotos.js"></script>
+    <script src="js/fotos/backgroundImage.directive.js"></script>
+    <script src="js/fotos/fab.directive.js"></script>
     <script src="js/fotos/fotos.controller.js"></script>
     <script src="js/placas/FbPlacas.js"></script>
     <script src="js/placas/placas.controller.js"></script>

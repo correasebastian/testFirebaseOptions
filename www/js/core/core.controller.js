@@ -11,14 +11,18 @@
     function AppController($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork) {
         var vm = this;
         vm.title = 'AppController';
-
+        vm.isExpanded = false;
+        vm.hasHeaderFabRight = true;
+        vm.setExtended = setExtended
         activate();
 
         ////////////////
 
         function activate() {}
 
-
+        function setExtended(bool) {
+            vn.isExpanded = bool;
+        }
 
 
         $ionicPlatform.ready(function() {
