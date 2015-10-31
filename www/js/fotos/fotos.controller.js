@@ -11,6 +11,7 @@
     function FotosCtrl($stateParams, FbFotos, FBROOT, moment, ionicMaterialInk, ionicMaterialMotion, $timeout) {
         var vm = this;
         vm.title = 'FotosCtrl';
+        // vm.isExpanded=true;
 
         activate();
 
@@ -37,7 +38,7 @@
                 ionicMaterialMotion.fadeSlideInRight({
                     selector: '.animate-fade-slide-in .item'
                 });
-            }, 10)
+            }, 200)
         }
 
         // $scope.chat = Chats.get($stateParams.chatId);
