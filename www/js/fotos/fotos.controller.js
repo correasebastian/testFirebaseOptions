@@ -11,7 +11,7 @@
     function FotosCtrl($stateParams, FbFotos, FBROOT, moment, ionicMaterialInk, ionicMaterialMotion, $timeout) {
         var vm = this;
         vm.title = 'FotosCtrl';
-        // vm.isExpanded=true;
+        vm.isExpanded=true;
 
         activate();
 
@@ -26,9 +26,16 @@
                 });
 
         }
+        var buttonAnimate=true;
 
         function animate() {
             $timeout(function() {
+
+                if(buttonAnimate){
+                     document.getElementById('fab-gallery').classList.toggle('on');
+                      document.getElementById('fab-gallery-plus').classList.toggle('on');
+                    buttonAnimate=false;
+                }
                 // Activate ink for controller
                 ionicMaterialInk.displayEffect();
 
@@ -38,7 +45,7 @@
                 ionicMaterialMotion.fadeSlideInRight({
                     selector: '.animate-fade-slide-in .item'
                 });
-            }, 200)
+            }, 300)
         }
 
         // $scope.chat = Chats.get($stateParams.chatId);
