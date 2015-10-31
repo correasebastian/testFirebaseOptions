@@ -11,7 +11,7 @@ var j;
     /* @ngInject */
     function scmFab($timeout, logger) {
         // Usage:
-        //solo funciona bien apra un boton, 
+        
         // Creates:
         //
         var directive = {
