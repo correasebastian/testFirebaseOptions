@@ -18,8 +18,8 @@
             controller: Controller,
             controllerAs: 'vm',
             link: link,
-            restrict: 'A',
-            scope: {}
+            restrict: 'A'/*,
+            scope: {}*/
         };
         return directive;
 

@@ -21,21 +21,15 @@
             FbFotos.getFotosArray($stateParams.idinspeccion).$loaded()
                 .then(function(data) {
                     vm.fotos = data;
-                    animate();
+                    // animate();
 
                 });
 
         }
-        var buttonAnimate = false;
+  
 
-        function animate() {
-            $timeout(function() {
-
-                if (buttonAnimate) {
-                    document.getElementById('fab-gallery').classList.toggle('on');
-                    document.getElementById('fab-gallery-plus').classList.toggle('on');
-                    buttonAnimate = false;
-                }
+   /*     function animate() {
+            $timeout(function() {             
 
                 ionicMaterialMotion.slideUp({
                     selector: '.slide-up'
@@ -52,7 +46,7 @@
 
                  ionicMaterialInk.displayEffect();
             }, 300)
-        }
+        }*/
 
         // $scope.chat = Chats.get($stateParams.chatId);
 
@@ -80,7 +74,7 @@
 
             function onAdded(data) {
                 var keyInserted = data.key();
-                animate();
+                // animate();
                 FBROOT.child('fotos').child(keyInserted).set(obj);
             }
 
