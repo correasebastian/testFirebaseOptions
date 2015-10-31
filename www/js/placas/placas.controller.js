@@ -36,17 +36,17 @@
         }
 
         function animate() {
-            $timeout(function() {
-                // Set Motion
-                ionicMaterialMotion.fadeSlideInRight();
+            // $timeout(function() {
+            //     // Set Motion
+            //     ionicMaterialMotion.fadeSlideInRight();
 
-                // Set Ink
-                ionicMaterialInk.displayEffect();
+            //     // Set Ink
+            //     ionicMaterialInk.displayEffect();
 
 
-                // $scope.$parent.AppCtrl.setExtended(true);
+            //     // $scope.$parent.AppCtrl.setExtended(true);
 
-            }, 20)
+            // }, 20)
         }
 
         var i = 0;
