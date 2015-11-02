@@ -1,15 +1,18 @@
 <ion-view view-title="Account">
-  <ion-content>
-    <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
-    </ion-list>
-
-    <button class="button button-light" ng-click="logout()">
-      logout
-    </button>
-   
-  </ion-content>
-
+    <ion-content>
+        <ion-list>
+            <ion-toggle ng-model="settings.enableFriends">
+                Enable Friends
+            </ion-toggle>
+        </ion-list>
+        <button class="button button-light" ng-click="logout()">
+            logout
+        </button>
+        <button class="button button-calm" ui-sref="app.placas">
+            go side menu
+        </button>
+        <button class="button button-calm" ui-sref="tab.placas">
+            go tabs
+        </button>
+    </ion-content>
 </ion-view>

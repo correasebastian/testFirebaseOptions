@@ -1,3 +1,4 @@
+// var ip;
 (function() {
     'use strict';
 
@@ -5,12 +6,29 @@
         .module('app.core')
         .run(Run);
 
-    Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory', 'logger'];
+    Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory', 'logger', 'mobileTest'];
 
     /* @ngInject */
-    function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory, logger) {
+    function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory, logger, mobileTest) {
 
+        // ip = $ionicPlatform;
+        /* usando el nuevo global de ionic , qu eno esta ligado a angular*/
+        /* funcionan inclusive antes del platform ready*/
+     /*   var isIOS = ionic.Platform.isIOS();
+        var isAndroid = ionic.Platform.isAndroid();
+        console.log('verificando si funciona antes de platfrom ready', isAndroid, isIOS);
 
+        if (isAndroid) {
+            
+            mobileTest = true;
+            logger.success('android', mobileTest);
+        }
+        if (isIOS) {
+            logger.success('Ios');
+            mobileTest = true;
+
+        }
+*/
         $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
             // We can catch the error thrown when the $requireAuth promise is rejected
             // and redirect the user back to the home page

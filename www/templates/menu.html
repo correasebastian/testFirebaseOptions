@@ -1,16 +1,12 @@
-
-<ion-nav-bar class="bar-positive "  align-title="left">
+<ion-nav-bar class="bar-positive " align-title="left" 
+ng-class="{expanded: AppCtrl.isExpanded, 'has-header-fab-left': AppCtrl.hasHeaderFabLeft, 'has-header-fab-right': AppCtrl.hasHeaderFabRight}">
     <ion-nav-back-button class="no-text">
     </ion-nav-back-button>
 </ion-nav-bar>
-
-<nav class="has-header" mfb-menu position="tr" effect="zoomin" label="close"
-     active-icon="ion-close-round" resting-icon="ion-plus-round"
-     toggling-method="click">
-  <button mfb-button icon="ion-android-car" label="placas"></button>
-   <button mfb-button icon="ion-gear-a" label="ajustes"></button>
-    <button mfb-button icon="ion-android-options" label="menu item"></button>
+<nav class="has-header" mfb-menu position="tr" effect="zoomin" label="close" active-icon="ion-close-round" resting-icon="ion-navicon" toggling-method="click" main-action="AppCtrl.fireMainAction()" menu-state="AppCtrl.menuState">
+    <button ui-sref="app.placas" mfb-button-close mfb-button icon="ion-android-car" label="placas"></button>
+    <button ui-sref="app.account" mfb-button-close mfb-button icon="ion-gear-a" label="ajustes"></button>
+    <button mfb-button mfb-button-close icon="ion-android-options" label="menu item"></button>
 </nav>
-
-
-<ion-nav-view name="menuContent" class="expanded" ></ion-nav-view>
+ <ion-nav-view name="fabContent"></ion-nav-view>
+<ion-nav-view name="menuContent" ng-class="{'expanded': AppCtrl.isExpanded}"></ion-nav-view>

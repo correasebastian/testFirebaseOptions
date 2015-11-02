@@ -1,0 +1,27 @@
+
+
+
+<ion-view view-title="Placas">
+<button scm-fab delay="2000" id="fab-friends" class="button button-fab button-fab-top-left expanded button-energized-900 spin"><i class="icon ion-chatbubbles"></i></button>
+    <ion-content>
+        <div class="content" ng-class="{'has-header':AppCtrl.isExpanded}">
+            <div class="list animate-fade-slide-in-right">
+                <!-- funcionando bien pero debo darle un timeout para ver la animacion -->
+                <a href="#/app/placas/{{placa.$id}}" scm-animate-placas-list ng-repeat="placa in PC.placas | orderBy:'-$id'" class="item  item-avatar item-icon-right">
+                    <img ng-src="img/{{placa.path}}">
+                    <h2>{{placa.name}}</h2>
+                    <p>{{placa.placa}}</p>
+                    <i class="icon ion-chatbubble muted"></i>
+                </a>
+            </div>
+        </div>
+        <button class="button button-full button-positive" ng-click="AppCtrl.setExtended(!AppCtrl.isExpanded)">
+            toggle header
+        </button>
+    </ion-content>
+    <button scm-fab delay="1000" class="button button-energized button-fab button-fab-bottom-right expanded spin" ng-click="PC.addPlaca()">
+        <i class="icon ion-plus">
+    </button>
+   
+</ion-view>
+

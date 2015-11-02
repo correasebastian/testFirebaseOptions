@@ -11,7 +11,8 @@
                 {{ item.path}}
             </ion-item>
         </ion-list> -->
-      
+        <img scm-animate-fotos-list animation="slideUp" delay="100" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="hero slide-up padding" ng-src="data:image/jpeg;base64,{{foto.path}}">
+        </img>
         <div scm-animate-fotos-list animation="slideUp" delay="100" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="img/{{foto.path}}">
             <div class="content">
                 <div class="avatar" background-image path="img/{{foto.path}}"></div>
@@ -125,8 +126,13 @@
             </div>
         </div> -->
     </ion-content>
-    <button scm-fab delay="1400" id="fab-gallery" class="button button-fab button-fab-bottom-left expanded button-energized-900 spin"><i class="icon ion-heart"></i></button>
-    <button scm-fab delay="800" id="fab-gallery-plus" class="button  button-energized button-fab button-fab-bottom-right expanded drop" ng-click="FC.addFoto()">
+    <button  ng-click="AppCtrl.setMobileTest(!AppCtrl.mobileTest)" scm-fab delay="1400" class="button button-fab button-fab-bottom-left expanded button-energized-900 spin">
+        <i class="icon ion-heart"></i>
+    </button>
+    <button  scm-fab delay="800" class="button  button-energized button-fab button-fab-bottom-right expanded drop" ng-click="FC.addFoto()">
+        <i class="icon ion-plus">
+    </button>
+      <button ng-show="AppCtrl.mobileTest" scm-fab delay="800" id="fab-gallery-plus" class="button  button-positive button-fab button-fab-bottom-right expanded drop" ng-click="FC.m_addFoto()">
         <i class="icon ion-plus">
     </button>
 </ion-view>

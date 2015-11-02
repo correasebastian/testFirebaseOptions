@@ -13,7 +13,7 @@
         vm.title = 'Placas';
         vm.addPlaca = addPlaca;
         vm.placas = [];
-
+vm.tc=tc;
         activate();
 
         ////////////////
@@ -62,6 +62,10 @@
 
 
             }
+        }
+
+        function tc (bool) {
+            $scope.$parent.AppCtrl.setExtended(!bool);
         }
     }
 })();

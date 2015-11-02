@@ -5,23 +5,53 @@
         .module('app.core')
         .controller('AppController', AppController);
 
-    AppController.$inject = ['$scope', '$rootScope', '$ionicPlatform', '$timeout', '$cordovaNetwork'];
+    AppController.$inject = ['$scope', '$rootScope', '$ionicPlatform', '$timeout', '$cordovaNetwork', 'logger', 'mobileTest'];
 
     /* @ngInject */
-    function AppController($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork) {
+    function AppController($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork, logger, mobileTest) {
         var vm = this;
         vm.title = 'AppController';
-        vm.isExpanded = false;
+        vm.isExpanded = true;
         vm.hasHeaderFabRight = true;
-        vm.setExtended = setExtended
+        vm.hasHeaderFabLeft = true;
+        vm.fireMainAction = fireMainAction;
+        vm.setExtended = setExtended;
+        vm.mobileTest = false;
+        vm.setMobileTest = setMobileTest;
+
         activate();
 
         ////////////////
 
-        function activate() {}
+        function activate() {
+
+            var isIOS = ionic.Platform.isIOS();
+            var isAndroid = ionic.Platform.isAndroid();
+            console.log('verificando si funciona antes de platfrom ready', isAndroid, isIOS);
+
+            if (isAndroid) {
+
+                vm.mobileTest = true;
+                logger.success('android', mobileTest);
+            }
+            if (isIOS) {
+                logger.success('Ios');
+                vm.mobileTest = true;
+
+            }
+
+        }
 
         function setExtended(bool) {
-            vn.isExpanded = bool;
+            vm.isExpanded = bool;
+        }
+
+        function setMobileTest(bool) {
+            vm.mobileTest = bool;
+        }
+
+        function fireMainAction() {
+            logger.success('click on menu ' + vm.menuState);
         }
 
 
@@ -65,7 +95,11 @@
 
 
             /*habilitarlo para cuando este en mobile, si estoy en serve tira error por no encontrar cordova*/
-            isOnline();
+
+            if (vm.mobileTest) {
+                isOnline();
+            }
+
 
 
         });
