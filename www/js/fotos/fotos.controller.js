@@ -22,7 +22,7 @@
         function activate() {
             FbFotos.getFotosArray($stateParams.idinspeccion).$loaded()
                 .then(function(data) {
-                    if (isMobileTest) {
+                    if (isMobileTest.get()) {
                         vm.m_fotos = data;
                     } else {
                         vm.fotos = data;

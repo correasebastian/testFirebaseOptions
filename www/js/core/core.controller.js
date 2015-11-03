@@ -25,7 +25,7 @@
 
         function activate() {
 
-            vm.mobileTest = isMobileTest;
+            vm.mobileTest = isMobileTest.get();
 
        /*     var isIOS = ionic.Platform.isIOS();
             var isAndroid = ionic.Platform.isAndroid();
@@ -49,7 +49,8 @@
         }
 
         function setMobileTest(bool) {
-            vm.mobileTest = bool;
+            isMobileTest.set(bool);
+            vm.mobileTest = isMobileTest.get();
         }
 
         function fireMainAction() {

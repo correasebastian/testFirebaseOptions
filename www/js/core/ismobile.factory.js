@@ -5,10 +5,10 @@
         .module('app.core')
         .factory('isMobileTest', isMobileTest);
 
-    isMobileTest.$inject = ['logger'];
+    isMobileTest.$inject = ['logger','$ionicHistory'];
 
     /* @ngInject */
-    function isMobileTest(logger) {
+    function isMobileTest(logger,$ionicHistory) {
         var mobileTest = false;
         var isIOS = ionic.Platform.isIOS();
         var isAndroid = ionic.Platform.isAndroid();
@@ -24,6 +24,23 @@
 
         }
 
-        return mobileTest;
+        var fact = {
+            set: set,
+            get: get
+        };
+
+        return fact;
+
+        function get() {
+            return mobileTest;
+        }
+
+        function set(bool) {
+
+            /*podria borrar la cache para que todo me funcione de nuevo*/
+            $ionicHistory.clearCache();
+            mobileTest = bool;
+            return mobileTest;
+        }
     }
 })();
