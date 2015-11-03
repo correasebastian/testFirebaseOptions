@@ -29,7 +29,8 @@
                 'background-image': 'url(' + attrs.path + ')',
                 'background-repeat': 'no-repeat',
                 'margin-bottom': '0.3em',
-                'margin-top': '0.3em'
+                'margin-top': '0.3em',
+                'height':attrs.height
             });
         }
     }
