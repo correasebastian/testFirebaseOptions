@@ -5,16 +5,17 @@
         .module('app.fotos')
         .controller('FotosCtrl', FotosCtrl);
 
-    FotosCtrl.$inject = ['$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest'];
+    FotosCtrl.$inject = ['$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest', '$window'];
 
     /* @ngInject */
-    function FotosCtrl($stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest) {
+    function FotosCtrl($stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest,$window) {
         var vm = this;
         vm.addFoto = addFoto;
         vm.m_addFoto = m_addFoto;
         vm.title = 'FotosCtrl';
         vm.isExpanded = true;
 
+        vm.height = ($window.screen.height - 92) / 2.3;
         activate();
 
         ////////////////

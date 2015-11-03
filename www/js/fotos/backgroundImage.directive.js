@@ -35,7 +35,7 @@
 
             if (attrs.height) {
                 element.css({
-                    'height': attrs.height
+                    'height': attrs.height + 'px'
                 });
             }
 

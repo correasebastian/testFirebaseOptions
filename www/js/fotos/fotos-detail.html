@@ -6,14 +6,14 @@
 -->
 <ion-view view-title="{{FC.title}}">
     <ion-content ng-class="{expanded:FC.isExpanded}" class=" animate-fade-slide-in">
-        <div ng-show="AppCtrl.mobileTest" scm-animate-fotos-list height="300px" animation="slideUp" delay="100" ng-repeat="foto in FC.m_fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="data:image/jpeg;base64,{{foto.path}}">
+        <div ng-show="AppCtrl.mobileTest" scm-animate-fotos-list height="{{FC.height}}" animation="slideUp" delay="100" ng-repeat="foto in FC.m_fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="data:image/jpeg;base64,{{foto.path}}">
             <div class="content">
                 <div class="avatar" background-image path="data:image/jpeg;base64,{{foto.path}}"></div>
                 <h3><a class="light">{{foto.name}}</a></h3>
                 <h4>{{foto.name}}</h4>
             </div>
         </div>
-        <div ng-hide="AppCtrl.mobileTest" scm-animate-fotos-list animation="slideUp"  height="300px"delay="100" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="img/{{foto.path}}">
+        <div ng-hide="AppCtrl.mobileTest" scm-animate-fotos-list animation="slideUp"  height="{{FC.height}}"delay="100" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="img/{{foto.path}}">
             <div class="content">
                 <div class="avatar" background-image path="img/{{foto.path}}"></div>
                 <h3><a class="light">{{foto.name}}</a></h3>
