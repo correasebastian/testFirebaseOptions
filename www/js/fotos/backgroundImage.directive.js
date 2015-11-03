@@ -18,8 +18,9 @@
             controller: Controller,
             controllerAs: 'vm',
             link: link,
-            restrict: 'A'/*,
-            scope: {}*/
+            restrict: 'A'
+                /*,
+                            scope: {}*/
         };
         return directive;
 
@@ -29,9 +30,15 @@
                 'background-image': 'url(' + attrs.path + ')',
                 'background-repeat': 'no-repeat',
                 'margin-bottom': '0.3em',
-                'margin-top': '0.3em',
-                'height':attrs.height
+                'margin-top': '0.3em'
             });
+
+            if (attrs.height) {
+                element.css({
+                    'height': attrs.height
+                });
+            }
+
         }
     }
 
