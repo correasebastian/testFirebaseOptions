@@ -6,10 +6,10 @@
         .module('app.core')
         .run(Run);
 
-    Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory', 'logger', 'mobileTest'];
+    Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory', 'logger', 'isMobileTest'];
 
     /* @ngInject */
-    function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory, logger, mobileTest) {
+    function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory, logger, isMobileTest) {
 
         // ip = $ionicPlatform;
         /* usando el nuevo global de ionic , qu eno esta ligado a angular*/

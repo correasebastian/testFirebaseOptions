@@ -5,10 +5,10 @@
         .module('app.fotos')
         .controller('FotosCtrl', FotosCtrl);
 
-    FotosCtrl.$inject = ['$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger'];
+    FotosCtrl.$inject = ['$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest'];
 
     /* @ngInject */
-    function FotosCtrl($stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger) {
+    function FotosCtrl($stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest) {
         var vm = this;
         vm.addFoto = addFoto;
         vm.m_addFoto = m_addFoto;
@@ -22,7 +22,12 @@
         function activate() {
             FbFotos.getFotosArray($stateParams.idinspeccion).$loaded()
                 .then(function(data) {
-                    vm.fotos = data;
+                    if (isMobileTest) {
+                        vm.m_fotos = data;
+                    } else {
+                        vm.fotos = data;
+                    }
+
                     // animate();
 
                 });
@@ -88,7 +93,7 @@
 
 
             var options = {
-                quality: 75,
+                quality: 45,
                 destinationType: Camera.DestinationType.DATA_URL,
                 sourceType: Camera.PictureSourceType.CAMERA,
                 allowEdit: true,
@@ -112,7 +117,7 @@
                     path: imageData,
                     name: paths[i].split('.')[0]
                 };
-                vm.fotos.$add(obj).then(onAdded(obj));
+                vm.m_fotos.$add(obj).then(onAdded(obj));
 
             }
             // body...

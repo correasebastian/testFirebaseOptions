@@ -5,10 +5,10 @@
         .module('app.core')
         .controller('AppController', AppController);
 
-    AppController.$inject = ['$scope', '$rootScope', '$ionicPlatform', '$timeout', '$cordovaNetwork', 'logger', 'mobileTest'];
+    AppController.$inject = ['$scope', '$rootScope', '$ionicPlatform', '$timeout', '$cordovaNetwork', 'logger', 'isMobileTest'];
 
     /* @ngInject */
-    function AppController($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork, logger, mobileTest) {
+    function AppController($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork, logger, isMobileTest) {
         var vm = this;
         vm.title = 'AppController';
         vm.isExpanded = true;
@@ -16,7 +16,7 @@
         vm.hasHeaderFabLeft = true;
         vm.fireMainAction = fireMainAction;
         vm.setExtended = setExtended;
-        vm.mobileTest = false;
+        
         vm.setMobileTest = setMobileTest;
 
         activate();
@@ -25,7 +25,9 @@
 
         function activate() {
 
-            var isIOS = ionic.Platform.isIOS();
+            vm.mobileTest = isMobileTest;
+
+       /*     var isIOS = ionic.Platform.isIOS();
             var isAndroid = ionic.Platform.isAndroid();
             console.log('verificando si funciona antes de platfrom ready', isAndroid, isIOS);
 
@@ -38,7 +40,7 @@
                 logger.success('Ios');
                 vm.mobileTest = true;
 
-            }
+            }*/
 
         }
 

@@ -6,14 +6,14 @@
 -->
 <ion-view view-title="{{FC.title}}">
     <ion-content ng-class="{expanded:FC.isExpanded}" class=" animate-fade-slide-in">
-        <!--  <ion-list>
-            <ion-item ng-repeat="item in FC.fotos">
-                {{ item.path}}
-            </ion-item>
-        </ion-list> -->
-        <img scm-animate-fotos-list animation="slideUp" delay="100" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="hero slide-up padding" ng-src="data:image/jpeg;base64,{{foto.path}}">
-        </img>
-        <div scm-animate-fotos-list animation="slideUp" delay="100" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="img/{{foto.path}}">
+        <div ng-show="AppCtrl.mobileTest" scm-animate-fotos-list animation="slideUp" delay="100" ng-repeat="foto in FC.m_fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="data:image/jpeg;base64,{{foto.path}}">
+            <div class="content">
+                <div class="avatar" background-image path="data:image/jpeg;base64,{{foto.path}}"></div>
+                <h3><a class="light">{{foto.name}}</a></h3>
+                <h4>{{foto.name}}</h4>
+            </div>
+        </div>
+        <div ng-hide="AppCtrl.mobileTest" scm-animate-fotos-list animation="slideUp" delay="100" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="img/{{foto.path}}">
             <div class="content">
                 <div class="avatar" background-image path="img/{{foto.path}}"></div>
                 <h3><a class="light">{{foto.name}}</a></h3>
@@ -35,34 +35,6 @@
                     </a>
                 </div>
             </div>
-            <!--   <div ui-sref="app.profile" class="card card-gallery item item-text-wrap">
-                <div class="ink dark-bg">
-                    <h2>Where's Elsa?</h2>
-                    <img class="full-image" src="img/sansa-snowcastle3.jpg">
-                </div>
-                <div class="item tabs tabs-secondary tabs-icon-left">
-                    <a class="tab-item stable-bg assertive">
-                        <i class="icon ion-heart"></i> 4
-                    </a>
-                    <a class="tab-item stable-bg positive-900">
-                        <i class="icon ion-chatbubbles"></i> 2
-                    </a>
-                </div>
-            </div>
-            <div ui-sref="app.profile" class="card card-gallery item item-text-wrap">
-                <div class="ink dark-bg">
-                    <h2>Hmm. Hope nobody destroys this!</h2>
-                    <img class="full-image" src="img/sansa-snowcastle.png">
-                </div>
-                <div class="item tabs tabs-secondary tabs-icon-left">
-                    <a class="tab-item stable-bg assertive">
-                        <i class="icon ion-heart"></i> 6
-                    </a>
-                    <a class="tab-item stable-bg positive-900">
-                        <i class="icon ion-chatbubbles"></i> 1
-                    </a>
-                </div>
-            </div> -->
         </div>
         <div class="list half">
             <div scm-animate-fotos-list delay="200" animation="fadeSlideInRight" ng-if="$odd" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="card card-gallery item item-text-wrap">
@@ -79,57 +51,12 @@
                     </a>
                 </div>
             </div>
-            <!--  <div ui-sref="app.profile" class="card card-gallery item item-text-wrap">
-                <div class="ink dark-bg">
-                    <h2>Making Olaf a House</h2>
-                    <img class="full-image" src="img/sansa-snowcastle2.jpg">
-                </div>
-                <div class="item tabs tabs-secondary tabs-icon-left">
-                    <a class="tab-item stable-bg assertive">
-                        <i class="icon ion-heart"></i> 22
-                    </a>
-                    <a class="tab-item stable-bg positive-900">
-                        <i class="icon ion-chatbubbles"></i> 9
-                    </a>
-                </div>
-            </div>
-            <div ui-sref="app.profile" class="card card-gallery item item-text-wrap">
-                <div class="ink dark-bg">
-                    <h2>ohai!</h2>
-                    <img class="full-image" src="img/sansa-snowcastle4.jpg">
-                </div>
-                <div class="item tabs tabs-secondary tabs-icon-left">
-                    <a class="tab-item stable-bg assertive">
-                        <i class="icon ion-heart"></i> 8
-                    </a>
-                    <a class="tab-item stable-bg positive-900">
-                        <i class="icon ion-chatbubbles"></i> 0
-                    </a>
-                </div>
-            </div> -->
         </div>
-        <!-- UNA SOLA LISTA // asi no funciona  -->
-        <!--    <div class="list ">
-            <div n ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="card card-gallery item item-text-wrap">
-                <div class="ink dark-bg">
-                    <h2>{{foto.name}}</h2>
-                    <img class="full-image" ng-src="img/{{foto.path}}">
-                </div>
-                <div class="item tabs tabs-secondary tabs-icon-left">
-                    <a class="tab-item stable-bg assertive">
-                        <i class="icon ion-heart"></i> 4
-                    </a>
-                    <a class="tab-item stable-bg positive-900">
-                        <i class="icon ion-chatbubbles"></i> 2
-                    </a>
-                </div>
-            </div>
-        </div> -->
     </ion-content>
-    <button  ng-click="AppCtrl.setMobileTest(!AppCtrl.mobileTest)" scm-fab delay="1400" class="button button-fab button-fab-bottom-left expanded button-energized-900 spin">
+    <button ng-click="AppCtrl.setMobileTest(!AppCtrl.mobileTest)" scm-fab delay="1400" class="button button-fab button-fab-bottom-left expanded button-energized-900 spin">
         <i class="icon ion-heart"></i>
     </button>
-    <button  scm-fab delay="800" class="button  button-energized button-fab button-fab-bottom-right expanded drop" ng-click="FC.addFoto()">
+    <button scm-fab delay="800" class="button  button-energized button-fab button-fab-bottom-right expanded drop" ng-click="FC.addFoto()">
         <i class="icon ion-plus">
     </button>
       <button ng-show="AppCtrl.mobileTest" scm-fab delay="800" id="fab-gallery-plus" class="button  button-positive button-fab button-fab-bottom-right expanded drop" ng-click="FC.m_addFoto()">
