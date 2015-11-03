@@ -98,7 +98,8 @@ module.exports = function() {
               devDependencies: true,
               // already include in ionic bundle
               exclude:['bootstrap.js','ionic.js','angular.js',
-              'angular-animate.js','angular-sanitize.js','angular-ui-router.js',
+              'angular-animate.js',//'angular-sanitize.js',
+              'angular-ui-router.js',
               'ionic.material.min.js','ionic.material.min.css']
         };
         return options;

@@ -5,9 +5,10 @@
         .module('blocks.logger')
         .factory('logger', logger);
 
-    logger.$inject = ['$log', 'toastr'];
+    logger.$inject = ['$log', 'toastr','$injector'];
 
-    function logger($log, toastr) {
+    function logger($log, toastr, $injector) {
+        
         var service = {
             showToasts: true,
 
@@ -24,7 +25,9 @@
         /////////////////////
 
         function error(message, data, title) {
+            var notifications =  $injector.get('notifications');
             toastr.error(message, title);
+            notifications.showError({message: message});
             $log.error('Error: ' + message, data);
         }
 
@@ -34,7 +37,9 @@
         }
 
         function success(message, data, title) {
+            var notifications =  $injector.get('notifications');
             toastr.success(message, title);
+            notifications.showSuccess({message: message});
             $log.info('Success: ' + message, data);
         }
 

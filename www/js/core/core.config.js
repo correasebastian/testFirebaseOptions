@@ -5,13 +5,29 @@
         .module('app.core')
         .config(Config);
 
-    Config.$inject = ['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider'];
+    Config.$inject = ['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', 'notificationsConfigProvider'];
 
     /* @ngInject */
-    function Config($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    function Config($stateProvider, $urlRouterProvider, $ionicConfigProvider, notificationsConfigProvider) {
 
         $ionicConfigProvider.tabs.position('top');
 
+
+        // auto hide
+        notificationsConfigProvider.setAutoHide(true);
+
+        // delay before hide
+        notificationsConfigProvider.setHideDelay(3000);
+
+        // support HTML
+        notificationsConfigProvider.setAcceptHTML(false);
+/*
+        // Set an animation for hiding the notification
+        notificationsConfigProvider.setAutoHideAnimation('fadeOutNotifications');
+
+        // delay between animation and removing the nofitication
+        notificationsConfigProvider.setAutoHideAnimationDelay(1200);
+*/
         // Ionic uses AngularUI Router which uses the concept of states
         // Learn more here: https://github.com/angular-ui/ui-router
         // Set up the various states which the app can be in.

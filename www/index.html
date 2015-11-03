@@ -4,11 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-
     <!-- whitelist plugin config to pass all -->
     <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">
     <title></title>
-    
     <link href="css/style.css" rel="stylesheet">
     <!-- bower:css -->
     <link rel="stylesheet" href="lib/toastr/toastr.css" />
@@ -16,6 +14,7 @@
     <link rel="stylesheet" href="lib/waves/dist/waves.min.css" />
     <link rel="stylesheet" href="lib/ionic-material/dist/ionic.material.css" />
     <link rel="stylesheet" href="lib/ng-mfb/mfb/dist/mfb.css" />
+    <link rel="stylesheet" href="lib/ng-notifications-bar/dist/ngNotificationsBar.min.css" />
     <!-- endbower -->
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -30,14 +29,16 @@
     <script src="lib/moment/moment.js"></script>
     <script src="lib/jquery/dist/jquery.js"></script>
     <script src="lib/toastr/toastr.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
     <script src="lib/waves/dist/waves.min.js"></script>
     <script src="lib/ionic-material/dist/ionic.material.js"></script>
     <script src="lib/ng-mfb/src/mfb-directive.js"></script>
+    <script src="lib/ng-notifications-bar/dist/ngNotificationsBar.min.js"></script>
     <!-- endbower -->
     <script src="cordova.js"></script>
 </head>
 
-<body ng-app="starter" >
+<body ng-app="starter">
     <!--
       The nav bar that will be updated as we navigate between views.
     -->
@@ -51,10 +52,8 @@
       Templates are in the /templates folder (but you could also
       have templates inline in this html file if you'd like).
     -->
- 
-    <ion-nav-view ></ion-nav-view>
-
-
+    <notifications-bar class="notifications"></notifications-bar>
+    <ion-nav-view></ion-nav-view>
     <!-- inject:js -->
     <script src="js/auth/auth.module.js"></script>
     <script src="js/core/core.module.js"></script>
