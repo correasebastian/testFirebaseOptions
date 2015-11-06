@@ -15,7 +15,7 @@
         vm.title = 'FotosCtrl';
         vm.isExpanded = true;
 
-        vm.height = ($window.screen.height - 92) / 2.3;
+        vm.height = ($window.screen.height - 92) / 2.4;
         activate();
 
         ////////////////
@@ -130,6 +130,8 @@
                 var keyInserted = data.key();
                 // animate();
                 FBROOT.child('fotos').child(keyInserted).set(obj);
+                obj.fb_id=keyInserted;
+                FBROOT.child('uploads').child('queue').child('tasks').push().set(obj);
 
             };
 

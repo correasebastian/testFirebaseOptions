@@ -27,7 +27,7 @@ var j;
         function link(scope, element, attrs) {
             j = element;
             console.log(scope, element, attrs);
-            logger.success('scmFab');
+            // logger.success('scmFab');
             $timeout(function() {
                 // j[0].classList.toggle('on');
                 element.toggleClass('on');
