@@ -5,15 +5,15 @@
         .module('app.placas')
         .controller('Placas', Placas);
 
-    Placas.$inject = ['$scope', 'currentAuth', 'FbPlacas', 'FBROOT', 'logger', 'ionicMaterialInk', 'ionicMaterialMotion', '$timeout'];
+    Placas.$inject = ['$scope', 'currentAuth', 'FbPlacas', 'FBROOT', 'logger', 'moment'];
 
     /* @ngInject */
-    function Placas($scope, currentAuth, FbPlacas, FBROOT, logger, ionicMaterialInk, ionicMaterialMotion, $timeout) {
+    function Placas($scope, currentAuth, FbPlacas, FBROOT, logger, moment) {
         var vm = this;
         vm.title = 'Placas';
         vm.addPlaca = addPlaca;
         vm.placas = [];
-vm.tc=tc;
+        vm.tc = tc;
         activate();
 
         ////////////////
@@ -22,11 +22,12 @@ vm.tc=tc;
 
             FbPlacas.setArrayPlacas(currentAuth.uid, 5);
             logger.info('activado placas');
-            FbPlacas.getArray(currentAuth.uid).$loaded().then(function(data) {
-                    vm.placas = data;
-                }
+            FbPlacas.getArray(currentAuth.uid).$loaded()
+                .then(function(data) {
+                        vm.placas = data;
+                    }
 
-            );
+                );
 
 
         }
@@ -37,14 +38,14 @@ vm.tc=tc;
         var paths = ['jon-snow.jpg', 'sansa.jpg',
             'daenerys.jpg',
             'arya.jpg'
-        ]
+        ];
 
         function addPlaca() {
 
 
 
             var obj = {
-                "placa": new Date().toString(),
+                "placa": moment().unix(),// new Date().toString(),
                 path: paths[i],
                 name: paths[i].split('.')[0]
             };
@@ -57,14 +58,20 @@ vm.tc=tc;
                 console.log('data registered', data.key());
 
                 var keyInserted = data.key();
+                //ingreso al registro de inspecciones
                 FBROOT.child('inspecciones').child(keyInserted).set(obj);
+
+                //ingreso a queue de inspecciones para ingreso sql
+                obj.idInspeccion = keyInserted;
+                FBROOT.child('inspecciones').child('queue').child('tasks')
+                    .push().set(obj);
 
 
 
             }
         }
 
-        function tc (bool) {
+        function tc(bool) {
             $scope.$parent.AppCtrl.setExtended(!bool);
         }
     }
