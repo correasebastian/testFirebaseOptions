@@ -5,15 +5,17 @@
         .module('app.fotos')
         .controller('FotosCtrl', FotosCtrl);
 
-    FotosCtrl.$inject = ['$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest', '$window'];
+    FotosCtrl.$inject = ['$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest', '$window', 'Firebase'];
 
     /* @ngInject */
-    function FotosCtrl($stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest,$window) {
+    function FotosCtrl($stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest, $window, Firebase) {
         var vm = this;
         vm.addFoto = addFoto;
         vm.m_addFoto = m_addFoto;
         vm.title = 'FotosCtrl';
         vm.isExpanded = true;
+        var idInspeccion = $stateParams.idinspeccion;
+        var placa = moment().unix(); //asignar por parametro tambien
 
         vm.height = ($window.screen.height - 92) / 2.4;
         activate();
@@ -21,7 +23,7 @@
         ////////////////
 
         function activate() {
-            FbFotos.getFotosArray($stateParams.idinspeccion).$loaded()
+            FbFotos.getFotosArray(idInspeccion).$loaded()
                 .then(function(data) {
                     if (isMobileTest.get()) {
                         vm.m_fotos = data;
@@ -66,10 +68,10 @@
             'arya.jpg'
         ];
 
-
+        //metodo web
         function addFoto() {
             var obj = {
-                "placa": new Date().toString(),
+                "placa": placa, // Firebase.ServerValue.TIMESTAMP, //new Date().toString(),
                 path: paths[i],
                 name: paths[i].split('.')[0]
             };
@@ -90,6 +92,8 @@
 
         }
 
+
+        //metodo mobile
         function m_addFoto() {
 
 
@@ -114,11 +118,12 @@
             function onGetPicture(imageData) {
 
                 var obj = {
-                    "placa": new Date().toString(),
-                    path: imageData,
-                    name: paths[i].split('.')[0]
+                    "placa": placa, // new Date().toString(),
+                    "base64Data": imageData,
+                    "name": paths[i].split('.')[0]
                 };
-                vm.m_fotos.$add(obj).then(onAdded(obj));
+                vm.m_fotos.$add(obj)
+                    .then(onAdded(obj));
 
             }
             // body...
@@ -126,14 +131,20 @@
 
         function onAdded(obj) {
 
-            return function(data) {
+            function toReturn(data) {
                 var keyInserted = data.key();
-                // animate();
+                //insertar en la general de fotos         
                 FBROOT.child('fotos').child(keyInserted).set(obj);
-                obj.fb_id=keyInserted;
-                FBROOT.child('uploads').child('queue').child('tasks').push().set(obj);
 
-            };
+                // insertar en el queue de upload añadiendo las propiedades 
+                obj.idFoto = keyInserted;
+                obj.idInspeccion = idInspeccion;
+                FBROOT.child('uploads').child('queue').child('tasks')
+                    .push().set(obj);
+
+            }
+
+            return toReturn;
 
         }
 
