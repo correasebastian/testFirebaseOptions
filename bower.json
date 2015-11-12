@@ -12,6 +12,7 @@
     "toastr": "~2.1.2",
     "ionic-material": "~0.4.2",
     "ng-mfb": "~0.6.2",
-    "ng-notifications-bar": "~0.0.15"
+    "ng-notifications-bar": "~0.0.15",
+    "ngletteravatar": "~3.0.1"
   }
 }

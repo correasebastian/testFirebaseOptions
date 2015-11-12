@@ -25,7 +25,7 @@
         return directive;
 
         function link(scope, element, attrs) {
-            console.log('bI directive', element, attrs);
+            // console.log('bI directive', element, attrs);
             element.css({
                 'background-image': 'url(' + attrs.path + ')',
                 'background-repeat': 'no-repeat',

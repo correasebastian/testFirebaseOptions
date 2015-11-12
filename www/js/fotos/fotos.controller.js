@@ -98,7 +98,7 @@
 
 
             var options = {
-                quality: 45,
+                quality: 65,
                 destinationType: Camera.DestinationType.DATA_URL,
                 sourceType: Camera.PictureSourceType.CAMERA,
                 allowEdit: true,

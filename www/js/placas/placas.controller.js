@@ -14,6 +14,9 @@
         vm.addPlaca = addPlaca;
         vm.placas = [];
         vm.tc = tc;
+        vm.filterString='';
+        vm.hasFocus=false;
+        vm.setFocus=setFocus;
         activate();
 
         ////////////////
@@ -68,6 +71,13 @@
 
 
 
+            }
+        }
+
+        function setFocus(bool){
+            vm.hasFocus=bool;
+            if(!bool){
+                vm.filterString='';
             }
         }
 

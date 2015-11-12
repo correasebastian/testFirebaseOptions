@@ -25,9 +25,9 @@
         /////////////////////
 
         function error(message, data, title) {
-            var notifications =  $injector.get('notifications');
+            // var notifications =  $injector.get('notifications');
             toastr.error(message, title);
-            notifications.showError({message: message});
+            // notifications.showError({message: message});
             $log.error('Error: ' + message, data);
         }
 
@@ -37,9 +37,9 @@
         }
 
         function success(message, data, title) {
-            var notifications =  $injector.get('notifications');
+            // var notifications =  $injector.get('notifications');
             toastr.success(message, title);
-            notifications.showSuccess({message: message});
+            // notifications.showSuccess({message: message});
             $log.info('Success: ' + message, data);
         }
 

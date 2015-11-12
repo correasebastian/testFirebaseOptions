@@ -16,6 +16,7 @@
         vm.hasHeaderFabLeft = true;
         vm.fireMainAction = fireMainAction;
         vm.setExtended = setExtended;
+        vm.hasFocus=false;
         
         vm.setMobileTest = setMobileTest;
 
