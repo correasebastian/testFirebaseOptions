@@ -48,7 +48,7 @@
                 url: '/placas',
                 views: {
                     'tab-placas': {
-                        templateUrl: 'js/placas/placa_simple.html',//'js/placas/tab-placas.html',
+                        templateUrl: 'js/placas/placas_simple.html',//'js/placas/tab-placas.html',
                         controller: 'Placas as PC',
                         resolve: {
 
@@ -83,7 +83,7 @@
                 url: '/placas/:idinspeccion',
                 views: {
                     'tab-placas': {
-                        templateUrl: 'js/fotos/fotos-detail.html',
+                        templateUrl: 'js/fotos/fotos_simple.html',
                         controller: 'FotosCtrl as FC'
                     }
                     /*,

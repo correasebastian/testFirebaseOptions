@@ -36,7 +36,7 @@
                 url: '/placas',
                 views: {
                     'menuContent': {
-                        templateUrl: 'js/placas/app-placas.html',
+                        templateUrl: 'js/placas/placas_simple.html',//'js/placas/app-placas.html',
                         /*no era necesario con el de las tabs me funcionaria, depende, por que el enlace me tira a tabs, tendria que configurar algo en el config de angular para decidir entre tabs y sidemenu*/
                         controller: 'Placas as PC',
                         resolve: {

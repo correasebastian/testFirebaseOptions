@@ -13,6 +13,7 @@
     "ionic-material": "~0.4.2",
     "ng-mfb": "~0.6.2",
     "ng-notifications-bar": "~0.0.15",
-    "ngletteravatar": "~3.0.1"
+    "ngletteravatar": "~3.0.1",
+    "ionic-filter-bar": "~1.1.1"
   }
 }

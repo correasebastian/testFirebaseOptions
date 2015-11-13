@@ -68,16 +68,16 @@
 
         /* FIJARME CUAL FUNCIONA MEJOR*/
 
-        $urlRouterProvider.otherwise('/tab/dash');
+        $urlRouterProvider.otherwise('/tab/placas');
 
-        /* se va a un estado intermedio que no me gusta*/
+        // /* se va a un estado intermedio que no me gusta*/
         // $stateProvider.state("otherwise", {
         //        url: "*path",
         //        template: "",
         //        controller: [
         //                  '$state',
         //          function($state) {
-        //            $state.go('tab.dash');
+        //            $state.go('tab.placas');
         //          }]
         //    });
 

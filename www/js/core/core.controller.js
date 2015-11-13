@@ -102,6 +102,8 @@
 
             if (vm.mobileTest) {
                 isOnline();
+            }else{
+                vm.isOnline = true;
             }
 
 

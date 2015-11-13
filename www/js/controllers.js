@@ -24,7 +24,7 @@ angular.module('starter.controllers', [])
                         });
                     });*/
 
-                    $state.go('tab.dash');
+                    // $state.go('tab.dash');
                 }).catch(function(error) {
                     alert("Authentication failed:" + error.message);
 

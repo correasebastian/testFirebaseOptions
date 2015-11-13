@@ -1,7 +1,44 @@
-
-
-.has-header {    margin-bottom: 4em;}
+.has-header {
+    margin-bottom: 4em;
+}
 
 .hero {
-	height:300px;
+    height: 300px;
+}
+
+
+/*avatar en lista de placa*/
+
+.item-avatar > img:first-child {
+    max-height: 37px;
+    max-width: 37px;
+}
+
+
+/*footer*/
+
+.platform-android .bar .title {
+    font-size: 19px;
+    line-height: 30px;
+}
+
+.scm-nonetwork-footer {
+    z-index: 100;
+    height: 4%;
+}
+
+
+/*para la lista de cards*/
+
+.scm-card-background {
+    width: 100%;
+    vertical-align: middle;
+    /* height: 589px; */
+    height: 100%;
+    background-size: cover;
+    box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+    display: block;
+    max-width: 100%;
+    max-height: initial;
+    position: static;
 }

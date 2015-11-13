@@ -5,35 +5,59 @@
         .module('app.fotos')
         .controller('FotosCtrl', FotosCtrl);
 
-    FotosCtrl.$inject = ['$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest', '$window', 'Firebase'];
+    FotosCtrl.$inject = ['$q', '$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest',
+        '$window', 'Firebase', '$ionicModal', '$scope', 'TiposFotos', 'ImgPro'
+    ];
 
     /* @ngInject */
-    function FotosCtrl($stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest, $window, Firebase) {
+    function FotosCtrl($q, $stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest,
+        $window, Firebase, $ionicModal, $scope, TiposFotos, ImgPro) {
         var vm = this;
         vm.addFoto = addFoto;
         vm.m_addFoto = m_addFoto;
         vm.title = 'FotosCtrl';
         vm.isExpanded = true;
+        vm.closeModal = closeModal;
+        vm.openModal = openModal;
         var idInspeccion = $stateParams.idinspeccion;
         var placa = moment().unix(); //asignar por parametro tambien
-
+        vm.fotosFalt = TiposFotos;
         vm.height = ($window.screen.height - 92) / 2.4;
         activate();
 
         ////////////////
 
         function activate() {
+            var promises = [
+                getFotos(),
+                setModal()
+            ];
+
+            return $q.all(promises)
+                .then(allPromisesCompleted);
+
+            function allPromisesCompleted(res) {
+                logger.info('Fotos activado');
+            }
+
+
+        }
+
+        function getFotos() {
+
             FbFotos.getFotosArray(idInspeccion).$loaded()
-                .then(function(data) {
-                    if (isMobileTest.get()) {
-                        vm.m_fotos = data;
-                    } else {
-                        vm.fotos = data;
-                    }
+                .then(onGetFotos);
 
-                    // animate();
+            function onGetFotos(data) {
+                if (isMobileTest.get()) {
+                    vm.m_fotos = data;
+                } else {
+                    vm.fotos = data;
+                }
+                // solo por devolver un valor para chaining promises
+                return true;
 
-                });
+            }
 
         }
 
@@ -70,23 +94,35 @@
 
         //metodo web
         function addFoto() {
-            var obj = {
-                "placa": placa, // Firebase.ServerValue.TIMESTAMP, //new Date().toString(),
-                path: paths[i],
-                name: paths[i].split('.')[0]
-            };
 
-            (i === 3) ? i = 0: i++;
+            ImgPro.image2DataUri("img/"+paths[i])
+                .then(onConvertDataUri)
+                .catch(function(error) {
+                    logger.error(error);
+                });
 
-            vm.fotos.$add(obj)
-                .then(onAdded(obj));
-            // saque la funcion de aca para utilizarla por ambos addFoto m_addFoto, pero no se si me molesta cuando son demasiado rapidas las promesas
+            function onConvertDataUri(dataUri) {
+                var obj = {
+                    "placa": placa, // Firebase.ServerValue.TIMESTAMP, //new Date().toString(),
+                    path: paths[i],
+                    name: paths[i].split('.')[0],
+                    base64Data: dataUri
+                };
 
-            /*   function onAdded(data) {
-                   var keyInserted = data.key();
-                   // animate();
-                   FBROOT.child('fotos').child(keyInserted).set(obj);
-               }*/
+                (i === 3) ? i = 0: i++;
+
+                vm.fotos.$add(obj)
+                    .then(onAdded(obj));
+                // saque la funcion de aca para utilizarla por ambos addFoto m_addFoto, pero no se si me molesta cuando son demasiado rapidas las promesas
+
+                /*   function onAdded(data) {
+                       var keyInserted = data.key();
+                       // animate();
+                       FBROOT.child('fotos').child(keyInserted).set(obj);
+                   }*/
+
+            }
+
 
 
 
@@ -118,9 +154,9 @@
             function onGetPicture(imageData) {
 
                 var obj = {
-                    "placa": placa, // new Date().toString(),
-                    "base64Data": imageData,
-                    "name": paths[i].split('.')[0]
+                    placa: placa, // new Date().toString(),
+                    base64Data: imageData,
+                    name: paths[i].split('.')[0]
                 };
                 vm.m_fotos.$add(obj)
                     .then(onAdded(obj));
@@ -146,6 +182,26 @@
 
             return toReturn;
 
+        }
+
+        function openModal() {
+            vm.modal.show();
+        }
+
+        function closeModal() {
+            vm.modal.hide();
+        }
+
+        function setModal() {
+            return $ionicModal.fromTemplateUrl('js/fotos/fotoModal.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(completeModal);
+
+            function completeModal(modal) {
+                vm.modal = modal;
+                return vm.modal;
+            }
         }
 
         //end controller

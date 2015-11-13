@@ -15,7 +15,7 @@ navigation history that also transitions its views in and out.
             Cancel
         </button>
     </div> -->
-  <!--   <ion-nav-buttons side="right">
+    <!--   <ion-nav-buttons side="right">
          <button ng-click="AppCtrl.setFocus(!AppCtrl.hasFocus)" ng-hide="AppCtrl.hasFocus" class="button button-positive button-clear button-icon icon ion-search animated">
         </button>
         <div ng-show="AppCtrl.hasFocus" class="item-input-inset">
@@ -32,11 +32,11 @@ navigation history that also transitions its views in and out.
     <!-- this fab-menu directive is not working fine in real device -->
     <!-- <fab-menu></fab-menu> -->
     <!-- Dashboard Tab -->
-    <ion-tab title="{{AppCtrl.msg}}" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/dash">
+    <!-- <ion-tab title="{{AppCtrl.msg}}" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/dash">
         <ion-nav-view name="tab-dash"></ion-nav-view>
-    </ion-tab>
+    </ion-tab> -->
     <!-- Chats Tab -->
-    <ion-tab title="Placas" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/placas">
+    <ion-tab title="Placas"  badge="3" badge-style="badge-assertive" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/placas">
         <ion-nav-view name="tab-placas"></ion-nav-view>
     </ion-tab>
     <!-- Account Tab -->
@@ -44,3 +44,6 @@ navigation history that also transitions its views in and out.
         <ion-nav-view name="tab-account"></ion-nav-view>
     </ion-tab>
 </ion-tabs>
+<div ng-hide="AppCtrl.isOnline" class="bar bar-footer bar-assertive scm-nonetwork-footer">
+    <div class="title">No hay conexion disponible</div>
+</div>

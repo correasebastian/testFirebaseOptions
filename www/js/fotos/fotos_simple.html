@@ -1,0 +1,45 @@
+<ion-view view-title="{{FC.title}}">
+    <ion-nav-buttons side="secondary">
+        <button ng-show="FC.role.idrolsura==1" class="button button-icon icon ion-drag" ng-click="FC.openPopover($event)">
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <!-- 
+    para cuando pruebo mobile
+    _______________________________________________________________________ -->
+        <div class="list card" ng-repeat="foto in FC.m_fotos | orderBy:'-$id'">
+            <div class="item item-image">
+                <img ng-src="data:image/jpeg;base64,{{foto.base64Data}}">
+            </div>
+        </div>
+        <!-- _______________________________________________________________________
+    para cuando pruebo web
+    _______________________________________________________________________ -->
+        <!--  <div class="list card hero scm-card-background" ng-repeat="foto in FC.fotos | orderBy:'-$id'"
+       background-image path="img/{{foto.path}}" >
+            <div class="item item-image" >
+              
+            </div>
+        </div> -->
+        <div class="list card " ng-repeat="foto in FC.fotos | orderBy:'-$id'">
+            <div class="item item-image">
+                <!-- <img ng-src="img/{{foto.path}}"> -->
+                <img ng-src="data:image/jpeg;base64,{{foto.base64Data}}">
+            </div>
+        </div>
+    </ion-content>
+    <button ng-click="AppCtrl.setMobileTest(!AppCtrl.mobileTest)" scm-fab delay="1400" class="button button-fab button-fab-bottom-left expanded button-energized-900 spin">
+        <i class="icon ion-heart"></i>
+    </button>
+    <!--  <button scm-fab delay="800" class="button  button-energized button-fab button-fab-bottom-right expanded drop" ng-click="FC.addFoto()">
+        <i class="icon ion-plus">
+    </button>
+      <button ng-show="AppCtrl.mobileTest" scm-fab delay="800" id="fab-gallery-plus" class="button  button-positive button-fab button-fab-bottom-right expanded drop" ng-click="FC.m_addFoto()">
+        <i class="icon ion-plus">
+    </button> -->
+    <ul mfb-menu position="br" effect="zoomin" label="close" active-icon="ion-close-round" resting-icon="ion-navicon" toggling-method="click" main-action="FC.fireMainAction()" menu-state="FC.menuState">
+        <li ng-click="FC.openFromGallery()" mfb-button-close mfb-button icon="ion-images" label="imagen"></li>
+        <li ng-click="FC.addFoto()" mfb-button-close mfb-button icon="ion-camera" label="web"></li>
+        <li ng-click="FC.m_addFoto()" mfb-button-close mfb-button icon="ion-camera" label="movil"></li>
+    </ul>
+</ion-view>

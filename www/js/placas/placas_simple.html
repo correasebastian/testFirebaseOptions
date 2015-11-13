@@ -1,0 +1,37 @@
+<ion-view>
+    <ion-nav-title  ng-hide="PC.hasFocus">
+    <!-- con el nav title puedo manipular mas facil el titulo -->
+        {{PC.title}}
+    </ion-nav-title>
+    <ion-nav-buttons side="right">
+        <!--   <button ng-click="PC.showFilterBar()" ng-hide="PC.hasFocus" class="button button-positive button-clear button-icon icon ion-search animated">
+        </button> -->
+        <button ng-click="PC.setFocus(!PC.hasFocus)" ng-hide="PC.hasFocus" class="button button-positive button-clear button-icon icon ion-search animated">
+        </button>
+        <div ng-show="PC.hasFocus" class="item-input-inset">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search" placeholder="busqueda" ng-model="PC.filterString">
+            </label>
+            <button class="button button-clear button-icon icon ion-close-circled" ng-click="PC.setFocus(!PC.hasFocus)">
+            </button>
+        </div>
+    </ion-nav-buttons>
+    <ion-content >
+        <div class="list">
+        <a class="item item-avatar item-icon-right" ng-click="PC.go(placa)" ng-repeat="placa in PC.placas | filter:{placa:PC.filterString} | orderBy:'-timeStamp'">
+      <!--       <a class="item item-avatar item-icon-right" href="#/tab/placas/{{placa.$id}}" ng-repeat="placa in PC.placas | filter:{placa:PC.filterString} | orderBy:'-timeStamp'"> -->
+                <!-- <a class="item item-avatar item-icon-right" href="#/tab/placas/{{placa.$id}}" 
+            ng-repeat="placa in PC.placas | orderBy:'-timeStamp'"> -->
+                <!-- <img ng-src="img/{{placa.path}}"> -->
+                <img scm-letter-avatar data="{{placa.placa}}"></img>
+                <h2>{{placa.placa}}</h2>
+                <p> </p>
+                <i class="icon ion-chevron-right muted"></i>
+            </a>
+        </div>
+    </ion-content>
+    <button scm-fab delay="1000" class="button button-energized button-fab button-fab-bottom-right expanded spin" ng-click="PC.placaPopup()" ng-hide="!AppCtrl.isOnline">
+        <i class="icon ion-plus">
+    </button>
+</ion-view>

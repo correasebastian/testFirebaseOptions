@@ -5,18 +5,31 @@
         .module('app.placas')
         .controller('Placas', Placas);
 
-    Placas.$inject = ['$scope', 'currentAuth', 'FbPlacas', 'FBROOT', 'logger', 'moment'];
+    Placas.$inject = ['$scope', 'currentAuth', 'FbPlacas', 'FBROOT',
+        'logger', 'moment', '$ionicFilterBar', 'Firebase', '$timeout',
+        '$ionicPopup', '$state'
+    ];
 
     /* @ngInject */
-    function Placas($scope, currentAuth, FbPlacas, FBROOT, logger, moment) {
+    function Placas($scope, currentAuth, FbPlacas, FBROOT,
+        logger, moment, $ionicFilterBar, Firebase, $timeout,
+        $ionicPopup, $state) {
         var vm = this;
         vm.title = 'Placas';
         vm.addPlaca = addPlaca;
         vm.placas = [];
         vm.tc = tc;
-        vm.filterString='';
-        vm.hasFocus=false;
-        vm.setFocus=setFocus;
+        vm.filterString = '';
+        vm.hasFocus = false;
+        vm.showFilterBar = showFilterBar;
+        vm.setFocus = setFocus;
+        vm.placaPopup = placaPopup;
+        vm.go=go;
+        vm.data = {
+            placa: null,
+            sl: null
+        };
+        var filterBarInstance;
         activate();
 
         ////////////////
@@ -35,6 +48,11 @@
 
         }
 
+        function go(placa) {
+            setFocus(false);
+            $state.go("tab.placas-detail",{idinspeccion:placa.$id});
+        }
+
 
         var i = 0;
 
@@ -43,14 +61,15 @@
             'arya.jpg'
         ];
 
-        function addPlaca() {
+        function addPlaca(placa) {
 
 
 
             var obj = {
-                "placa": moment().unix(),// new Date().toString(),
-                path: paths[i],
-                name: paths[i].split('.')[0]
+                placa: placa, // moment().unix(), // new Date().toString(),
+                /*    path: paths[i],
+                    name: paths[i].split('.')[0],*/
+                timeStamp: Firebase.ServerValue.TIMESTAMP
             };
 
             (i === 3) ? i = 0: i++;
@@ -58,6 +77,7 @@
             vm.placas.$add(obj).then(onAdded);
 
             function onAdded(data) {
+                cleanData();
                 console.log('data registered', data.key());
 
                 var keyInserted = data.key();
@@ -74,15 +94,79 @@
             }
         }
 
-        function setFocus(bool){
-            vm.hasFocus=bool;
-            if(!bool){
-                vm.filterString='';
+        function setFocus(bool) {
+            vm.hasFocus = bool;
+            if (!bool) {
+                vm.filterString = '';
+                vm.title = 'Placas';
+                /*$timeout(function() {
+                    vm.title = 'Placas';
+                }, 300)
+                */
+
             }
+
         }
 
         function tc(bool) {
             $scope.$parent.AppCtrl.setExtended(!bool);
         }
+
+        function showFilterBar() {
+            filterBarInstance = $ionicFilterBar.show({
+                items: vm.placas,
+                update: function(filteredItems) {
+                    vm.placas = filteredItems;
+                },
+                filterProperties: 'name'
+            });
+        }
+
+        function placaPopup() {
+
+            var myprompt = $ionicPopup.prompt({
+                title: 'Nueva Placa',
+
+                templateUrl: 'js/placas/insertPlaca.html',
+                scope: $scope,
+                buttons: [{
+                    text: 'Cancel',
+                    onTap: function(e) {
+                        cleanData();
+                    }
+                }, {
+                    text: '<b>Save</b>',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                        if (vm.data.placa === null) {
+                            // || vm.data.sl === null|| vm.data.sl === null                    
+                            e.preventDefault();
+                        } else {
+                            return vm.data.placa;
+                        }
+                    }
+                }]
+            });
+            myprompt.then(function(placa) {
+                if (placa !== null && placa !== undefined) {
+                    if (placa.length < 4) {
+                        logger.error('longitud de placa muy corta');
+                        return;
+                    }
+                    placa = placa.replace(/[^\w\s]/gi, '').toUpperCase();
+                    placa = placa.replace(/\s/g, '');
+                    addPlaca(placa);
+                }
+            });
+        }
+
+
+
+
+        function cleanData() {
+            vm.data.placa = null;
+            vm.data.sl = null;
+        };
+        ///////////////////////////////////////////////////////
     }
 })();

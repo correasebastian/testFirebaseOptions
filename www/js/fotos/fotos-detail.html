@@ -13,7 +13,7 @@
                 <h4>{{foto.name}}</h4>
             </div>
         </div>
-        <div ng-hide="AppCtrl.mobileTest" scm-animate-fotos-list animation="slideUp"  height="{{FC.height}}"delay="100" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="img/{{foto.path}}">
+        <div ng-hide="AppCtrl.mobileTest" scm-animate-fotos-list animation="slideUp" height="{{FC.height}}" delay="100" ng-repeat="foto in FC.fotos | orderBy:'-$id'" class="hero slide-up padding" background-image path="img/{{foto.path}}">
             <div class="content">
                 <div class="avatar" background-image path="img/{{foto.path}}"></div>
                 <h3><a class="light">{{foto.name}}</a></h3>
@@ -53,7 +53,7 @@
             </div>
         </div>
     </ion-content>
-    <button ng-click="AppCtrl.setMobileTest(!AppCtrl.mobileTest)" scm-fab delay="1400" class="button button-fab button-fab-bottom-left expanded button-energized-900 spin">
+     <button ng-click="AppCtrl.setMobileTest(!AppCtrl.mobileTest)" scm-fab delay="1400" class="button button-fab button-fab-bottom-left expanded button-energized-900 spin">
         <i class="icon ion-heart"></i>
     </button>
     <button scm-fab delay="800" class="button  button-energized button-fab button-fab-bottom-right expanded drop" ng-click="FC.addFoto()">
@@ -62,4 +62,10 @@
       <button ng-show="AppCtrl.mobileTest" scm-fab delay="800" id="fab-gallery-plus" class="button  button-positive button-fab button-fab-bottom-right expanded drop" ng-click="FC.m_addFoto()">
         <i class="icon ion-plus">
     </button>
+    <ul class="has-header" mfb-menu position="tr" effect="zoomin" label="close" active-icon="ion-close-round" resting-icon="ion-navicon" 
+    toggling-method="click" main-action="AppCtrl.fireMainAction()" menu-state="AppCtrl.menuState">
+        <button ui-sref="app.placas" mfb-button-close mfb-button icon="ion-android-car" label="placas"></button>
+        <button ui-sref="app.account" mfb-button-close mfb-button icon="ion-gear-a" label="ajustes"></button>
+        <button mfb-button mfb-button-close icon="ion-android-options" label="menu item"></button>
+    </ul>
 </ion-view>

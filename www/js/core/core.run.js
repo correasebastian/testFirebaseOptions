@@ -34,7 +34,7 @@
             // and redirect the user back to the home page
             console.log(error);
             if (error === "AUTH_REQUIRED") {
-                logger.error(error);
+                // logger.error(error);
                 $state.go("login");
             }
         });
@@ -50,6 +50,9 @@
                 authMock.setAuth(true);
 
                 console.log("Logged in as:", authData.uid);
+
+                //siempre que haga login debe ir a placas o a la vista main
+                $state.go('tab.placas');
             } else {
                 authMock.setAuth(false);
                 /* limpiando la cache para que se vuelva a ejecitar todo por ejemplo en home o sino coge el 
