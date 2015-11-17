@@ -5,12 +5,13 @@
         .module('common.imagesProcessing')
         .factory('ImgPro', ImgPro);
 
-    ImgPro.$inject = ['$q'];
+    ImgPro.$inject = ['$q', '$cordovaImagePicker', 'exception'];
 
     /* @ngInject */
-    function ImgPro($q) {
+    function ImgPro($q, $cordovaImagePicker, exception) {
         var service = {
-            image2DataUri: image2DataUri
+            image2DataUri: image2DataUri,
+            getImagesFromGallery:getImagesFromGallery
         };
         return service;
 
@@ -44,6 +45,27 @@
             }
             return deferred.promise;
 
+        }
+
+        function getImagesFromGallery() {
+
+            var options = {
+                maximumImagesCount: 10,
+                width: 800,
+                height: 800,
+                quality: 70
+            };
+
+           
+
+            return  $cordovaImagePicker.getPictures(options)
+                .then(onGetCompleted)
+                .catch(exception.catcher('cant get pictures from gallery'));
+
+                function onGetCompleted (results) {
+                   return results;
+                }
+            // body...
         }
     }
 })();

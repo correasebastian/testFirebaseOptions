@@ -19,6 +19,7 @@
         vm.isExpanded = true;
         vm.closeModal = closeModal;
         vm.openModal = openModal;
+        vm.getImagesFromGallery = getImagesFromGallery;
         var idInspeccion = $stateParams.idinspeccion;
         var placa = moment().unix(); //asignar por parametro tambien
         vm.fotosFalt = TiposFotos;
@@ -41,6 +42,45 @@
             }
 
 
+        }
+
+        function getImagesFromGallery() {
+            ImgPro.getImagesFromGallery()
+                .then(onGetImages);
+
+            function onGetImages(results) {
+                for (var i = 0; i < results.length; i++) {
+                    console.log('Image URI: ' + results[i]);
+
+                    ImgPro.image2DataUri(results[i])
+                        .then(onConvertDataUri)
+                        .catch(onConverterError);
+
+
+                }
+
+                function onConvertDataUri(dataUri) {
+                    var obj = {
+                        "placa": placa, // Firebase.ServerValue.TIMESTAMP, //new Date().toString(),
+                        path: paths[i],
+                        name: paths[i].split('.')[0],
+                        base64Data: dataUri
+                    };
+
+                    (i === 3) ? i = 0: i++;
+
+                    vm.m_fotos.$add(obj)
+                        .then(onAdded(obj));
+
+
+                }
+
+                function onConverterError(error) {
+                    logger.error(error);
+
+
+                }
+            }
         }
 
         function getFotos() {
@@ -95,7 +135,7 @@
         //metodo web
         function addFoto() {
 
-            ImgPro.image2DataUri("img/"+paths[i])
+            ImgPro.image2DataUri("img/" + paths[i])
                 .then(onConvertDataUri)
                 .catch(function(error) {
                     logger.error(error);
