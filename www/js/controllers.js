@@ -188,13 +188,23 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AccountCtrl', function($scope, Auth, currentAuth) {
+.controller('AccountCtrl', function($scope, Auth, currentAuth, UserInfo, $ionicHistory) {
     $scope.settings = {
-        enableFriends: true
+        enableFriends: true,
+        groupMode:UserInfo.userGroupMode.enable
     };
 
     $scope.logout = function() {
 
         Auth.$unauth();
     };
+
+    $scope.saveToggle=function(bool){
+        console.log("save");
+        UserInfo.userGroupMode.enable=bool;
+        UserInfo.userGroupMode.$save();
+        $ionicHistory.clearCache();
+    }
+
+
 });

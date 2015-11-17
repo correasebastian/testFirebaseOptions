@@ -14,5 +14,11 @@
         <button class="button button-calm" ui-sref="tab.placas">
             go tabs
         </button>
+          <ion-list>
+            <ion-toggle ng-model="settings.groupMode" ng-click="saveToggle(settings.groupMode)">
+                groupmode
+            </ion-toggle>
+            {{settings}}
+        </ion-list>
     </ion-content>
 </ion-view>

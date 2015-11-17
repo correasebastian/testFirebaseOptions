@@ -7,13 +7,13 @@
 
     Placas.$inject = ['$scope', 'currentAuth', 'FbPlacas', 'FBROOT',
         'logger', 'moment', '$ionicFilterBar', 'Firebase', '$timeout',
-        '$ionicPopup', '$state'
+        '$ionicPopup', '$state', 'UserInfo'
     ];
 
     /* @ngInject */
     function Placas($scope, currentAuth, FbPlacas, FBROOT,
         logger, moment, $ionicFilterBar, Firebase, $timeout,
-        $ionicPopup, $state) {
+        $ionicPopup, $state, UserInfo) {
         var vm = this;
         vm.title = 'Placas';
         vm.addPlaca = addPlaca;
@@ -24,7 +24,7 @@
         vm.showFilterBar = showFilterBar;
         vm.setFocus = setFocus;
         vm.placaPopup = placaPopup;
-        vm.go=go;
+        vm.go = go;
         vm.data = {
             placa: null,
             sl: null
@@ -36,21 +36,28 @@
 
         function activate() {
 
-            FbPlacas.setArrayPlacas(currentAuth.uid, 5);
+            UserInfo.getInfoUser(currentAuth.uid)
+                .then(getPlacas);
+        }
+
+        function getPlacas() {
             logger.info('activado placas');
-            FbPlacas.getArray(currentAuth.uid).$loaded()
-                .then(function(data) {
-                        vm.placas = data;
-                    }
+            FbPlacas.setArrayPlacas(currentAuth.uid, 5);
 
-                );
+            return FbPlacas.getArray().$loaded()
+                .then(onGetPlacas);
 
-
+            function onGetPlacas(data) {
+                vm.placas = data;
+                return vm.placas;
+            }
         }
 
         function go(placa) {
             setFocus(false);
-            $state.go("tab.placas-detail",{idinspeccion:placa.$id});
+            $state.go("tab.placas-detail", {
+                idinspeccion: placa.$id
+            });
         }
 
 
@@ -79,10 +86,20 @@
             function onAdded(data) {
                 cleanData();
                 console.log('data registered', data.key());
-
                 var keyInserted = data.key();
                 //ingreso al registro de inspecciones
                 FBROOT.child('inspecciones').child(keyInserted).set(obj);
+
+                if (UserInfo.userGroupMode.enable) {
+                    //si esta en gropu mode entonces me falta ingresarlo en las inspecciones del usuario
+                    FBROOT.child('users').child(currentAuth.uid).child('inspecciones').child(keyInserted).set(obj);
+
+                } else {
+                    var mainGroup = UserInfo.userGroups.$id;
+                    //si NO esta en gropu mode entonces me falta ingresarlo en GROUPMODE
+                    FBROOT.child('groups').child(mainGroup).child('inspecciones').child(keyInserted).set(obj);
+
+                }
 
                 //ingreso a queue de inspecciones para ingreso sql
                 obj.idInspeccion = keyInserted;

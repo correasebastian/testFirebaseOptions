@@ -64,7 +64,8 @@
                         "placa": placa, // Firebase.ServerValue.TIMESTAMP, //new Date().toString(),
                         path: paths[i],
                         name: paths[i].split('.')[0],
-                        base64Data: dataUri
+                        base64Data: dataUri,
+                        camera:false
                     };
 
                     (i === 3) ? i = 0: i++;
@@ -146,7 +147,8 @@
                     "placa": placa, // Firebase.ServerValue.TIMESTAMP, //new Date().toString(),
                     path: paths[i],
                     name: paths[i].split('.')[0],
-                    base64Data: dataUri
+                    base64Data: dataUri,
+                    camera:false
                 };
 
                 (i === 3) ? i = 0: i++;
@@ -196,7 +198,8 @@
                 var obj = {
                     placa: placa, // new Date().toString(),
                     base64Data: imageData,
-                    name: paths[i].split('.')[0]
+                    name: paths[i].split('.')[0],
+                    camera:true
                 };
                 vm.m_fotos.$add(obj)
                     .then(onAdded(obj));
