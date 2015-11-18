@@ -27,6 +27,13 @@
                 vm.newNotifications = data;
             }
 
+            NotificacionesService.getOldNotifications()
+                .then(onGetOldNotifications);
+
+            function onGetOldNotifications(data) {
+                vm.oldNotifications = data;
+            }
+
 
         }
 
@@ -52,7 +59,8 @@
              });*/
 
             $scope.$on('$destroy', function() {
-                alert("In destroy of:");
+                // alert("In destroy of:");
+                NotificacionesService.setRead();
                 $scope.$emit('scmResetNotificationsBadge', {
                     name: "juliana"
                 });

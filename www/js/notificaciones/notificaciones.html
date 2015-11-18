@@ -13,8 +13,13 @@
             <div class="item item-divider">
                 Anteriores
             </div>
+            <div class="item item-avatar" ng-repeat="notification in NC.oldNotifications | orderBy:'-time'">
+                <img scm-letter-avatar data="{{notification.placa}}"></img>
+                <h2>{{notification.placa}}</h2>
+                <p>Back off, man. I'm a scientist.</p>
+                <span class="item-note" scm-time-ago unixms="{{notification.time}}"></span>
+            </div>
         </div>
-
         {{NC.newNotifications | json}}
     </ion-content>
 </ion-view>
