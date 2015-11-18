@@ -1,12 +1,20 @@
-<ion-view view-title="{{title}}"  cache-view="false">
+<ion-view view-title="{{title}}" cache-view="false">
     <ion-content>
         <div class="list">
-            <div class="item item-avatar">
-                <img scm-letter-avatar data="Venkman"></img>
-                <h2>Venkman</h2>
+            <div class="item item-divider">
+                Nuevas
+            </div>
+            <div class="item item-avatar" ng-repeat="notification in NC.newNotifications | orderBy:'-time'">
+                <img scm-letter-avatar data="{{notification.placa}}"></img>
+                <h2>{{notification.placa}}</h2>
                 <p>Back off, man. I'm a scientist.</p>
-                <span class="item-note">Grammy</span>
+                <span class="item-note" scm-time-ago unixms="{{notification.time}}"></span>
+            </div>
+            <div class="item item-divider">
+                Anteriores
             </div>
         </div>
+
+        {{NC.newNotifications | json}}
     </ion-content>
 </ion-view>

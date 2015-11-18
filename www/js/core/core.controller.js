@@ -6,12 +6,12 @@
         .controller('AppController', AppController);
 
     AppController.$inject = ['$scope', '$rootScope', '$ionicPlatform', '$timeout',
-        '$cordovaNetwork', 'logger', 'isMobileTest', 'Auth', 'FBROOT'
+        '$cordovaNetwork', 'logger', 'isMobileTest', 'Auth', 'FBROOT', 'NotificacionesService'
     ];
 
     /* @ngInject */
     function AppController($scope, $rootScope, $ionicPlatform, $timeout,
-        $cordovaNetwork, logger, isMobileTest, Auth, FBROOT) {
+        $cordovaNetwork, logger, isMobileTest, Auth, FBROOT, NotificacionesService) {
         var vm = this;
         vm.title = 'AppController';
         vm.isExpanded = true;
@@ -74,6 +74,12 @@
             Auth.$waitForAuth()
                 .then(function(data) {
                     console.log('listenNotifications', data);
+                    NotificacionesService.setNotificationsRoot(data.uid);
+
+                    //tiene que ir despues del set
+                    // getNumberOfNotifications();
+
+
 
                     var rootNotification = FBROOT.child('users').child(data.uid).child('notificaciones');
 
@@ -92,15 +98,30 @@
                     function addOne(snap) {
                         console.log('notificacion add', snap.val());
 
-                        $timeout(function() {
-                            vm.numberOfNotifications += 1;
-                        });
+                          $timeout(function() {
+                              vm.numberOfNotifications += 1;
+                          });
+
+                        //presenta algo raro, se come un numeto
+                        // getNumberOfNotifications();
 
                     }
 
 
 
                 });
+        }
+
+        function getNumberOfNotifications() {
+
+            NotificacionesService.getNumberOfNotifications()
+                .then(onGetNumberOfNotifications);
+
+            function onGetNumberOfNotifications(numero) {
+                console.log('onGetNumberOfNotifications', numero);
+                vm.numberOfNotifications = numero;
+            }
+
         }
 
 
