@@ -40,3 +40,33 @@ g.update({users: {"d94166fc-f71f-4327-b431-03949c9a27f5":true}})
 http://jsfiddle.net/cristoferdomingues/KR7KV/10/
 
 
+
+
+-------------acerca de las fechas
+
+para obtener unix en segundos from moment
+
+moment().unix() // en segundos
+
+
+para tener una fecha con un dato unix
+
+moment.unix(unixsegundos)
+
+moment(unixMiliSegundos) // este se usa con firebase por que  asi lo da el servidor
+
+
+-----contar el numero de children y un select solo con los unread
+
+
+f= new Firebase("https://scmtest.firebaseio.com/users/d94166fc-f71f-4327-b431-03949c9a27f5/notificaciones").orderByChild("unread").equalTo(true)
+
+var z; function c (snap){z=snap}
+
+z.numChildren()
+
+-----agregar una notificacion
+
+f= new Firebase("https://scmtest.firebaseio.com/users/d94166fc-f71f-4327-b431-03949c9a27f5/notificaciones")
+
+f.push().set({placa:"cinco", unread:true, time:t})

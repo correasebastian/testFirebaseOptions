@@ -43,9 +43,11 @@
         <i class="icon ion-plus">
     </button> -->
     <ul mfb-menu position="br" effect="zoomin" label="close" active-icon="ion-close-round" resting-icon="ion-navicon" toggling-method="click" main-action="FC.fireMainAction()" menu-state="FC.menuState">
-        <li ng-click="FC.getImagesFromGallery()" mfb-button-close mfb-button icon="ion-images" label="imagen"></li>
+       <!--  <li ng-click="FC.getImagesFromGallery()" mfb-button-close mfb-button icon="ion-images" label="imagen">
+            
+        </li> -->
         <li ng-click="FC.addFoto()" mfb-button-close mfb-button icon="ion-camera" label="web"></li>
-        <!-- <li ng-click="FC.m_addFoto()" mfb-button-close mfb-button icon="ion-camera" label="movil"></li> -->
+        <li ng-click="FC.m_addFoto()" mfb-button-close mfb-button icon="ion-camera" label="movil"></li>
         <li ng-click="FC.sistemasPopup()" mfb-button-close mfb-button icon="ion-camera" label="sistemas"></li>
         <li ng-click="FC.matriculaPopup()" mfb-button-close mfb-button icon="ion-camera" label="matricula"></li>
     </ul>

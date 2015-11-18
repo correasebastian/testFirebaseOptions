@@ -48,7 +48,7 @@
                 url: '/placas',
                 views: {
                     'tab-placas': {
-                        templateUrl: 'js/placas/placas_simple.html',//'js/placas/tab-placas.html',
+                        templateUrl: 'js/placas/placas_simple.html', //'js/placas/tab-placas.html',
                         controller: 'Placas as PC',
                         resolve: {
 
@@ -63,7 +63,9 @@
                             "currentAuth": ["Auth",
                                 function(Auth) {
                                     // $waitForAuth returns a promise so the resolve waits for it to complete
-                                    return Auth.$requireAuth();
+                                    //mirar para la primera pagina de entrada cual funciona mejor, 
+                                    // por que ambas sirven $requireAuth
+                                    return Auth.$waitForAuth();
                                 }
                             ]
                         }
@@ -114,6 +116,25 @@
 
                         // controller will not be loaded until $waitForAuth resolves
                         // Auth refers to our $firebaseAuth wrapper in the example above
+                        "currentAuth": ["Auth",
+                            function(Auth) {
+                                // $waitForAuth returns a promise so the resolve waits for it to complete
+                                return Auth.$requireAuth();
+                            }
+                        ]
+                    }
+                }
+            }
+        })
+
+        .state('tab.notificaciones', {
+            url: '/notificaciones',
+            views: {
+                'tab-notificaciones': {
+                    templateUrl: 'js/notificaciones/notificaciones.html',
+                    controller: 'Notificaciones as NC',
+                    resolve: {
+
                         "currentAuth": ["Auth",
                             function(Auth) {
                                 // $waitForAuth returns a promise so the resolve waits for it to complete
