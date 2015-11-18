@@ -44,7 +44,7 @@ angular.module('starter.controllers', [])
         // authMock.setAuth();
 
         console.log('in dash', currentAuth)
-        // Auth.$requireAuth().then(activated);
+            // Auth.$requireAuth().then(activated);
 
         function activated() {
             FbPlacas.setArrayPlacas(currentAuth.uid, 5);
@@ -71,7 +71,7 @@ angular.module('starter.controllers', [])
 
                 $scope.placas.$add(obj).then(function(data) {
                     console.log('data registered', data.key());
-                    var keyInserted=data.key();
+                    var keyInserted = data.key();
 
                     FBROOT.child('inspecciones').child(keyInserted).set(obj);
                 });
@@ -89,71 +89,71 @@ angular.module('starter.controllers', [])
     })
     // .controller('AppController', function($scope, $rootScope, $ionicPlatform, $timeout, $cordovaNetwork, Auth, $state, authMock, FbPlacas) {
 
-    //     var vm;
-    //     vm = this;
-    //     vm.msg = 'init';
+//     var vm;
+//     vm = this;
+//     vm.msg = 'init';
 
-    //     vm.cl = function(msg) {
-    //         $timeout(function() {
-    //             vm.msg = msg;
-    //         });
-    //     };
-
-
-  
-
-    //     $ionicPlatform.ready(function() {
-
-    //         function isOnline() {
-
-    //             function checkIsonline() {
-    //                 if ($cordovaNetwork.isOnline()) {
-    //                     vm.isOnline = true;
-    //                     vm.msg = 'online';
-
-    //                 } else {
-    //                     vm.isOnline = false;
-    //                     vm.msg = 'offline';
-
-    //                 }
-    //             }
-    //             $timeout(checkIsonline);
-    //         }
-
-    //         // listen for Online event
-    //         $scope.$on('$cordovaNetwork:online', function(event, networkState) {
-    //             console.log('online', networkState);
-    //             isOnline();
-    //         });
-
-    //         // listen for Offline event
-    //         $scope.$on('$cordovaNetwork:offline', function(event, networkState) {
-    //             console.log('offline --->>', networkState);
-    //             isOnline();
-    //         });
+//     vm.cl = function(msg) {
+//         $timeout(function() {
+//             vm.msg = msg;
+//         });
+//     };
 
 
-    //         $scope.$on('custom', function(event, data) {
-    //             $timeout(function() {
-    //                 console.log(data);
-    //                 vm.msg = 'custom';
-    //             });
-    //         });
 
 
-    //         /*habilitarlo para cuando este en mobile, si estoy en serve tira error por no encontrar cordova*/
-    //         isOnline();
+//     $ionicPlatform.ready(function() {
+
+//         function isOnline() {
+
+//             function checkIsonline() {
+//                 if ($cordovaNetwork.isOnline()) {
+//                     vm.isOnline = true;
+//                     vm.msg = 'online';
+
+//                 } else {
+//                     vm.isOnline = false;
+//                     vm.msg = 'offline';
+
+//                 }
+//             }
+//             $timeout(checkIsonline);
+//         }
+
+//         // listen for Online event
+//         $scope.$on('$cordovaNetwork:online', function(event, networkState) {
+//             console.log('online', networkState);
+//             isOnline();
+//         });
+
+//         // listen for Offline event
+//         $scope.$on('$cordovaNetwork:offline', function(event, networkState) {
+//             console.log('offline --->>', networkState);
+//             isOnline();
+//         });
 
 
-    //     });
+//         $scope.$on('custom', function(event, data) {
+//             $timeout(function() {
+//                 console.log(data);
+//                 vm.msg = 'custom';
+//             });
+//         });
 
-    //     /*
-    //     e=angular.element($0);
-    //     s=e.scope()
-    //     p=s.$parent
-    //     p.AppCtrl.*/
 
-    // })
+//         /*habilitarlo para cuando este en mobile, si estoy en serve tira error por no encontrar cordova*/
+//         isOnline();
+
+
+//     });
+
+//     /*
+//     e=angular.element($0);
+//     s=e.scope()
+//     p=s.$parent
+//     p.AppCtrl.*/
+
+// })
 
 .controller('ChatsCtrl', function($scope, currentAuth, FbPlacas) {
     // With the new view caching in Ionic, Controllers are only called
@@ -168,18 +168,18 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams,  FbFotos, moment, FBROOT) {
+.controller('ChatDetailCtrl', function($scope, $stateParams, FbFotos, moment, FBROOT) {
     // $scope.chat = Chats.get($stateParams.chatId);
 
-    $scope.fotos= FbFotos.getFotosArray($stateParams.idinspeccion);
+    $scope.fotos = FbFotos.getFotosArray($stateParams.idinspeccion);
 
-    $scope.addFoto=function(){
-        var obj={
+    $scope.addFoto = function() {
+        var obj = {
             path: moment().unix()
         }
 
-        $scope.fotos.$add(obj).then(function(data){
-            var keyInserted=data.key();
+        $scope.fotos.$add(obj).then(function(data) {
+            var keyInserted = data.key();
 
             FBROOT.child('fotos').child(keyInserted).set(obj);
         });
@@ -191,7 +191,8 @@ angular.module('starter.controllers', [])
 .controller('AccountCtrl', function($scope, Auth, currentAuth, UserInfo, $ionicHistory) {
     $scope.settings = {
         enableFriends: true,
-        groupMode:UserInfo.userGroupMode.enable
+        groupMode: UserInfo.userConfig.groupMode,
+        numberOfItems: UserInfo.userConfig.numberOfItems
     };
 
     $scope.logout = function() {
@@ -199,12 +200,18 @@ angular.module('starter.controllers', [])
         Auth.$unauth();
     };
 
-    $scope.saveToggle=function(bool){
+    $scope.saveToggle = function(bool) {
         console.log("save");
-        UserInfo.userGroupMode.enable=bool;
-        UserInfo.userGroupMode.$save();
+        UserInfo.userConfig.groupMode = bool;
+        UserInfo.userConfig.$save();
         $ionicHistory.clearCache();
-    }
+    };
+    $scope.updateRange = function(range) {
+        console.log("range", range);
+        UserInfo.userConfig.numberOfItems =parseInt(range) ;
+        UserInfo.userConfig.$save();
+        $ionicHistory.clearCache();
+    };
 
 
 });

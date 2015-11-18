@@ -24,7 +24,7 @@
         vm.showFilterBar = showFilterBar;
         vm.setFocus = setFocus;
         vm.placaPopup = placaPopup;
-        vm.go = go;
+        vm.go = go;        
         vm.data = {
             placa: null,
             sl: null
@@ -41,8 +41,9 @@
         }
 
         function getPlacas() {
+            vm.userConfig=UserInfo.userConfig;
             logger.info('activado placas');
-            FbPlacas.setArrayPlacas(currentAuth.uid, 5);
+            FbPlacas.setArrayPlacas(currentAuth.uid, vm.userConfig.numberOfItems);
 
             return FbPlacas.getArray().$loaded()
                 .then(onGetPlacas);
@@ -90,12 +91,13 @@
                 //ingreso al registro de inspecciones
                 FBROOT.child('inspecciones').child(keyInserted).set(obj);
 
-                if (UserInfo.userGroupMode.enable) {
+                if (vm.userConfig.groupMode) {
                     //si esta en gropu mode entonces me falta ingresarlo en las inspecciones del usuario
                     FBROOT.child('users').child(currentAuth.uid).child('inspecciones').child(keyInserted).set(obj);
 
                 } else {
-                    var mainGroup = UserInfo.userGroups.$id;
+                    // var mainGroup = vm.userConfig.groups.$id;
+                    var mainGroup = vm.userConfig.defaultGroup;
                     //si NO esta en gropu mode entonces me falta ingresarlo en GROUPMODE
                     FBROOT.child('groups').child(mainGroup).child('inspecciones').child(keyInserted).set(obj);
 

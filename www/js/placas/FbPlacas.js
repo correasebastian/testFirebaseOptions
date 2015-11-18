@@ -24,9 +24,12 @@
         }
 
         function setArrayPlacas(uid, lastNumber) {
+
+            lastNumber = parseInt(lastNumber) || 5;
             var query = null;
-            if (UserInfo.userGroupMode.enable) {
-                var mainGroup=UserInfo.userGroups.$id;
+            if (UserInfo.userConfig.groupMode) {
+                // var mainGroup=UserInfo.userConfig.group.$id;
+                var mainGroup = UserInfo.userConfig.defaultGroup;
                 query = FBROOT.child('groups').child(mainGroup).child('inspecciones').orderByKey().limitToLast(lastNumber);
 
             } else {

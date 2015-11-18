@@ -102,8 +102,8 @@
             url: '/account',
             views: {
                 'tab-account': {
-                    templateUrl: 'templates/tab-account.html',
-                    controller: 'AccountCtrl',
+                    templateUrl: 'js/settings/settings.html',
+                    controller: 'Settings as SC',
                     resolve: {
 
                         /*// Example using function with simple return value.
