@@ -1,3 +1,4 @@
+var v;
 (function() {
     'use strict';
 
@@ -6,13 +7,14 @@
         .controller('FotosCtrl', FotosCtrl);
 
     FotosCtrl.$inject = ['$q', '$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest',
-        '$window', 'Firebase', '$ionicModal', '$scope', 'TiposFotos', 'ImgPro'
+        '$window', 'Firebase', '$ionicModal', '$scope', 'TiposFotos', 'ImgPro', '$ionicPopup'
     ];
 
     /* @ngInject */
     function FotosCtrl($q, $stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest,
-        $window, Firebase, $ionicModal, $scope, TiposFotos, ImgPro) {
+        $window, Firebase, $ionicModal, $scope, TiposFotos, ImgPro, $ionicPopup) {
         var vm = this;
+        v = vm;
         vm.addFoto = addFoto;
         vm.m_addFoto = m_addFoto;
         vm.title = 'FotosCtrl';
@@ -22,7 +24,10 @@
         vm.getImagesFromGallery = getImagesFromGallery;
         var idInspeccion = $stateParams.idinspeccion;
         var placa = moment().unix(); //asignar por parametro tambien
+        var backup = {};
         vm.fotosFalt = TiposFotos;
+        vm.sistemasPopup = sistemasPopup;
+        vm.matriculaPopup = matriculaPopup;
         vm.height = ($window.screen.height - 92) / 2.4;
         activate();
 
@@ -31,7 +36,10 @@
         function activate() {
             var promises = [
                 getFotos(),
-                setModal()
+                setModal(),
+                getSistemasDictamenes(),
+                getMatriculasDictamenes(),
+                getDictamenes()
             ];
 
             return $q.all(promises)
@@ -65,7 +73,7 @@
                         path: paths[i],
                         name: paths[i].split('.')[0],
                         base64Data: dataUri,
-                        camera:false
+                        camera: false
                     };
 
                     (i === 3) ? i = 0: i++;
@@ -86,7 +94,7 @@
 
         function getFotos() {
 
-            FbFotos.getFotosArray(idInspeccion).$loaded()
+            return FbFotos.getFotosArray(idInspeccion).$loaded()
                 .then(onGetFotos);
 
             function onGetFotos(data) {
@@ -100,6 +108,19 @@
 
             }
 
+        }
+
+
+        function getDictamenes() {
+            return FbFotos.getDictamenes(idInspeccion).$loaded()
+                .then(onGetDictamenes);
+
+            function onGetDictamenes(data) {
+                vm.dictamenes = data;
+                // solo por devolver un valor para chaining promises
+                return true;
+
+            }
         }
 
 
@@ -148,7 +169,7 @@
                     path: paths[i],
                     name: paths[i].split('.')[0],
                     base64Data: dataUri,
-                    camera:false
+                    camera: false
                 };
 
                 (i === 3) ? i = 0: i++;
@@ -199,7 +220,7 @@
                     placa: placa, // new Date().toString(),
                     base64Data: imageData,
                     name: paths[i].split('.')[0],
-                    camera:true
+                    camera: true
                 };
                 vm.m_fotos.$add(obj)
                     .then(onAdded(obj));
@@ -245,6 +266,123 @@
                 vm.modal = modal;
                 return vm.modal;
             }
+        }
+
+        function getSistemasDictamenes() {
+            return FbFotos.getSistemasDictamenes().$loaded()
+                .then(onGetSistemasDictamenes);
+
+            function onGetSistemasDictamenes(data) {
+                vm.sistemasDictamenes = data;
+                // solo por devolver un valor para chaining promises
+                return true;
+
+            }
+        }
+
+        function getMatriculasDictamenes() {
+            return FbFotos.getMatriculasDictamenes().$loaded()
+                .then(onGetMatriculasDictamenes);
+
+            function onGetMatriculasDictamenes(data) {
+                vm.matriculasDictamenes = data;
+                // solo por devolver un valor para chaining promises
+                return true;
+
+            }
+        }
+
+        //////////////popups
+
+        function sistemasPopup() {
+            // angular.copy(vm.dictamenes, backup);
+            backData(backup, vm.dictamenes);
+            var myprompt = $ionicPopup.prompt({
+                title: 'Sistemas',
+
+                templateUrl: 'js/fotos/sistemas.html',
+                scope: $scope,
+                buttons: [{
+                    text: 'Cancel',
+                    onTap: function(e) {
+                        backData( vm.dictamenes,backup);
+                        return false;
+
+                    }
+                }, {
+                    text: '<b>Save</b>',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                        if (!vm.dictamenes.sistemas) {
+                            e.preventDefault();
+                        } else {
+                            return true;
+                        }
+                    }
+                }]
+            });
+            myprompt.then(function(bool) {
+                // vm.closePopover();          
+                if (bool) {
+                    saveDictamen();
+                    // vm.setSistemas();
+                }
+            });
+        }
+
+        function saveDictamen() {
+            vm.dictamenes.$save();
+        }
+
+
+        function matriculaPopup() {
+          backData(backup, vm.dictamenes);
+            var myprompt = $ionicPopup.prompt({
+                title: 'Matricula',
+                // template: 'Ingrese la nueva placa',
+                templateUrl: 'js/fotos/matricula.html',
+                scope: $scope,
+                buttons: [{
+                    text: 'Cancel',
+                    onTap: function(e) {
+                        backData( vm.dictamenes,backup);
+                        // vm.data.matriculasDictamen=vm.dataCopy.matriculasDictamen;
+                        // vm.closePopover();
+                        return false;
+                    }
+                }, {
+                    text: '<b>Save</b>',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                        if (!vm.dictamenes.matricula) {
+                            e.preventDefault();
+
+                        } else {
+                            // vm.closePopover();
+                            return true;
+                        }
+                    }
+                }]
+            });
+            myprompt.then(function(bool) {
+                // vm.closePopover();          
+                if (bool) {
+                    saveDictamen();
+                    // setMatricula();
+                }
+            });
+        }
+
+        function backData(dest, origin) {
+            var myKeys = ["sistemas", "matricula"];
+
+            myKeys.forEach(function(name, i) {
+                console.log(name, i);
+                // (backup[name]) ? 
+                dest[name] = origin[name] || null;
+
+            });
+
         }
 
         //end controller

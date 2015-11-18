@@ -1,20 +1,12 @@
 <ion-view view-title="Account">
     <ion-content>
         <ion-list>
-            <ion-toggle ng-model="settings.enableFriends">
-                Enable Friends
-            </ion-toggle>
-        </ion-list>
-        <button class="button button-light" ng-click="SC.logout()">
-            logout
-        </button>
-        <button class="button button-calm" ui-sref="app.placas">
-            go side menu
-        </button>
-        <button class="button button-calm" ui-sref="tab.placas">
-            go tabs
-        </button>
-        <ion-list>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">N° Placas</span>
+                <div class="range range-positive">
+                    <input type="range" name="volume" min="5" max="100" value="{{SC.config.numberOfItems}}" ng-model="SC.config.numberOfItems" ng-click="SC.updateRange()"> <span class="badge badge-assertive">{{SC.config.numberOfItems}}</span>
+                </div>
+            </label>
             <!-- cuando no uso controller as vm, debo pasar el parametro en la funcion save toggle por que no lo coge automaticamente -->
             <ion-toggle ng-model="SC.config.groupMode" ng-click="SC.saveToggle()">
                 groupmode
@@ -22,20 +14,22 @@
             {{SC.config| json}}
         </ion-list>
         <div class="list">
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">N° Placas</span>
-                <div class="range range-positive">
-                    <input type="range" name="volume" min="5" max="100" value="{{SC.config.numberOfItems}}" ng-model="SC.config.numberOfItems" ng-click="SC.updateRange()"> <span class="badge badge-assertive">{{SC.config.numberOfItems}}</span>
-                </div>
-            </label>
-            <div class="item item-input item-select">
+            <div ng-show="SC.config.groupMode" class="item item-input item-select">
                 <div class="input-label">
                     Grupo principal
                 </div>
-             
                 <select ng-model="SC.config.defaultGroup" ng-options="group.$id as group.name for group in SC.userGroups" ng-change="SC.setDefaulGroup()"></select>
             </div>
             {{SC.userGroups|json}} {{SC.selected|json}}
+            <button class=" item item-input button button-calm" ui-sref="app.placas">
+                go side menu
+            </button>
+            <button class=" item item-input button button-calm" ui-sref="tab.placas">
+                go tabs
+            </button>
+            <button class=" item item-input  button button-assertive" ng-click="SC.logout()">
+                logout
+            </button>
         </div>
     </ion-content>
 </ion-view>

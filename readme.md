@@ -34,3 +34,9 @@ U {k: Yh, path: L, n: ae, lc: false}
 g.update({users: {d94166fc-f71f-4327-b431-03949c9a27f5:true}})
 VM1490:2 Uncaught SyntaxError: Unexpected token -(…)InjectedScript._evaluateOn @ VM1319:875InjectedScript._evaluateAndWrap @ VM1319:808InjectedScript.evaluate @ VM1319:664
 g.update({users: {"d94166fc-f71f-4327-b431-03949c9a27f5":true}})
+
+----------------------directiva para select with search option autocomplete
+
+http://jsfiddle.net/cristoferdomingues/KR7KV/10/
+
+

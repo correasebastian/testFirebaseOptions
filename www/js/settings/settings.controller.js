@@ -14,7 +14,7 @@
         vm.setDefaulGroup = setDefaulGroup;
         vm.updateRange = updateRange;
         vm.saveToggle = saveToggle;
-        vm.logout = logout
+        vm.logout = logout;
 
 
         activate();
