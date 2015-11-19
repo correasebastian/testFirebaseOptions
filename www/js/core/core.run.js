@@ -7,15 +7,18 @@ var m;
         .module('app.core')
         .run(Run);
 
-    Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory', 'logger', 'isMobileTest','MomentFactory'];
+    Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory',
+        'logger', 'isMobileTest', 'MomentFactory', 'Ionic'
+    ];
 
     /* @ngInject */
-    function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory, logger, isMobileTest, MomentFactory) {
+    function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory,
+        logger, isMobileTest, MomentFactory, Ionic) {
 
         // ip = $ionicPlatform;
         /* usando el nuevo global de ionic , qu eno esta ligado a angular*/
         /* funcionan inclusive antes del platform ready*/
-     /*   var isIOS = ionic.Platform.isIOS();
+        /*   var isIOS = ionic.Platform.isIOS();
         var isAndroid = ionic.Platform.isAndroid();
         console.log('verificando si funciona antes de platfrom ready', isAndroid, isIOS);
 
@@ -39,9 +42,9 @@ var m;
                 $state.go("login");
             }
         });
-        m=MomentFactory;
+        // m = MomentFactory;
 
-        MomentFactory.setOffset()
+        MomentFactory.setOffset();
 
         Auth.$onAuth(function(authData) {
             console.log('authData  desde run', authData);
@@ -72,6 +75,29 @@ var m;
         });
 
         $ionicPlatform.ready(function() {
+
+            var push = new Ionic.Push({
+                "debug": true,
+                "onNotification": function(notification) {
+                    var payload = notification.payload;
+                    logger.info('notification', payload);
+                },
+
+                "pluginConfig": {
+                    "ios": {
+                        "badge": true,
+                        "sound": true
+                    },
+                    "android": {
+                        "iconColor": "#343434"
+                    }
+                }
+            });
+
+            push.register(function(token) {
+                console.log(token);
+                logger.info("Device token:", token.token);
+            });
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -83,6 +109,8 @@ var m;
                 // org.apache.cordova.statusbar required
                 StatusBar.styleLightContent();
             }
+
+
         });
     }
 })();

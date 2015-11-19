@@ -3,7 +3,8 @@
 
     angular
         .module('app.core')
-        .value('mobileTest', false);
+        .value('mobileTest', false)
+        .constant('Ionic', Ionic);
 
 
 })();
