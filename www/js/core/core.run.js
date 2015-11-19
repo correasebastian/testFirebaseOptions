@@ -8,12 +8,12 @@ var m;
         .run(Run);
 
     Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory',
-        'logger', 'isMobileTest', 'MomentFactory', 'Ionic'
+        'logger', 'isMobileTest', 'MomentFactory', 'Ionic', 'Presence'
     ];
 
     /* @ngInject */
     function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory,
-        logger, isMobileTest, MomentFactory, Ionic) {
+        logger, isMobileTest, MomentFactory, Ionic, Presence) {
 
         // ip = $ionicPlatform;
         /* usando el nuevo global de ionic , qu eno esta ligado a angular*/
@@ -55,6 +55,11 @@ var m;
             if (authData) {
                 // FbPlacas.setArrayPlacas(authData.uid)
                 authMock.setAuth(true);
+
+              /*  //solo funciona bien en web, en ionic se dispara cada que se cambia de nav view ni en tabs ni en sidemenu funciona bien , pu
+              // pues si se actualiza cada que se cambia de vista
+                Presence.config(authData.uid);
+                Presence.run();*/
 
                 console.log("Logged in as:", authData.uid);
 
