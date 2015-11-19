@@ -80,7 +80,7 @@ var m;
                 "debug": true,
                 "onNotification": function(notification) {
                     var payload = notification.payload;
-                    logger.info('notification', payload);
+                    logger.info('notification', notification);
                 },
 
                 "pluginConfig": {
