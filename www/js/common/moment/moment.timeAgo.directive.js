@@ -5,10 +5,10 @@
         .module('common.moment')
         .directive('scmTimeAgo', scmTimeAgo);
 
-    scmTimeAgo.$inject = ['moment'];
+    scmTimeAgo.$inject = ['moment', 'MomentFactory'];
 
     /* @ngInject */
-    function scmTimeAgo(moment) {
+    function scmTimeAgo(moment, MomentFactory) {
         // Usage:
         //
         // Creates:
@@ -26,7 +26,9 @@
         function link(scope, element, attrs) {
 
             if (attrs.unixms) {
-                var timeAgo = moment(parseInt(attrs.unixms)).fromNow();
+                // var timeAgo = moment(parseInt(attrs.unixms)).fromNow();
+                var nowUnixms=MomentFactory.getUnixms();
+                var timeAgo = moment(parseInt(attrs.unixms)).from(nowUnixms);
 
                 element.text(timeAgo);
             }

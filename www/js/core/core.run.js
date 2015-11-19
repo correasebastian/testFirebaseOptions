@@ -1,4 +1,5 @@
 // var ip;
+var m;
 (function() {
     'use strict';
 
@@ -6,10 +7,10 @@
         .module('app.core')
         .run(Run);
 
-    Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory', 'logger', 'isMobileTest'];
+    Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory', 'logger', 'isMobileTest','MomentFactory'];
 
     /* @ngInject */
-    function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory, logger, isMobileTest) {
+    function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory, logger, isMobileTest, MomentFactory) {
 
         // ip = $ionicPlatform;
         /* usando el nuevo global de ionic , qu eno esta ligado a angular*/
@@ -38,6 +39,9 @@
                 $state.go("login");
             }
         });
+        m=MomentFactory;
+
+        MomentFactory.setOffset()
 
         Auth.$onAuth(function(authData) {
             console.log('authData  desde run', authData);

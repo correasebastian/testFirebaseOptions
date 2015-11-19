@@ -5,10 +5,10 @@
         .module('app.notificaciones')
         .controller('Notificaciones', Notificaciones);
 
-    Notificaciones.$inject = ['currentAuth', '$scope', 'NotificacionesService'];
+    Notificaciones.$inject = ['currentAuth', '$scope', 'NotificacionesService', 'logger'];
 
     /* @ngInject */
-    function Notificaciones(currentAuth, $scope, NotificacionesService) {
+    function Notificaciones(currentAuth, $scope, NotificacionesService, logger) {
         var vm = this;
         vm.title = 'Notificaciones';
 
@@ -60,6 +60,8 @@
 
             $scope.$on('$destroy', function() {
                 // alert("In destroy of:");
+                //si le doy cache=true ala vista esto no se ejecuta, y yo lo necesito
+                logger.info('$destroy');
                 NotificacionesService.setRead();
                 $scope.$emit('scmResetNotificationsBadge', {
                     name: "juliana"
