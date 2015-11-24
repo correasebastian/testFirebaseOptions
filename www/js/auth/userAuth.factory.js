@@ -12,9 +12,9 @@
 
         var service = {
             getInfoUser: getInfoUser,
-            getUserGroups: getUserGroups,
+            // getUserGroups: getUserGroups,
             userGroups: null,
-            userGroupMode: null,
+            // userGroupMode: null,
             userID: null,
             userConfig: null
         };
@@ -38,19 +38,36 @@
         }
 
         function getInfoUser(userId) {
-            if(service.userConfig){
-                return $q.when(true);// ya esta cargado no es necesario volver a hacerlo
-            }            
+            if (service.userConfig) {
+                return $q.when(true); // ya esta cargado no es necesario volver a hacerlo
+            }
 
 
-            return getUserConfig(userId)
-                .then(getUserGroups);// asi llamaria despues a GetUserGroups pero tambien lo puedo traer en congig
+            /*return getUserConfig(userId)
+                .then(getUserGroups);*/
+
+            // asi llamaria despues a GetUserGroups pero tambien lo puedo traer en congig
             /*    .then(onGetUserInfo);
 
             function onGetUserInfo(data) {
                 service.userConfig = data;
                 return true; // solo por encadenar la promesa, la verdad no necesito ninguna info
             }*/
+
+            //voy a probar con 4q.all me parece que se ve mejor
+            var promises = [
+                getUserConfig(userId),
+                getUserGroups(userId),
+                getUserMainData(userId)
+            ];
+
+            return $q.all(promises)
+                .then(allPromisesCompleted);
+
+            function allPromisesCompleted() {
+                logger.info('getInfoUser activado');
+            }
+
         }
 
 
@@ -74,7 +91,7 @@
         }
 
         function getUserGroups(userId) {
-            var query = FBROOT.child('users').child(userId).child('groups').orderByKey();//.limitToLast(1);
+            var query = FBROOT.child('users').child(userId).child('groups').orderByKey(); //.limitToLast(1);
 
             return $firebaseArray(query).$loaded()
                 .then(onGetGroups)
@@ -93,16 +110,35 @@
 
         }
 
-        function getGroupMode(userId) {
-            var query = FBROOT.child('users').child(userId).child('groupMode');
+        function getUserMainData(userId) {
+            var query = FBROOT.child('users').child(userId).child('mainData');
             return $firebaseObject(query).$loaded()
-                .then(onGetGroupMode)
-                .catch(exception.catcher("cant get groupMode"));
+                .then(onGetMainData)
+                .catch(exception.catcher("cant get mainData"));
 
-            function onGetGroupMode(data) {
-                service.userGroupMode = data; //.enable;
-                return service.userGroupMode;
+            function onGetMainData(data) {
+                /* if (!data[0]) {
+                     service.userConfig.groupMode = false;
+                     service.userConfig.$save();
+                 }
+                 service.userGroups = data[0] || {};*/
+                service.mainData = data;
+                // return service.userGroups;// no es necesario devolver la informacion
+                return true; //solo por devolver algo y encadenar
             }
+
         }
+
+        /*  function getGroupMode(userId) {
+              var query = FBROOT.child('users').child(userId).child('groupMode');
+              return $firebaseObject(query).$loaded()
+                  .then(onGetGroupMode)
+                  .catch(exception.catcher("cant get groupMode"));
+
+              function onGetGroupMode(data) {
+                  service.userGroupMode = data; //.enable;
+                  return service.userGroupMode;
+              }
+          }*/
     }
 })();

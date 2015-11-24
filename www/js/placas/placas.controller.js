@@ -1,3 +1,5 @@
+
+var uf;
 (function() {
     'use strict';
 
@@ -14,6 +16,8 @@
     function Placas($scope, currentAuth, FbPlacas, FBROOT,
         logger, moment, $ionicFilterBar, Firebase, $timeout,
         $ionicPopup, $state, UserInfo) {
+
+        uf=UserInfo;
         var vm = this;
         vm.title = 'Placas';
         vm.addPlaca = addPlaca;

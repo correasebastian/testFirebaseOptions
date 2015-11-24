@@ -51,6 +51,8 @@ var m;
             logger.success('evento onAuth');
             /*desde que movi el onAuth al run parece que siempre me carga antes que el del conrrolador dash, 
             pero por seguirdad sigo usando el id, desde la promesa resuelta en dash para iniciar el array de placas*/
+
+            // esto no lo voy a usar, voy a resolver todo lo ncesario desde el resolve de tab.placas
             authMock.setUserData(authData);
             if (authData) {
                 // FbPlacas.setArrayPlacas(authData.uid)
