@@ -5,10 +5,10 @@
         .module('common.push')
         .factory('PushF', PushF);
 
-    PushF.$inject = ['logger', '$ionicPlatform', 'FBROOT'];
+    PushF.$inject = ['logger', '$ionicPlatform', 'FBROOT', 'UserInfo'];
 
     /* @ngInject */
-    function PushF(logger, $ionicPlatform, FBROOT) {
+    function PushF(logger, $ionicPlatform, FBROOT, UserInfo) {
         var service = {
             register: register
         };
@@ -47,11 +47,37 @@
                         }
                     };
 
-                    FBROOT.child('users').child(uid).child('mainData')
-                        .update({
-                            'pushToken': token.token
-                        }, onComplete);
-                    console.log(token);
+                    var updatedPushToken = {};
+                    updatedPushToken["users/" + uid + "/mainData"] = {
+                        'pushToken': token.token
+                    };
+                    /*  updatedPushToken["posts/" + newPostKey] = {
+                          title: "New Post",
+                          content: "Here is my new post!"
+                      };*/
+
+                    /*  FBROOT.child('users').child(uid).child('mainData')
+                          .update({
+                              'pushToken': token.token
+                          }, onComplete);*/
+
+                    UserInfo.getUserGroups(uid)
+                        .then(function(groups) {
+                            
+                            groups.forEach(function(group) {
+                                updatedPushToken["groups/" + group.$id + "/pushTokens/" + uid ] = {"token":token.token};
+                                logger.log('group', group);
+                            });
+
+                            //atomic operatin
+                            FBROOT.update(updatedPushToken, onComplete);
+
+                        });
+
+
+
+
+                    // console.log(token);
                     logger.info("Device token:", token.token);
                 });
             });

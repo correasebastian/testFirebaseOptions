@@ -8,12 +8,12 @@ var m;
         .run(Run);
 
     Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory',
-        'logger', 'isMobileTest', 'MomentFactory', 'Ionic', 'Presence', 'PushF'
+        'logger', 'isMobileTest', 'MomentFactory', 'Ionic', 'Presence', 'PushF', 'UserInfo'
     ];
 
     /* @ngInject */
     function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory,
-        logger, isMobileTest, MomentFactory, Ionic, Presence, PushF) {
+        logger, isMobileTest, MomentFactory, Ionic, Presence, PushF, UserInfo) {
 
         // ip = $ionicPlatform;
         /* usando el nuevo global de ionic , qu eno esta ligado a angular*/
@@ -70,6 +70,7 @@ var m;
                 //siempre que haga login debe ir a placas o a la vista main
                 $state.go('tab.placas');
             } else {
+                UserInfo.reset();
                 authMock.setAuth(false);
                 /* limpiando la cache para que se vuelva a ejecitar todo por ejemplo en home o sino coge el 
                 anterior que estaba ingresado,esto es recomendable si se va a cambiar de usuario*/

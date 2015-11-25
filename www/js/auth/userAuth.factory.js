@@ -12,15 +12,24 @@
 
         var service = {
             getInfoUser: getInfoUser,
-            // getUserGroups: getUserGroups,
+            getUserGroups: getUserGroups,
             userGroups: null,
             // userGroupMode: null,
             userID: null,
-            userConfig: null
+            userConfig: null,
+            reset:reset
         };
         return service;
 
         ////////////////
+
+        function reset (){
+
+            service.userGroups= null;         
+            service.userID= null;
+            service.userConfig= null;
+
+        }
 
         function getInfoUser_v1(userId) {
             service.userID = userId;
@@ -91,6 +100,10 @@
         }
 
         function getUserGroups(userId) {
+
+            if(service.userGroups){
+                return $q.when(service.userGroups);
+            }
             var query = FBROOT.child('users').child(userId).child('groups').orderByKey(); //.limitToLast(1);
 
             return $firebaseArray(query).$loaded()
@@ -105,7 +118,8 @@
                  service.userGroups = data[0] || {};*/
                 service.userGroups = data;
                 // return service.userGroups;// no es necesario devolver la informacion
-                return true; //solo por devolver algo y encadenar
+                // return true; //solo por devolver algo y encadenar
+                return service.userGroups;
             }
 
         }
