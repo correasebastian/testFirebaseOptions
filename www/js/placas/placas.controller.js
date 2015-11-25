@@ -61,7 +61,7 @@ var uf;
         function go(placa) {
             setFocus(false);
             $state.go("tab.placas-detail", {
-                idinspeccion: placa.$id
+                idinspeccion: placa.$id, placa:placa.placa
             });
         }
 
@@ -81,7 +81,8 @@ var uf;
                 placa: placa, // moment().unix(), // new Date().toString(),
                 /*    path: paths[i],
                     name: paths[i].split('.')[0],*/
-                timeStamp: Firebase.ServerValue.TIMESTAMP
+                timeStamp: Firebase.ServerValue.TIMESTAMP,
+                createdBy:currentAuth.uid
             };
 
             (i === 3) ? i = 0: i++;

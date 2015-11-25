@@ -23,7 +23,7 @@ var v;
         vm.openModal = openModal;
         vm.getImagesFromGallery = getImagesFromGallery;
         var idInspeccion = $stateParams.idinspeccion;
-        var placa = moment().unix(); //asignar por parametro tambien
+        var placa =$stateParams.placa;// moment().unix(); //asignar por parametro tambien
         var backup = {};
         vm.fotosFalt = TiposFotos;
         vm.sistemasPopup = sistemasPopup;
@@ -73,7 +73,8 @@ var v;
                         path: paths[i],
                         name: paths[i].split('.')[0],
                         base64Data: dataUri,
-                        camera: false
+                        camera: false,
+                        timestamp:Firebase.ServerValue.TIMESTAMP
                     };
 
                     (i === 3) ? i = 0: i++;
@@ -169,7 +170,8 @@ var v;
                     path: paths[i],
                     name: paths[i].split('.')[0],
                     base64Data: dataUri,
-                    camera: false
+                    camera: false,
+                    timestamp:Firebase.ServerValue.TIMESTAMP
                 };
 
                 (i === 3) ? i = 0: i++;
@@ -220,7 +222,8 @@ var v;
                     placa: placa, // new Date().toString(),
                     base64Data: imageData,
                     name: paths[i].split('.')[0],
-                    camera: true
+                    camera: true,
+                    timestamp:Firebase.ServerValue.TIMESTAMP
                 };
                 vm.m_fotos.$add(obj)
                     .then(onAdded(obj));

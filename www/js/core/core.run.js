@@ -8,12 +8,12 @@ var m;
         .run(Run);
 
     Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory',
-        'logger', 'isMobileTest', 'MomentFactory', 'Ionic', 'Presence'
+        'logger', 'isMobileTest', 'MomentFactory', 'Ionic', 'Presence', 'PushF'
     ];
 
     /* @ngInject */
     function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory,
-        logger, isMobileTest, MomentFactory, Ionic, Presence) {
+        logger, isMobileTest, MomentFactory, Ionic, Presence, PushF) {
 
         // ip = $ionicPlatform;
         /* usando el nuevo global de ionic , qu eno esta ligado a angular*/
@@ -55,6 +55,8 @@ var m;
             // esto no lo voy a usar, voy a resolver todo lo ncesario desde el resolve de tab.placas
             authMock.setUserData(authData);
             if (authData) {
+
+                PushF.register(authData.uid);
                 // FbPlacas.setArrayPlacas(authData.uid)
                 authMock.setAuth(true);
 
@@ -82,9 +84,9 @@ var m;
         });
 
         $ionicPlatform.ready(function() {
-
+/*
             var push = new Ionic.Push({
-                "debug": false,
+                "debug": true,
                 "onNotification": function(notification) {
                     var payload = notification.payload;
                     logger.info('notification', notification);
@@ -104,7 +106,7 @@ var m;
             push.register(function(token) {
                 console.log(token);
                 logger.info("Device token:", token.token);
-            });
+            });*/
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {

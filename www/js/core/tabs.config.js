@@ -82,7 +82,7 @@
                 }
             })
             .state('tab.placas-detail', {
-                url: '/placas/:idinspeccion',
+                url: '/placas/:idinspeccion/:placa',
                 views: {
                     'tab-placas': {
                         templateUrl: 'js/fotos/fotos_simple.html',
