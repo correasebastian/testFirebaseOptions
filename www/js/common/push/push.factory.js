@@ -5,10 +5,10 @@
         .module('common.push')
         .factory('PushF', PushF);
 
-    PushF.$inject = ['logger', '$ionicPlatform', 'FBROOT', 'UserInfo'];
+    PushF.$inject = ['logger', '$ionicPlatform', 'FBROOT', 'UserInfo', 'exception'];
 
     /* @ngInject */
-    function PushF(logger, $ionicPlatform, FBROOT, UserInfo) {
+    function PushF(logger, $ionicPlatform, FBROOT, UserInfo, exception) {
         var service = {
             register: register
         };
@@ -39,18 +39,10 @@
                 });
 
                 push.register(function(token) {
-                    var onComplete = function(error) {
-                        if (error) {
-                            console.log('Synchronization failed updating token');
-                        } else {
-                            console.log('Synchronization succeeded');
-                        }
-                    };
+                  
 
                     var updatedPushToken = {};
-                    updatedPushToken["users/" + uid + "/mainData"] = {
-                        'pushToken': token.token
-                    };
+                    updatedPushToken["users/" + uid + '/mainData/pushToken'] = token.token;
                     /*  updatedPushToken["posts/" + newPostKey] = {
                           title: "New Post",
                           content: "Here is my new post!"
@@ -65,12 +57,12 @@
                         .then(function(groups) {
                             
                             groups.forEach(function(group) {
-                                updatedPushToken["groups/" + group.$id + "/pushTokens/" + uid ] = {"token":token.token};
+                                updatedPushToken["groups/" + group.$id + "/pushTokens/" + uid + '/token'] = token.token;
                                 logger.log('group', group);
                             });
 
                             //atomic operatin
-                            FBROOT.update(updatedPushToken, onComplete);
+                            FBROOT.update(updatedPushToken, exception.fbCatcher('ingresando pushToken'));
 
                         });
 
