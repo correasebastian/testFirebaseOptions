@@ -10,7 +10,9 @@ angular.module('starter.controllers', [])
 
 
         $scope.loginFn = function(user) {
-
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
             Auth.$authWithPassword({
                     email: user.email,
                     password: user.pass
@@ -208,7 +210,7 @@ angular.module('starter.controllers', [])
     };
     $scope.updateRange = function(range) {
         console.log("range", range);
-        UserInfo.userConfig.numberOfItems =parseInt(range) ;
+        UserInfo.userConfig.numberOfItems = parseInt(range);
         UserInfo.userConfig.$save();
         $ionicHistory.clearCache();
     };
