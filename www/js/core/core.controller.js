@@ -72,40 +72,52 @@
                 });
             });
             Auth.$waitForAuth()
-                .then(function(data) {
-                    console.log('listenNotifications', data);
-                    NotificacionesService.setNotificationsRoot(data.uid);
-
-                    //tiene que ir despues del set
-                    // getNumberOfNotifications();
+                .then(function(authData) {
 
 
 
-                    var rootNotification = FBROOT.child('users').child(data.uid).child('notificaciones');
+                    // esto siempre devuelve una promesa, pero si tiene informacion es que esta autenticado, por ahora lo dejo aca, pero seria mejor en el run
 
 
-                    /*    rootNotification.orderByChild("unread").equalTo(true)
-                            .once('value', getInitNotifications);
+                    if (authData) {
+                        console.log('listenNotifications', authData);
+                        NotificacionesService.setNotificationsRoot(authData.uid);
 
-                        function getInitNotifications(snap) {
-                            console.log('notificaciones iniciales', snap.numChildren());
-                            vm.numberOfNotifications = snap.numChildren();
-                        }*/
+                        //tiene que ir despues del set
+                        // getNumberOfNotifications();
 
-                    rootNotification.orderByChild("unread").equalTo(true)
-                        .on("child_added", addOne);
+
+
+                        var rootNotification = FBROOT.child('users').child(authData.uid).child('notificaciones');
+
+
+                        /*    rootNotification.orderByChild("unread").equalTo(true)
+                                .once('value', getInitNotifications);
+
+                            function getInitNotifications(snap) {
+                                console.log('notificaciones iniciales', snap.numChildren());
+                                vm.numberOfNotifications = snap.numChildren();
+                            }*/
+
+                        rootNotification.orderByChild("unread").equalTo(true)
+                            .on("child_added", addOne);
+
+
+
+                    }
 
                     function addOne(snap) {
                         console.log('notificacion add', snap.val());
-
-                          $timeout(function() {
-                              vm.numberOfNotifications += 1;
-                          });
+                        // este timeour no se si es necesario por que estamos en controllerAS
+                        $timeout(function() {
+                            vm.numberOfNotifications += 1;
+                        });
 
                         //presenta algo raro, se come un numeto
                         // getNumberOfNotifications();
 
                     }
+
 
 
 
