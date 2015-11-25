@@ -66,6 +66,7 @@
                                     //mirar para la primera pagina de entrada cual funciona mejor, 
                                     // por que ambas sirven $requireAuth
                                     return Auth.$waitForAuth();
+                                    // return Auth.$requireAuth();// no sirve en ionic dispara muchos errores
                                 }
                             ]
                         }

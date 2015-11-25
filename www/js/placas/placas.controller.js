@@ -1,4 +1,3 @@
-
 var uf;
 (function() {
     'use strict';
@@ -17,7 +16,7 @@ var uf;
         logger, moment, $ionicFilterBar, Firebase, $timeout,
         $ionicPopup, $state, UserInfo) {
 
-        uf=UserInfo;
+        uf = UserInfo;
         var vm = this;
         vm.title = 'Placas';
         vm.addPlaca = addPlaca;
@@ -28,7 +27,7 @@ var uf;
         vm.showFilterBar = showFilterBar;
         vm.setFocus = setFocus;
         vm.placaPopup = placaPopup;
-        vm.go = go;        
+        vm.go = go;
         vm.data = {
             placa: null,
             sl: null
@@ -39,13 +38,18 @@ var uf;
         ////////////////
 
         function activate() {
+            logger.log('en placac ctrl', currentAuth);
 
-            UserInfo.getInfoUser(currentAuth.uid)
-                .then(getPlacas);
+            if (currentAuth) {
+                UserInfo.getInfoUser(currentAuth.uid)
+                    .then(getPlacas);
+            }
+
+
         }
 
         function getPlacas() {
-            vm.userConfig=UserInfo.userConfig;
+            vm.userConfig = UserInfo.userConfig;
             logger.info('activado placas');
             FbPlacas.setArrayPlacas(currentAuth.uid, vm.userConfig.numberOfItems);
 
@@ -61,7 +65,8 @@ var uf;
         function go(placa) {
             setFocus(false);
             $state.go("tab.placas-detail", {
-                idinspeccion: placa.$id, placa:placa.placa
+                idinspeccion: placa.$id,
+                placa: placa.placa
             });
         }
 
@@ -82,7 +87,7 @@ var uf;
                 /*    path: paths[i],
                     name: paths[i].split('.')[0],*/
                 timeStamp: Firebase.ServerValue.TIMESTAMP,
-                createdBy:currentAuth.uid
+                createdBy: currentAuth.uid
             };
 
             (i === 3) ? i = 0: i++;
