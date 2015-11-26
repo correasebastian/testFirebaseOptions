@@ -7,7 +7,7 @@
         <!-- 
     para cuando pruebo mobile
     _______________________________________________________________________ -->
-        <div class="list card" ng-repeat="foto in FC.m_fotos | orderBy:'-$id'">
+        <div class="list card" ng-repeat="foto in FC.m_fotos | orderBy:'-timestamp'">
             <div class="item item-image">
                 <img ng-src="data:image/jpeg;base64,{{foto.base64Data}}">
             </div>
@@ -21,7 +21,7 @@
               
             </div>
         </div> -->
-        <div class="list card " ng-repeat="foto in FC.fotos | orderBy:'-$id'">
+        <div class="list card " ng-repeat="foto in FC.fotos | orderBy:'-timestamp'">
             <div class="item item-image">
                 <!-- <img ng-src="img/{{foto.path}}"> -->
                 <img ng-src="data:image/jpeg;base64,{{foto.base64Data}}">
@@ -29,9 +29,8 @@
         </div>
         {{FC.data.sistemasDictamen |json}}
         <div>
-        {{FC.dictamenes  | json}}
+            {{FC.dictamenes | json}}
         </div>
-
     </ion-content>
     <button ng-click="AppCtrl.setMobileTest(!AppCtrl.mobileTest)" scm-fab delay="1400" class="button button-fab button-fab-bottom-left expanded button-energized-900 spin">
         <i class="icon ion-heart"></i>
@@ -43,12 +42,12 @@
         <i class="icon ion-plus">
     </button> -->
     <ul mfb-menu position="br" effect="zoomin" label="close" active-icon="ion-close-round" resting-icon="ion-navicon" toggling-method="click" main-action="FC.fireMainAction()" menu-state="FC.menuState">
-       <!--  <li ng-click="FC.getImagesFromGallery()" mfb-button-close mfb-button icon="ion-images" label="imagen">
-            
-        </li> -->
-        <li ng-click="FC.addFoto()" mfb-button-close mfb-button icon="ion-camera" label="web"></li>
-        <li ng-click="FC.m_addFoto()" mfb-button-close mfb-button icon="ion-camera" label="movil"></li>
-        <li ng-click="FC.sistemasPopup()" mfb-button-close mfb-button icon="ion-camera" label="sistemas"></li>
-        <li ng-click="FC.matriculaPopup()" mfb-button-close mfb-button icon="ion-camera" label="matricula"></li>
+        <li ng-show="AppCtrl.mobileTest" ng-click="FC.getImagesFromGallery()" mfb-button-close mfb-button icon="ion-images"
+         label="imagen">
+        </li>
+        <li ng-hide="AppCtrl.mobileTest" ng-click="FC.addFoto()" mfb-button-close mfb-button icon="ion-camera" label="web"></li>
+        <li ng-show="AppCtrl.mobileTest" ng-click="FC.m_addFoto()" mfb-button-close mfb-button icon="ion-camera" label="movil"></li>
+        <!--  <li ng-click="FC.sistemasPopup()" mfb-button-close mfb-button icon="ion-camera" label="sistemas"></li>
+        <li ng-click="FC.matriculaPopup()" mfb-button-close mfb-button icon="ion-camera" label="matricula"></li> -->
     </ul>
 </ion-view>

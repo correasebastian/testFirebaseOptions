@@ -6,12 +6,12 @@
         .controller('AppController', AppController);
 
     AppController.$inject = ['$scope', '$rootScope', '$ionicPlatform', '$timeout',
-        '$cordovaNetwork', 'logger', 'isMobileTest', 'Auth', 'FBROOT', 'NotificacionesService'
+        '$cordovaNetwork', 'logger', 'isMobileTest', 'Auth', 'FBROOT', 'NotificacionesService', '$cordovaVibration'
     ];
 
     /* @ngInject */
     function AppController($scope, $rootScope, $ionicPlatform, $timeout,
-        $cordovaNetwork, logger, isMobileTest, Auth, FBROOT, NotificacionesService) {
+        $cordovaNetwork, logger, isMobileTest, Auth, FBROOT, NotificacionesService, $cordovaVibration) {
         var vm = this;
         vm.title = 'AppController';
         vm.isExpanded = true;
@@ -112,6 +112,12 @@
                         $timeout(function() {
                             vm.numberOfNotifications += 1;
                         });
+
+                        $ionicPlatform.ready(function() {
+                            $cordovaVibration.vibrate(230);
+                        });
+
+
 
                         //presenta algo raro, se come un numeto
                         // getNumberOfNotifications();

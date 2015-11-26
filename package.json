@@ -28,15 +28,21 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    "org.apache.cordova.network-information",
-    "org.apache.cordova.camera",
+    "cordova-plugin-network-information",
+    "cordova-plugin-camera",
+    "phonegap-plugin-push",
     {
       "locator": "https://github.com/wymsee/cordova-imagePicker.git",
       "id": "com.synconset.imagepicker"
     },
-    "phonegap-plugin-push"
+    "cordova-plugin-vibration"
   ],
   "cordovaPlatforms": [
-    "android"
+    "android",
+    {
+      "platform": "android",
+      "version": "",
+      "locator": "android"
+    }
   ]
 }

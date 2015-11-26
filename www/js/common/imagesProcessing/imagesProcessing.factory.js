@@ -50,10 +50,10 @@
         function getImagesFromGallery() {
 
             var options = {
-                maximumImagesCount: 10,
-                width: 800,
-                height: 800,
-                quality: 70
+                maximumImagesCount: 12,
+                width: 600,
+                height: 600,
+                quality: 40
             };
 
            

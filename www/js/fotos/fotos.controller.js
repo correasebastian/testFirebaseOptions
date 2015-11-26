@@ -7,23 +7,24 @@ var v;
         .controller('FotosCtrl', FotosCtrl);
 
     FotosCtrl.$inject = ['$q', '$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest',
-        '$window', 'Firebase', '$ionicModal', '$scope', 'TiposFotos', 'ImgPro', '$ionicPopup'
+        '$window', 'Firebase', '$ionicModal', '$scope', 'TiposFotos', 'ImgPro', '$ionicPopup', '$ionicLoading'
     ];
 
     /* @ngInject */
     function FotosCtrl($q, $stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest,
-        $window, Firebase, $ionicModal, $scope, TiposFotos, ImgPro, $ionicPopup) {
+        $window, Firebase, $ionicModal, $scope, TiposFotos, ImgPro, $ionicPopup, $ionicLoading) {
         var vm = this;
         v = vm;
         vm.addFoto = addFoto;
         vm.m_addFoto = m_addFoto;
-        vm.title = 'FotosCtrl';
+        var placa = $stateParams.placa; // moment().unix(); //asignar por parametro tambien
+        vm.title = placa;
         vm.isExpanded = true;
         vm.closeModal = closeModal;
         vm.openModal = openModal;
         vm.getImagesFromGallery = getImagesFromGallery;
         var idInspeccion = $stateParams.idinspeccion;
-        var placa =$stateParams.placa;// moment().unix(); //asignar por parametro tambien
+
         var backup = {};
         vm.fotosFalt = TiposFotos;
         vm.sistemasPopup = sistemasPopup;
@@ -57,24 +58,34 @@ var v;
                 .then(onGetImages);
 
             function onGetImages(results) {
+                var promises = []; // por si quiero hacer el $q.all con todas las imagenes a convertir, por ahora activemolo para cada una
                 for (var i = 0; i < results.length; i++) {
                     console.log('Image URI: ' + results[i]);
+                    $ionicLoading.show({
+                        template: 'Loading...'
+                    });
 
+                    // promises.push()
                     ImgPro.image2DataUri(results[i])
                         .then(onConvertDataUri)
-                        .catch(onConverterError);
+                        .catch(onConverterError)
+                        .finally(onFinally);
 
 
+                }
+
+                function onFinally() {
+                    $ionicLoading.hide();
                 }
 
                 function onConvertDataUri(dataUri) {
                     var obj = {
                         "placa": placa, // Firebase.ServerValue.TIMESTAMP, //new Date().toString(),
                         path: paths[i],
-                        name: paths[i].split('.')[0],
+                        name: 'randomname', //paths[i].split('.')[0],
                         base64Data: dataUri,
                         camera: false,
-                        timestamp:Firebase.ServerValue.TIMESTAMP
+                        timestamp: Firebase.ServerValue.TIMESTAMP
                     };
 
                     (i === 3) ? i = 0: i++;
@@ -171,7 +182,7 @@ var v;
                     name: paths[i].split('.')[0],
                     base64Data: dataUri,
                     camera: false,
-                    timestamp:Firebase.ServerValue.TIMESTAMP
+                    timestamp: Firebase.ServerValue.TIMESTAMP
                 };
 
                 (i === 3) ? i = 0: i++;
@@ -223,7 +234,7 @@ var v;
                     base64Data: imageData,
                     name: paths[i].split('.')[0],
                     camera: true,
-                    timestamp:Firebase.ServerValue.TIMESTAMP
+                    timestamp: Firebase.ServerValue.TIMESTAMP
                 };
                 vm.m_fotos.$add(obj)
                     .then(onAdded(obj));
@@ -308,7 +319,7 @@ var v;
                 buttons: [{
                     text: 'Cancel',
                     onTap: function(e) {
-                        backData( vm.dictamenes,backup);
+                        backData(vm.dictamenes, backup);
                         return false;
 
                     }
@@ -339,7 +350,7 @@ var v;
 
 
         function matriculaPopup() {
-          backData(backup, vm.dictamenes);
+            backData(backup, vm.dictamenes);
             var myprompt = $ionicPopup.prompt({
                 title: 'Matricula',
                 // template: 'Ingrese la nueva placa',
@@ -348,7 +359,7 @@ var v;
                 buttons: [{
                     text: 'Cancel',
                     onTap: function(e) {
-                        backData( vm.dictamenes,backup);
+                        backData(vm.dictamenes, backup);
                         // vm.data.matriculasDictamen=vm.dataCopy.matriculasDictamen;
                         // vm.closePopover();
                         return false;
