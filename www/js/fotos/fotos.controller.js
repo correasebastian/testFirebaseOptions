@@ -24,7 +24,8 @@ var v;
         vm.openModal = openModal;
         vm.getImagesFromGallery = getImagesFromGallery;
         var idInspeccion = $stateParams.idinspeccion;
-
+        var queueMatricula = FBROOT.child('dictamenes').child('matriculas').child('queue').child('tasks');
+        var queueSistemas = FBROOT.child('dictamenes').child('sistemas').child('queue').child('tasks');
         var backup = {};
         vm.fotosFalt = TiposFotos;
         vm.sistemasPopup = sistemasPopup;
@@ -338,14 +339,34 @@ var v;
             myprompt.then(function(bool) {
                 // vm.closePopover();          
                 if (bool) {
-                    saveDictamen();
+                    saveDictamenSistemas();
                     // vm.setSistemas();
                 }
             });
         }
 
-        function saveDictamen() {
+        function saveDictamenMatricula() {
             vm.dictamenes.$save();
+
+            var matricula = {
+                idInspeccion: idInspeccion,
+                idDictamen: vm.dictamenes.matricula
+
+            };
+
+            queueMatricula.push().set(matricula);
+        }
+
+        function saveDictamenSistemas() {
+            vm.dictamenes.$save();
+
+            var sistemas = {
+                idInspeccion: idInspeccion,
+                idDictamen: vm.dictamenes.sistemas
+
+            };
+
+            queueSistemas.push().set(sistemas);
         }
 
 
@@ -381,7 +402,7 @@ var v;
             myprompt.then(function(bool) {
                 // vm.closePopover();          
                 if (bool) {
-                    saveDictamen();
+                    saveDictamenMatricula();
                     // setMatricula();
                 }
             });
