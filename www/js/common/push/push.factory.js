@@ -21,7 +21,7 @@
             $ionicPlatform.ready(function() {
 
                 var push = new Ionic.Push({
-                    "debug": false,
+                    "debug": true,
                     "onNotification": function(notification) {
                         var payload = notification.payload;
                         logger.info('notification', notification);
