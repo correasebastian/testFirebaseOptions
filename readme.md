@@ -7,6 +7,8 @@ bower install
 
 ionic state reset
 
+ionic io init 
+
 ----
 
 añadiendo algunos usuarios a grupos

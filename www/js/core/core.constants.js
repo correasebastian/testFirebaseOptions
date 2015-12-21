@@ -4,7 +4,9 @@
     angular
         .module('app.core')
         .value('mobileTest', false)
-        .constant('Ionic', Ionic);
+        // .constant('Ionic', Ionic);
+        .constant('Ionic', ionic);
+
 
 
 })();

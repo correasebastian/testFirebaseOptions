@@ -15,6 +15,7 @@
     "ng-mfb": "~0.6.2",
     "ng-notifications-bar": "~0.0.15",
     "ngletteravatar": "~3.0.1",
-    "ionic-filter-bar": "~1.1.1"
+    "ionic-filter-bar": "~1.1.1",
+    "lokijs": "~1.3.10"
   }
 }

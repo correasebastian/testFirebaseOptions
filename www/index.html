@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <!-- whitelist plugin config to pass all -->
-    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src &apos;self&apos; &apos;unsafe-inline&apos; &apos;unsafe-eval&apos; *; style-src  &apos;self&apos; &apos;unsafe-inline&apos; *">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; img-src * data:; script-src &apos;self&apos; &apos;unsafe-inline&apos; &apos;unsafe-eval&apos; *; style-src  &apos;self&apos; &apos;unsafe-inline&apos; *">
     <title></title>
     <!-- bower:css -->
     <link rel="stylesheet" href="lib/toastr/toastr.css" />
@@ -38,10 +38,14 @@
     <script src="lib/ng-notifications-bar/dist/ngNotificationsBar.min.js"></script>
     <script src="lib/ngletteravatar/ngletteravatar.js"></script>
     <script src="lib/ionic-filter-bar/dist/ionic.filter.bar.js"></script>
+    <script src="lib/lokijs/src/lokijs.js"></script>
     <script src="lib/ionic-platform-web-client/dist/ionic.io.bundle.min.js"></script>
     <!-- endbower -->
+    <script src="lib/lokijs/src/loki-angular.js"></script>
+    <script src="js/vendor/loki-cordova-fs-adapter.js"></script>
     <!-- Cordova is bootstrapped by ionic-platform-web-client, uncomment this if you remove ionic-platform-web-client... -->
     <!-- parece que el problema en el login es debido a esto, debo uncomment cordova.js -->
+    <!-- Cordova is bootstrapped by ionic-platform-web-client, uncomment this if you remove ionic-platform-web-client... -->
     <script src="cordova.js"></script>
 </head>
 
@@ -75,6 +79,7 @@
     <script src="js/common/imagesProcessing/imagesProcessing.module.js"></script>
     <script src="js/common/letterAvatar/letterAvatar.module.js"></script>
     <script src="js/common/logger/logger.module.js"></script>
+    <script src="js/common/loki/loki.module.js"></script>
     <script src="js/common/moment/moment.module.js"></script>
     <script src="js/common/promise/promise.module.js"></script>
     <script src="js/common/push/push.module.js"></script>
@@ -105,6 +110,7 @@
     <script src="js/placas/animate.directive.js"></script>
     <script src="js/placas/placas.controller.js"></script>
     <script src="js/settings/settings.controller.js"></script>
+    <script src="js/vendor/loki-cordova-fs-adapter.js"></script>
     <script src="js/common/Firebase/fbroot.factory.js"></script>
     <script src="js/common/Firebase/firebase.constants.js"></script>
     <script src="js/common/Firebase/firebase.presence.factory.js"></script>
@@ -114,6 +120,8 @@
     <script src="js/common/letterAvatar/letterAvatar.constants.js"></script>
     <script src="js/common/letterAvatar/letterAvatar.directive.js"></script>
     <script src="js/common/logger/logger.js"></script>
+    <script src="js/common/loki/loki.factory.js"></script>
+    <script src="js/common/loki/loki.run.js"></script>
     <script src="js/common/moment/moment.contants.js"></script>
     <script src="js/common/moment/moment.factory.js"></script>
     <script src="js/common/moment/moment.timeAgo.directive.js"></script>
