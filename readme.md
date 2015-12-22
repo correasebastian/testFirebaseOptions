@@ -10,6 +10,24 @@ ionic state reset
 ionic io init 
 
 ----
+fbA.$add({
+            Name: 'diez'
+        });
+        var sss = setInterval(function() {
+            console.log(fbA.length);
+        }, 1);
+
+        setTimeout(function() {
+            clearInterval(sss);
+        }, 10);
+
+
+https://groups.google.com/forum/#!searchin/firebase-angular/$24firebaseArray/firebase-angular/kkWs1FQPjkM/8UQMGmdYgpUJ
+
+
+http://stackoverflow.com/questions/29708726/get-firebasearray-from-geoquery
+
+-------------------
 
 añadiendo algunos usuarios a grupos
 f=new Firebase("https://scmtest.firebaseio.com/")

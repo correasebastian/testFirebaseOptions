@@ -8,13 +8,13 @@ var uf;
 
     Placas.$inject = ['$scope', 'currentAuth', 'FbPlacas', 'FBROOT',
         'logger', 'moment', '$ionicFilterBar', 'Firebase', '$timeout',
-        '$ionicPopup', '$state', 'UserInfo'
+        '$ionicPopup', '$state', 'UserInfo', 'LokiScm'
     ];
 
     /* @ngInject */
     function Placas($scope, currentAuth, FbPlacas, FBROOT,
         logger, moment, $ionicFilterBar, Firebase, $timeout,
-        $ionicPopup, $state, UserInfo) {
+        $ionicPopup, $state, UserInfo, LokiScm) {
 
         uf = UserInfo;
         var vm = this;
@@ -41,6 +41,7 @@ var uf;
             logger.log('en placac ctrl', currentAuth);
 
             if (currentAuth) {
+                LokiScm.setInspeccionesURI(currentAuth.uid);
                 UserInfo.getInfoUser(currentAuth.uid)
                     .then(getPlacas);
             }
@@ -79,9 +80,6 @@ var uf;
         ];
 
         function addPlaca(placa) {
-
-
-
             var obj = {
                 placa: placa, // moment().unix(), // new Date().toString(),
                 /*    path: paths[i],
@@ -91,8 +89,10 @@ var uf;
             };
 
             (i === 3) ? i = 0: i++;
+            LokiScm.addInspeccion(obj)
 
-            vm.placas.$add(obj).then(onAdded);
+          /*  vm.placas.$add(obj)
+                .then(onAdded);*/
 
             function onAdded(data) {
                 cleanData();

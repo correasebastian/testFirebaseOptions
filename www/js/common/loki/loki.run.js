@@ -1,5 +1,4 @@
-
-
+var lscm;
 (function() {
     'use strict';
 
@@ -11,6 +10,7 @@
 
     /* @ngInject */
     function Run(LokiScm) {
+        lscm = LokiScm;
 
     }
 })();
