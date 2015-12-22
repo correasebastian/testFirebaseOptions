@@ -1,4 +1,4 @@
-var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
+var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
 (function() {
     'use strict';
 
@@ -18,6 +18,7 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
         var _inspeccionesToSync = null;
         var _fotos = null;
         var _fotosToSync = null;
+        var _users = null;
         var _inspeccionesURI;
         var _inspeccionesRawUserURI;
         var _inspeccionesQueueRef = FBROOT.child('inspecciones').child('queue').child('tasks');
@@ -31,14 +32,17 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
             getInspecciones: getInspecciones,
             getFotos: getFotos,
             setInspeccionesURI: setInspeccionesURI,
-            addInspeccion: addInspeccion
+            addInspeccion: addInspeccion,
+            isDbLoad: isDbLoad,
+            getUserConfig: getUserConfig,
+            saveUserData: saveUserData
 
         };
 
 
         ////
         // initDB();
-        isDbLoad();
+        loadDbAsync();
 
         return service;
 
@@ -64,12 +68,16 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
             _inspeccionesURI = FBROOT.child('users').child(uid).child('inspecciones');
             _inspeccionesRawUserURI = 'users/' + uid + '/inspecciones/';
 
-            isDbLoad()
-                .then(trySyncAll);
+            loadDbAsync()
+                .then(function() {
+
+                    
+                    trySyncAll();
+                });
 
         }
 
-        function isDbLoad() {
+        function loadDbAsync() {
             return $q(function(resolve, reject) {
                 if (_alreadyLoad) {
                     resolve();
@@ -106,6 +114,7 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
                 fotosCollection();
                 inspeccionesToSyncCollection();
                 fotosToSyncCollection();
+                usersCollection();
                 cbQ();
             });
         }
@@ -180,6 +189,22 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
             // trySync();
         }
 
+        function usersCollection() {
+            _users = _db.getCollection('users');
+
+            if (!_users) {
+                _users = _db.addCollection('users', {
+                    indices: ['$id'],
+                    clone: true
+                });
+                _users.ensureUniqueIndex('$id');
+
+            }
+
+            users = _users;
+
+        }
+
         function fotosToSyncCollection() {
             _fotosToSync = _db.getCollection('fotosToSync');
 
@@ -202,7 +227,7 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
         }
 
         function getInspecciones() {
-            return isDbLoad()
+            return loadDbAsync()
                 .then(dbOK);
 
             function dbOK() {
@@ -218,7 +243,7 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
         }
 
         function getFotos() {
-            return isDbLoad()
+            return loadDbAsync()
                 .then(dbOK);
 
             function dbOK() {
@@ -419,6 +444,23 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
             }
 
 
+        }
+
+        function isDbLoad() {
+            if (!_db) {
+                return false;
+            }
+            return true;
+        }
+
+        function getUserConfig(uid) {
+
+            return _users.by('$id', uid);
+
+        }
+
+        function saveUserData(data) {
+            _users.insert(data);
         }
 
 

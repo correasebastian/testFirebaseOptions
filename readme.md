@@ -29,6 +29,18 @@ http://stackoverflow.com/questions/29708726/get-firebasearray-from-geoquery
 
 -------------------
 
+
+
+
+
+como PUEDE FALLAR LOKI?????
+
+
+
+
+
+----------------
+
 añadiendo algunos usuarios a grupos
 f=new Firebase("https://scmtest.firebaseio.com/")
 U {k: Yh, path: L, n: ae, lc: false}

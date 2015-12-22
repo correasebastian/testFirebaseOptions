@@ -89,10 +89,11 @@ var uf;
             };
 
             (i === 3) ? i = 0: i++;
-            LokiScm.addInspeccion(obj)
+            LokiScm.addInspeccion(obj);
+            cleanData();
 
-          /*  vm.placas.$add(obj)
-                .then(onAdded);*/
+            /*  vm.placas.$add(obj)
+                  .then(onAdded);*/
 
             function onAdded(data) {
                 cleanData();

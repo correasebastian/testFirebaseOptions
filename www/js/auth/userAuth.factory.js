@@ -5,10 +5,10 @@
         .module('app.auth')
         .factory('UserInfo', UserInfo);
 
-    UserInfo.$inject = ['$firebaseArray', 'FBROOT', '$firebaseObject', '$q', 'logger', 'exception'];
+    UserInfo.$inject = ['$firebaseArray', 'FBROOT', '$firebaseObject', '$q', 'logger', 'exception', 'LokiScm'];
 
     /* @ngInject */
-    function UserInfo($firebaseArray, FBROOT, $firebaseObject, $q, logger, exception) {
+    function UserInfo($firebaseArray, FBROOT, $firebaseObject, $q, logger, exception, LokiScm) {
 
         var service = {
             getInfoUser: getInfoUser,
@@ -17,17 +17,17 @@
             // userGroupMode: null,
             userID: null,
             userConfig: null,
-            reset:reset
+            reset: reset
         };
         return service;
 
         ////////////////
 
-        function reset (){
+        function reset() {
 
-            service.userGroups= null;         
-            service.userID= null;
-            service.userConfig= null;
+            service.userGroups = null;
+            service.userID = null;
+            service.userConfig = null;
 
         }
 
@@ -49,6 +49,16 @@
         function getInfoUser(userId) {
             if (service.userConfig) {
                 return $q.when(true); // ya esta cargado no es necesario volver a hacerlo
+            }
+
+            if (LokiScm.isDbLoad()) {
+
+                var userData = LokiScm.getUserConfig(userId);
+                console.log('userConfig', userData);
+                if (userData) {
+                    return $q.when(true);
+                }
+
             }
 
 
@@ -75,9 +85,38 @@
 
             function allPromisesCompleted() {
                 logger.info('getInfoUser activado');
+                saveUserData(userId);
             }
 
         }
+
+        function saveUserData(uid) {
+            console.log('service', service);
+            var userData = {
+                $id: uid,
+                mainData: cleanObject(service.mainData),
+                config: cleanObject(service.userConfig),
+                groups: service.userGroups
+            };
+            console.log('userData', userData);
+
+            LokiScm.saveUserData(userData);
+
+        }
+
+        function cleanObject(data) {
+            var obj = {};
+            for ( var prop in data) {
+                if (!prop.startsWith('$')) {
+                    obj[prop] = data[prop];
+
+                }
+            }
+            console.log('cleanObject', data, obj);
+            return obj;
+        }
+
+
 
 
         function getUserConfig(userId) {
@@ -101,7 +140,7 @@
 
         function getUserGroups(userId) {
 
-            if(service.userGroups){
+            if (service.userGroups) {
                 return $q.when(service.userGroups);
             }
             var query = FBROOT.child('users').child(userId).child('groups').orderByKey(); //.limitToLast(1);
