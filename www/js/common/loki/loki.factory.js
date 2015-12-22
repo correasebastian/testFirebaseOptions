@@ -1,4 +1,4 @@
-var db, inspecciones, fotos;
+var db, inspecciones, fotos, inspeccionesToSync, fotosToSync;
 (function() {
     'use strict';
 
@@ -15,14 +15,16 @@ var db, inspecciones, fotos;
         var _alreadyLoad = false;
         var _fbAlreadyLoad = false;
         var _inspecciones = null;
+        var _inspeccionesToSync = null;
         var _fotos = null;
+        var _fotosToSync = null;
         var _inspeccionesURI;
         var _inspeccionesRawUserURI;
         var _inspeccionesQueueRef = FBROOT.child('inspecciones').child('queue').child('tasks');
 
         //todo asignarle el fbarray
         var _fbInspecciones = [];
-        var _fbFotos = []
+        var _fbFotos = [];
 
         var loading = null;
         var service = {
@@ -61,6 +63,10 @@ var db, inspecciones, fotos;
         function setInspeccionesURI(uid) {
             _inspeccionesURI = FBROOT.child('users').child(uid).child('inspecciones');
             _inspeccionesRawUserURI = 'users/' + uid + '/inspecciones/';
+
+            isDbLoad()
+                .then(trySyncAll);
+
         }
 
         function isDbLoad() {
@@ -96,8 +102,10 @@ var db, inspecciones, fotos;
                 console.timeEnd('loki');
                 _alreadyLoad = true;
                 loading = false;
-                validateInspeccionesCollection();
-                validateFotosCollection();
+                inspeccionesCollection();
+                fotosCollection();
+                inspeccionesToSyncCollection();
+                fotosToSyncCollection();
                 cbQ();
             });
         }
@@ -111,8 +119,9 @@ var db, inspecciones, fotos;
 
         }
 
-        function validateInspeccionesCollection() {
+        function inspeccionesCollection() {
             _inspecciones = _db.getCollection('inspecciones');
+            _inspeccionesToSync = _db.getCollection('inspeccionesToSync');
             if (!_inspecciones) {
                 _inspecciones = _db.addCollection('inspecciones', {
                     indices: ['$id'],
@@ -125,11 +134,33 @@ var db, inspecciones, fotos;
             _inspecciones.setChangesApi(isEnabled);
             inspecciones = _inspecciones;
 
-            // //TODO
-            // trySync();
+
         }
 
-        function validateFotosCollection() {
+        function inspeccionesToSyncCollection() {
+
+            _inspeccionesToSync = _db.getCollection('_inspeccionesToSync');
+            if (!_inspeccionesToSync) {
+                _inspeccionesToSync = _db.addCollection('_inspeccionesToSync', {
+                    indices: ['$id'],
+                    clone: true
+                });
+                _inspeccionesToSync.ensureUniqueIndex('$id');
+            }
+
+            var isEnabled = true;
+            _inspeccionesToSync.setChangesApi(isEnabled);
+            inspeccionesToSync = _inspeccionesToSync;
+
+
+        }
+
+        function trySyncAll() {
+            trySyncInspecciones();
+        }
+
+
+        function fotosCollection() {
             _fotos = _db.getCollection('fotos');
 
             if (!_fotos) {
@@ -147,6 +178,27 @@ var db, inspecciones, fotos;
 
             // //TODO
             // trySync();
+        }
+
+        function fotosToSyncCollection() {
+            _fotosToSync = _db.getCollection('fotosToSync');
+
+            if (!_fotosToSync) {
+                _fotosToSync = _db.addCollection('fotosToSync', {
+                    indices: ['$id'],
+                    clone: true
+                });
+                _fotosToSync.ensureUniqueIndex('$id');
+
+                //ejemplo de como obtener el registro
+                // temp.by('$id',"-K5fLRn_P7GM1VceDQTa")
+            }
+
+            fotosToSync = _fotosToSync;
+
+            // //TODO
+            // trySync();
+
         }
 
         function getInspecciones() {
@@ -213,10 +265,10 @@ var db, inspecciones, fotos;
             updatedInspeccion[queue] = copyInspeccion;
 
 
-            return atomicInsert(updatedInspeccion);
+            return atomicInsert(key, updatedInspeccion);
         }
 
-        function atomicInsert(data) {
+        function atomicInsert(key, data) {
             return $q(function(resolve, reject) {
                 FBROOT.update(data, function(error) {
                     if (error) {
@@ -224,6 +276,7 @@ var db, inspecciones, fotos;
                         reject(error);
                     } else {
                         logger.info("atomicInsertInspeccion saved successfully.");
+                        removeInspeccionToSyncById(key);
                         resolve();
                     }
                 });
@@ -301,6 +354,13 @@ var db, inspecciones, fotos;
             var copyInspeccion = angular.copy(inspeccion);
             copyInspeccion.$id = fbI.key();
             _inspecciones.insert(copyInspeccion);
+            _inspeccionesToSync.insert(copyInspeccion);
+        }
+
+        function removeInspeccionToSyncById(fbKey) {
+            _inspeccionesToSync.removeWhere({
+                '$id': fbKey
+            });
         }
 
         function validateIndex(before, birthday) {
@@ -331,6 +391,34 @@ var db, inspecciones, fotos;
 
             _birthdays.insert(birthday);
             _temp.insert(birthday);
+        }
+
+        function trySyncInspecciones() {
+            _inspeccionesToSync.data.forEach(function(obj, i) {
+                console.log(obj, i);
+                var key = obj.$id;
+                var objClone = angular.copy(obj);
+
+                if (deleteInvalidProperties(objClone)) {
+                    console.log('format obj', key, objClone);
+                    atomicInsertInspeccion(key, objClone);
+
+                }
+
+            });
+        }
+
+        function deleteInvalidProperties(data) {
+            if (delete data.$id && delete data.$loki) {
+                logger.info('formated data ok to sync with firebase');
+                return true;
+
+            } else {
+                logger.error('cannor removeinvalid proprties', data);
+                return false;
+            }
+
+
         }
 
 
