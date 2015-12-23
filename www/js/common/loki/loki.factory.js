@@ -306,8 +306,8 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
 
             var main = 'inspecciones/' + key;
             updatedInspeccion[main] = inspeccion;
-
-            var queue = 'inspecciones/queue/tasks/' + key;
+// workers/
+            var queue = 'workers/inspecciones/queue/tasks/' + key;
             var copyInspeccion = angular.copy(inspeccion);
             copyInspeccion.idInspeccion = key;
             updatedInspeccion[queue] = copyInspeccion;

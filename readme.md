@@ -31,6 +31,30 @@ http://stackoverflow.com/questions/29708726/get-firebasearray-from-geoquery
 
 
 
+Object
+$id: "d94166fc-f71f-4327-b431-03949c9a27f5"
+$loki: 1
+config: Object
+defaultGroup: "-K3LkUDlu_O-QV_VsluO"
+groupMode: false
+numberOfItems: "37"
+__proto__: Object
+groups: Array[2]
+0: Object
+1: Object
+length: 2
+__proto__: Array[0]
+mainData: Object
+email: "a@a.com"
+fullName: "usuario a"
+numCelular: 3017343810
+pushToken: "DEV-d8b3d975-2015-489c-a7b5-e05c8e891429"
+__proto__: Object
+
+
+-------------------------
+
+
 
 
 como PUEDE FALLAR LOKI?????
