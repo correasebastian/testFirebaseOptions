@@ -8,12 +8,12 @@ var m;
         .run(Run);
 
     Run.$inject = ['$ionicPlatform', '$state', '$rootScope', 'Auth', 'authMock', '$ionicHistory',
-        'logger', 'isMobileTest', 'MomentFactory', 'Ionic', 'Presence', 'PushF', 'UserInfo'
+        'logger', 'isMobileTest', 'MomentFactory', 'Ionic', 'Presence', 'PushF', 'UserInfo','FbPlacas'
     ];
 
     /* @ngInject */
     function Run($ionicPlatform, $state, $rootScope, Auth, authMock, $ionicHistory,
-        logger, isMobileTest, MomentFactory, Ionic, Presence, PushF, UserInfo) {
+        logger, isMobileTest, MomentFactory, Ionic, Presence, PushF, UserInfo, FbPlacas) {
 
         // ip = $ionicPlatform;
         /* usando el nuevo global de ionic , qu eno esta ligado a angular*/
@@ -36,7 +36,7 @@ var m;
         $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
             // We can catch the error thrown when the $requireAuth promise is rejected
             // and redirect the user back to the home page
-            console.log(error);
+            logger.error(error);
             if (error === "AUTH_REQUIRED") {
                 // logger.error(error);
                 $state.go("login");
@@ -47,7 +47,7 @@ var m;
         MomentFactory.setOffset();
 
         Auth.$onAuth(function(authData) {
-            console.log('authData  desde run', authData);
+            logger.log('authData  desde run', authData);
             logger.success('evento onAuth');
             /*desde que movi el onAuth al run parece que siempre me carga antes que el del conrrolador dash, 
             pero por seguirdad sigo usando el id, desde la promesa resuelta en dash para iniciar el array de placas*/
@@ -60,21 +60,28 @@ var m;
                 // FbPlacas.setArrayPlacas(authData.uid)
                 authMock.setAuth(true);
 
-              /*  //solo funciona bien en web, en ionic se dispara cada que se cambia de nav view ni en tabs ni en sidemenu funciona bien , pu
-              // pues si se actualiza cada que se cambia de vista
-                Presence.config(authData.uid);
-                Presence.run();*/
+                /*  //solo funciona bien en web, en ionic se dispara cada que se cambia de nav view ni en tabs ni en sidemenu funciona bien , pu
+                // pues si se actualiza cada que se cambia de vista
+                  Presence.config(authData.uid);
+                  Presence.run();*/
 
                 console.log("Logged in as:", authData.uid);
 
                 //siempre que haga login debe ir a placas o a la vista main
                 $state.go('tab.placas');
             } else {
+                FbPlacas.destroy();
                 UserInfo.reset();
                 authMock.setAuth(false);
                 /* limpiando la cache para que se vuelva a ejecitar todo por ejemplo en home o sino coge el 
                 anterior que estaba ingresado,esto es recomendable si se va a cambiar de usuario*/
-                $ionicHistory.clearCache();
+                $ionicHistory.clearCache()
+                    .then(function(res) {
+                        logger.success('clearcache', res);
+                    })
+                    .catch(function(error) {
+                        logger.error('clearcache', error);
+                    });
 
                 /*no se si esta sea necesaria por que si le doy atras desde login para volver a una vista anterior se genera el error AUTH_REQUIRED  y no deja cambiar de state*/
                 $ionicHistory.clearHistory();
@@ -85,29 +92,29 @@ var m;
         });
 
         $ionicPlatform.ready(function() {
-/*
-            var push = new Ionic.Push({
-                "debug": true,
-                "onNotification": function(notification) {
-                    var payload = notification.payload;
-                    logger.info('notification', notification);
-                },
+            /*
+                        var push = new Ionic.Push({
+                            "debug": true,
+                            "onNotification": function(notification) {
+                                var payload = notification.payload;
+                                logger.info('notification', notification);
+                            },
 
-                "pluginConfig": {
-                    "ios": {
-                        "badge": true,
-                        "sound": true
-                    },
-                    "android": {
-                        "iconColor": "#343434"
-                    }
-                }
-            });
+                            "pluginConfig": {
+                                "ios": {
+                                    "badge": true,
+                                    "sound": true
+                                },
+                                "android": {
+                                    "iconColor": "#343434"
+                                }
+                            }
+                        });
 
-            push.register(function(token) {
-                console.log(token);
-                logger.info("Device token:", token.token);
-            });*/
+                        push.register(function(token) {
+                            console.log(token);
+                            logger.info("Device token:", token.token);
+                        });*/
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {

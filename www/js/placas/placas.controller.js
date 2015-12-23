@@ -47,6 +47,11 @@ var uf;
                     .then(onGetPlacas);
                 UserInfo.getInfoUser(uid)
                     .then(getPlacas);
+
+            } else {
+                //para que lo vuelva a llamar y evitar problemas con el primer inicio;
+                logger.info('destroy scope on plcaas controller');
+                // $scope.$destroy();
             }
 
 

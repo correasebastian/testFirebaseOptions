@@ -31,6 +31,7 @@
             service.userGroups = null;
             service.userID = null;
             service.userConfig = null;
+            loading = false;
 
         }
 
@@ -141,13 +142,27 @@
         function cleanObject(data) {
             var obj = {};
             for (var prop in data) {
-                if (!prop.startsWith('$')) {
+
+                if (!startsWith(prop, '$')) {
                     obj[prop] = data[prop];
 
                 }
+                /*  if (typeof prop === 'string') {
+                      logger.log(prop);
+                      if (!prop.startsWith('$')) {
+                          obj[prop] = data[prop];
+                      }
+                  }*/
+
             }
             console.log('cleanObject', data, obj);
             return obj;
+        }
+
+        function startsWith(prop, str) {
+            if (prop.substring(0, str.length) === str)
+                return true;
+            return false;
         }
 
 

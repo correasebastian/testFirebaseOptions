@@ -35,7 +35,8 @@
       "locator": "https://github.com/wymsee/cordova-imagePicker.git",
       "id": "com.synconset.imagepicker"
     },
-    "cordova-plugin-vibration"
+    "cordova-plugin-vibration",
+    "org.apache.cordova.file"
   ],
   "cordovaPlatforms": [
     "android",

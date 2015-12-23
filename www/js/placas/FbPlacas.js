@@ -5,15 +5,16 @@
         .module('app.placas')
         .factory('FbPlacas', FbPlacas);
 
-    FbPlacas.$inject = ['$firebaseArray', 'FBROOT', 'UserInfo'];
+    FbPlacas.$inject = ['$firebaseArray', 'FBROOT', 'UserInfo', 'logger'];
 
     /* @ngInject */
-    function FbPlacas($firebaseArray, FBROOT, UserInfo) {
+    function FbPlacas($firebaseArray, FBROOT, UserInfo, logger) {
         var ngArrayFb;
 
         var factory = {
             getArray: getArray,
-            setArrayPlacas: setArrayPlacas
+            setArrayPlacas: setArrayPlacas,
+            destroy: destroy
 
         };
         return factory;
@@ -21,6 +22,17 @@
         function getArray() {
 
             return ngArrayFb;
+        }
+
+        function destroy() {
+            logger.info('destroy FbPlacas', ngArrayFb);
+            if (ngArrayFb) {
+                ngArrayFb.$destroy();
+                logger.success('destroy FbPlacas', ngArrayFb);
+                ngArrayFb = null;
+
+            }
+
         }
 
         function setArrayPlacas(uid, lastNumber) {
