@@ -252,11 +252,15 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
             function dbOK() {
                 // service.emu = _birthdays.data;
                 //TODO RAER EL ARRAY FB
-                if (_fbAlreadyLoad) {
-                    return _fbInspecciones;
-                } else {
-                    return _inspecciones.data;
-                }
+                /* if (_fbAlreadyLoad) {
+                     return _fbInspecciones;
+                 } else {
+                     return _inspecciones.data;
+                 }*/
+
+                //TODO  se supone que la loki podria ser mas rapida que FB vamos a mirar con los console
+                logger.info('get inspecciones desde lokijs');
+                return _inspecciones.data;
 
             }
         }

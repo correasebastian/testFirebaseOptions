@@ -20,7 +20,7 @@
             <div class="list animate-fade-slide-in-right">
 
             <!-- funcionando bien pero debo darle un timeout para ver la animacion -->
-                <a href="#/tab/placas/{{placa.$id}}" scm-animate-placas-list ng-repeat="placa in PC.placas | orderBy:'-$id'" class="item  item-avatar item-icon-right">
+                <a href="#/tab/placas/{{placa.$id}}" scm-animate-placas-list ng-repeat="placa in PC.placas track by placa.$id | orderBy:'-$id'" class="item  item-avatar item-icon-right">
                     <img ng-src="img/{{placa.path}}">
                     <h2>{{placa.name}}</h2>
                     <p>{{placa.placa}}</p>

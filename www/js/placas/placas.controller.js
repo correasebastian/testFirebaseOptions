@@ -41,8 +41,11 @@ var uf;
             logger.log('en placac ctrl', currentAuth);
 
             if (currentAuth) {
-                LokiScm.setInspeccionesURI(currentAuth.uid);
-                UserInfo.getInfoUser(currentAuth.uid)
+                var uid = currentAuth.uid;
+                LokiScm.setInspeccionesURI(uid);
+                LokiScm.getInspecciones()
+                    .then(onGetPlacas);
+                UserInfo.getInfoUser(uid)
                     .then(getPlacas);
             }
 
@@ -57,10 +60,12 @@ var uf;
             return FbPlacas.getArray().$loaded()
                 .then(onGetPlacas);
 
-            function onGetPlacas(data) {
-                vm.placas = data;
-                return vm.placas;
-            }
+
+        }
+
+        function onGetPlacas(data) {
+            vm.placas = data;
+            return vm.placas;
         }
 
         function go(placa) {
