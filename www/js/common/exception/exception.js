@@ -9,7 +9,9 @@
     function exception($q, logger) {
         var service = {
             catcher: catcher,
-            fbCatcher:fbCatcher
+            fbCatcher: fbCatcher,
+            catcherSimple: catcherSimple,
+            qCatcher: qCatcher
         };
         return service;
 
@@ -20,15 +22,27 @@
             };
         }
 
+        function qCatcher(reject, message) {
+            return function(reason) {
+                logger.error(message, reason);
+                reject(message);
+            };
+        }
+
+
+        function catcherSimple(message) {
+            return function(reason) {
+                logger.error(message, reason);
+            };
+        }
+
         function fbCatcher(message) {
             return function(error) {
                 if (error) {
-                    logger.error(message, reason);
+                    logger.error(message, error);
                 } else {
                     logger.log('success ' + message);
                 }
-
-
             };
         }
     }

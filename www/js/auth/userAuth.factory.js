@@ -5,11 +5,13 @@
         .module('app.auth')
         .factory('UserInfo', UserInfo);
 
-    UserInfo.$inject = ['$firebaseArray', 'FBROOT', '$firebaseObject', '$q', 'logger', 'exception', 'LokiScm'];
+    UserInfo.$inject = ['$firebaseArray', 'FBROOT', '$firebaseObject', '$q', 'logger', 'exception', '$timeout'];
 
     /* @ngInject */
-    function UserInfo($firebaseArray, FBROOT, $firebaseObject, $q, logger, exception, LokiScm) {
+    function UserInfo($firebaseArray, FBROOT, $firebaseObject, $q, logger, exception, $timeout) {
 
+
+        var loading = false;
         var service = {
             getInfoUser: getInfoUser,
             getUserGroups: getUserGroups,
@@ -18,6 +20,7 @@
             userID: null,
             userConfig: null,
             reset: reset
+
         };
         return service;
 
@@ -47,50 +50,80 @@
         }
 
         function getInfoUser(userId) {
-            if (service.userConfig) {
-                return $q.when(true); // ya esta cargado no es necesario volver a hacerlo
-            }
 
-            if (LokiScm.isDbLoad()) {
+            return $q(function(resolve, reject) {
+                if (service.userConfig) {
+                    resolve(formatuserData(userId)); // ya esta cargado no es necesario volver a hacerlo
+                } else {
 
-                var userData = LokiScm.getUserConfig(userId);
-                console.log('userConfig', userData);
-                if (userData) {
-                    return $q.when(true);
+                    if (loading) {
+                        validateLoadDb(resolve, reject, userId);
+
+                    } else {
+                        loading = true;
+                        /*
+                               if (!loading) {
+                                   $timeout()
+
+                               }*/
+
+
+
+                        /*   if (LokiScm.isDbLoad()) {
+
+                               var userData = LokiScm.getUserConfig(userId);
+                               console.log('userConfig', userData);
+                               if (userData) {
+                                   return $q.when(true);
+                               }
+
+                           }*/
+
+
+                        /*return getUserConfig(userId)
+                            .then(getUserGroups);*/
+
+                        // asi llamaria despues a GetUserGroups pero tambien lo puedo traer en congig
+                        /*    .then(onGetUserInfo);
+
+                        function onGetUserInfo(data) {
+                            service.userConfig = data;
+                            return true; // solo por encadenar la promesa, la verdad no necesito ninguna info
+                        }*/
+
+                        //voy a probar con 4q.all me parece que se ve mejor
+                        var promises = [
+                            getUserConfig(userId),
+                            getUserGroups(userId),
+                            getUserMainData(userId)
+                        ];
+
+                        $q.all(promises)
+                            .then(allPromisesCompleted)
+                            .catch(exception.qCatcher(reject, 'getInfoUser'));
+                    }
                 }
 
-            }
+                function allPromisesCompleted() {
+                    logger.info('getInfoUser activado');
+                    resolve(formatuserData(userId));
+                }
+
+            });
 
 
-            /*return getUserConfig(userId)
-                .then(getUserGroups);*/
+        }
 
-            // asi llamaria despues a GetUserGroups pero tambien lo puedo traer en congig
-            /*    .then(onGetUserInfo);
-
-            function onGetUserInfo(data) {
-                service.userConfig = data;
-                return true; // solo por encadenar la promesa, la verdad no necesito ninguna info
-            }*/
-
-            //voy a probar con 4q.all me parece que se ve mejor
-            var promises = [
-                getUserConfig(userId),
-                getUserGroups(userId),
-                getUserMainData(userId)
-            ];
-
-            return $q.all(promises)
-                .then(allPromisesCompleted);
-
-            function allPromisesCompleted() {
-                logger.info('getInfoUser activado');
-                saveUserData(userId);
+        function validateLoadDb(resolve, reject, uid) {
+            if (service.userConfig) {
+                resolve(formatuserData(uid));
+            } else {
+                $timeout(validateLoadDb, 20, false, resolve, reject, uid);
             }
 
         }
 
-        function saveUserData(uid) {
+        function formatuserData(uid) {
             console.log('service', service);
             var userData = {
                 $id: uid,
@@ -99,14 +132,15 @@
                 groups: service.userGroups
             };
             console.log('userData', userData);
+            return userData;
 
-            LokiScm.saveUserData(userData);
+            // LokiScm.saveUserData(userData);
 
         }
 
         function cleanObject(data) {
             var obj = {};
-            for ( var prop in data) {
+            for (var prop in data) {
                 if (!prop.startsWith('$')) {
                     obj[prop] = data[prop];
 

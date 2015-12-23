@@ -6,10 +6,10 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
         .module('common.loki')
         .factory('LokiScm', LokiScm);
 
-    LokiScm.$inject = ['$q', '$timeout', '$ionicPlatform', 'Loki', 'FBROOT', 'logger'];
+    LokiScm.$inject = ['$q', '$timeout', '$ionicPlatform', 'Loki', 'FBROOT', 'logger', 'UserInfo', 'exception'];
 
     /* @ngInject */
-    function LokiScm($q, $timeout, $ionicPlatform, Loki, FBROOT, logger) {
+    function LokiScm($q, $timeout, $ionicPlatform, Loki, FBROOT, logger, UserInfo, exception) {
 
         var _db;
         var _alreadyLoad = false;
@@ -22,6 +22,7 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
         var _inspeccionesURI;
         var _inspeccionesRawUserURI;
         var _inspeccionesQueueRef = FBROOT.child('inspecciones').child('queue').child('tasks');
+        var _defaultGroup = null;
 
         //todo asignarle el fbarray
         var _fbInspecciones = [];
@@ -70,12 +71,31 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
 
             loadDbAsync()
                 .then(function() {
-
-                    
-                    trySyncAll();
-                });
+                    var userData = getUserConfig(uid);
+                    if (userData) {
+                        console.log('userData on lokijs', userData);
+                        userDataSet(userData, true);
+                    } else {
+                        UserInfo.getInfoUser(uid)
+                            .then(userDataSet)
+                            .catch(exception.catcherSimple('setInspeccionesURI'));
+                    }
+                })
+                .catch(exception.catcherSimple('setInspeccionesURI'));
 
         }
+
+        function userDataSet(userData, noSave) {
+            console.log('userData  on lokijs', userData);
+            _defaultGroup = userData.config.defaultGroup;
+            if (!noSave) {
+                console.log('saving data');
+                saveUserData(userData);
+            }
+            trySyncAll();
+        }
+
+
 
         function loadDbAsync() {
             return $q(function(resolve, reject) {
@@ -92,10 +112,7 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
                                 return resolve;
                             })
                             .then(initCollections)
-                            .catch(function(err) {
-                                console.error('cant load db', err);
-                                reject(err);
-                            });
+                            .catch(exception.qCatcher(reject, 'loadDbAsync'));
 
                     }
 
@@ -165,6 +182,8 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
         }
 
         function trySyncAll() {
+
+            //puedo buscar despues de inspecciones si hay que actualizar fotos
             trySyncInspecciones();
         }
 
@@ -289,6 +308,10 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
             copyInspeccion.idInspeccion = key;
             updatedInspeccion[queue] = copyInspeccion;
 
+            var group = 'groups/' + _defaultGroup + '/inspecciones/' + key;
+            logger.info(group);
+
+            updatedInspeccion[group] = inspeccion;
 
             return atomicInsert(key, updatedInspeccion);
         }
@@ -462,11 +485,6 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
         function saveUserData(data) {
             _users.insert(data);
         }
-
-
-
-
-
 
     }
 })();

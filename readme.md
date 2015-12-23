@@ -35,6 +35,10 @@ http://stackoverflow.com/questions/29708726/get-firebasearray-from-geoquery
 
 como PUEDE FALLAR LOKI?????
 
+------
+
+el oreden importa por almenos en algunas rutas por que si pongo primero las fotos y luego la inspeccion puede sobreescribir la info
+
 
 
 
