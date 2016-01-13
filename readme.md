@@ -30,6 +30,13 @@ http://stackoverflow.com/questions/29708726/get-firebasearray-from-geoquery
 -------------------
 
 
+ionic config set dev_push true
+ionic config set dev_push false
+
+
+
+-----------------------------
+
 
 Object
 $id: "d94166fc-f71f-4327-b431-03949c9a27f5"

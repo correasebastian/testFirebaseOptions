@@ -21,6 +21,7 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
         var _users = null;
         var _inspeccionesURI;
         var _inspeccionesRawUserURI;
+        var _fotosURI = null;
         var _inspeccionesQueueRef = FBROOT.child('inspecciones').child('queue').child('tasks');
         var _defaultGroup = null;
 
@@ -36,7 +37,9 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
             addInspeccion: addInspeccion,
             isDbLoad: isDbLoad,
             getUserConfig: getUserConfig,
-            saveUserData: saveUserData
+            saveUserData: saveUserData,
+            addFoto: addFoto,
+            setFotosURI: setFotosURI
 
         };
 
@@ -48,6 +51,11 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
         return service;
 
         ////////////////
+
+        function setFotosURI(idInspeccion) {
+            _fotosURI = FBROOT.child('inspecciones').child(idInspeccion).child('fotos');
+
+        }
 
         function initDB() {
             console.info('platform ready, inicializando db');
@@ -63,6 +71,27 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
             }
             _db = new Loki('ajustevDB', options);
             db = _db;
+        }
+
+        function addFoto(idInspeccion, foto) {
+            //TODO, mirar si se necesitas que sea loadDbAsync
+            var fbI = FBROOT.child('inspecciones').child(idInspeccion).child('fotos').push();
+            logger.info('key', fbI.key());
+            insertFotoLocal(fbI, foto);
+        }
+
+        function getFotos(idInspeccion) {
+            return loadDbAsync()
+                .then(dbOK)
+                .catch(function(error) {
+                    logger.error('getFotos', error);
+                });
+
+            function dbOK() {
+                logger.info('get inspecciones desde lokijs');
+                return _fotos.data;
+
+            }
         }
 
         function setInspeccionesURI(uid) {
@@ -265,34 +294,26 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
             }
         }
 
-        function getFotos() {
-            return loadDbAsync()
-                .then(dbOK);
+        /*    function getFotos() {
+                return loadDbAsync()
+                    .then(dbOK);
 
-            function dbOK() {
-                //TODO RAER EL ARRAY FB
-                if (_fbAlreadyLoad) {
-                    return _fbFotos;
-                } else {
-                    return _fotos.data;
+                function dbOK() {
+                    //TODO RAER EL ARRAY FB
+                    if (_fbAlreadyLoad) {
+                        return _fbFotos;
+                    } else {
+                        return _fotos.data;
+                    }
                 }
-            }
-        }
+            }*/
 
         function addInspeccion(inspeccion) {
             var fbI = _inspeccionesURI.push();
             logger.info('key', fbI.key());
             insertInspeccionLocal(fbI, inspeccion);
-
-            /* // if (delete inspeccion.$id) {
-            return insertInspeccionCompletaFirebase(fbI, inspeccion);
-            // }
-*/
-
-            //probando el atomic
-
-            return atomicInsertInspeccion(fbI.key(), inspeccion);
-
+            debugger;
+             atomicInsertInspeccion(fbI.key(), inspeccion);
 
         }
 
@@ -306,7 +327,7 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
 
             var main = 'inspecciones/' + key;
             updatedInspeccion[main] = inspeccion;
-// workers/
+            // workers/
             var queue = 'workers/inspecciones/queue/tasks/' + key;
             var copyInspeccion = angular.copy(inspeccion);
             copyInspeccion.idInspeccion = key;
@@ -407,6 +428,13 @@ var db, inspecciones, fotos, inspeccionesToSync, fotosToSync, users;
             copyInspeccion.$id = fbI.key();
             _inspecciones.insert(copyInspeccion);
             _inspeccionesToSync.insert(copyInspeccion);
+        }
+
+        function insertFotoLocal(fbI, foto) {
+            var copyFoto = angular.copy(foto);
+            copyFoto.$id = fbI.key();
+            _fotos.insert(copyFoto);
+            _fotosToSync.insert(copyFoto);
         }
 
         function removeInspeccionToSyncById(fbKey) {

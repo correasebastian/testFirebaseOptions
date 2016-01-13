@@ -7,12 +7,14 @@ var v;
         .controller('FotosCtrl', FotosCtrl);
 
     FotosCtrl.$inject = ['$q', '$stateParams', 'FbFotos', 'FBROOT', 'moment', '$cordovaCamera', 'logger', 'isMobileTest',
-        '$window', 'Firebase', '$ionicModal', '$scope', 'TiposFotos', 'ImgPro', '$ionicPopup', '$ionicLoading'
+        '$window', 'Firebase', '$ionicModal', '$scope', 'TiposFotos', 'ImgPro', '$ionicPopup', '$ionicLoading',
+        'exception'
     ];
 
     /* @ngInject */
     function FotosCtrl($q, $stateParams, FbFotos, FBROOT, moment, $cordovaCamera, logger, isMobileTest,
-        $window, Firebase, $ionicModal, $scope, TiposFotos, ImgPro, $ionicPopup, $ionicLoading) {
+        $window, Firebase, $ionicModal, $scope, TiposFotos, ImgPro, $ionicPopup, $ionicLoading,
+        exception) {
         var vm = this;
         v = vm;
         vm.addFoto = addFoto;
@@ -36,6 +38,8 @@ var v;
         ////////////////
 
         function activate() {
+
+            // LokiScm.setFotosURI(idInspeccion);
             var promises = [
                 getFotos(),
                 setModal(),
@@ -51,6 +55,12 @@ var v;
                 logger.info('Fotos activado');
             }
 
+
+        }
+
+        function lokiGetFotos(idInspeccion) {
+            LokiScm.getFotos(idInspeccion)
+                .then(onGetFotos);
 
         }
 
@@ -110,16 +120,18 @@ var v;
             return FbFotos.getFotosArray(idInspeccion).$loaded()
                 .then(onGetFotos);
 
-            function onGetFotos(data) {
-                if (isMobileTest.get()) {
-                    vm.m_fotos = data;
-                } else {
-                    vm.fotos = data;
-                }
-                // solo por devolver un valor para chaining promises
-                return true;
 
+
+        }
+
+        function onGetFotos(data) {
+            if (isMobileTest.get()) {
+                vm.m_fotos = data;
+            } else {
+                vm.fotos = data;
             }
+            // solo por devolver un valor para chaining promises
+            return true;
 
         }
 

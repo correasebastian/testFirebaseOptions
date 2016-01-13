@@ -1,4 +1,4 @@
-var uf;
+var uf, vmPlacas;
 (function() {
     'use strict';
 
@@ -18,6 +18,7 @@ var uf;
 
         uf = UserInfo;
         var vm = this;
+        vmPlacas=vm;
         vm.title = 'Placas';
         vm.addPlaca = addPlaca;
         vm.placas = [];
@@ -44,9 +45,11 @@ var uf;
                 var uid = currentAuth.uid;
                 LokiScm.setInspeccionesURI(uid);
                 LokiScm.getInspecciones()
-                    .then(onGetPlacas);
-                UserInfo.getInfoUser(uid)
+                    .then(onGetPlacasLk);
+                UserInfo.getInfoUser(uid)//esto lo estoy llamando desde loki
                     .then(getPlacas);
+
+
 
             } else {
                 //para que lo vuelva a llamar y evitar problemas con el primer inicio;
@@ -69,6 +72,13 @@ var uf;
         }
 
         function onGetPlacas(data) {
+            logger.info('onGetPlacas');
+            vm.placas = data;
+            return vm.placas;
+        }
+
+        function onGetPlacasLk(data) {
+            logger.info('onGetPlacasLk');
             vm.placas = data;
             return vm.placas;
         }
